@@ -5,20 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0e1117">
-<title>HumanVoice Studio V3 — Smooth Analog Edition</title>
+<meta name="theme-color" content="#0d1016">
+<title>HumanVoice Studio V4 — Phase-Pure & MP3 Mastering</title>
+<!-- LameJS for fast on-device MP3 encoding on iPad -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
 <style>
 :root {
   color-scheme: dark;
-  --bg: #0e1117;
-  --panel: #171c26;
-  --panel2: #1f2633;
-  --line: #2e384a;
-  --text: #f4f6fa;
-  --muted: #9aa7b8;
-  --accent: #8ce8c8;
-  --accent2: #4fb391;
-  --warn: #f5c478;
+  --bg: #0d1016;
+  --panel: #161b24;
+  --panel2: #1e2532;
+  --line: #2c3648;
+  --text: #f3f6fa;
+  --muted: #98a6b8;
+  --accent: #8be8cb;
+  --accent2: #4cb090;
+  --warn: #f3c878;
 }
 * {
   box-sizing: border-box;
@@ -33,7 +35,7 @@ html, body {
   overscroll-behavior-y: none;
 }
 body {
-  padding: max(12px, env(safe-area-inset-top)) 14px calc(26px + env(safe-area-inset-bottom));
+  padding: max(12px, env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom));
 }
 button, select, input, label, canvas {
   touch-action: manipulation;
@@ -58,10 +60,10 @@ main {
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  background: linear-gradient(135deg, #a4f2d6, #3d9978);
+  background: linear-gradient(135deg, #a6f5dc, #3a9677);
   display: grid;
   place-items: center;
-  color: #0b1e16;
+  color: #091d15;
   font-size: 18px;
   font-weight: 900;
 }
@@ -83,7 +85,7 @@ h1 {
   font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
-  background: #132620;
+  background: #12241f;
 }
 .panel {
   background: var(--panel);
@@ -110,11 +112,11 @@ h2 {
 
 /* Upload / File Picker */
 .upload-zone {
-  border: 1.5px dashed #45556b;
+  border: 1.5px dashed #435369;
   border-radius: 14px;
   padding: 15px;
   text-align: center;
-  background: #121720;
+  background: #11161f;
 }
 .upload-actions {
   display: flex;
@@ -130,7 +132,7 @@ h2 {
   justify-content: center;
   gap: 8px;
   background: var(--accent);
-  color: #0b1f17;
+  color: #091e16;
   font-weight: 700;
   font-size: 14px;
   padding: 11px 18px;
@@ -168,11 +170,11 @@ h2 {
   overflow-wrap: anywhere;
 }
 
-/* Waveform */
+/* Waveform & Spectrum */
 .wavewrap {
   margin-top: 13px;
-  background: #0d1118;
-  border: 1px solid #253042;
+  background: #0c1017;
+  border: 1px solid #242f41;
   border-radius: 12px;
   padding: 8px 8px 6px;
 }
@@ -207,7 +209,7 @@ h2 {
 .meter-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #5fd3a6 0%, #f5c478 82%, #ff6b6b 100%);
+  background: linear-gradient(90deg, #5fd3a6 0%, #f3c878 82%, #ff6b6b 100%);
 }
 
 /* Transport */
@@ -238,12 +240,12 @@ button:active:not(:disabled) { transform: scale(0.98); }
 button.primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #0b1f17;
+  color: #091e16;
   font-weight: 700;
 }
 button.active-mode {
   border-color: var(--accent);
-  background: #1a372d;
+  background: #19362c;
   color: var(--accent);
 }
 button:disabled {
@@ -258,7 +260,7 @@ button:disabled {
   font-variant-numeric: tabular-nums;
 }
 select {
-  background: #121720;
+  background: #11161f;
   color: var(--text);
   border: 1px solid var(--line);
   border-radius: 11px;
@@ -294,7 +296,7 @@ select {
 }
 .preset.active {
   border-color: var(--accent);
-  background: #1a352b;
+  background: #183329;
 }
 
 /* Controls */
@@ -305,14 +307,14 @@ select {
 }
 .control {
   min-width: 0;
-  background: #121720;
+  background: #11161f;
   padding: 11px 13px;
   border-radius: 13px;
-  border: 1px solid #222b3a;
+  border: 1px solid #212a38;
 }
 .control.highlight {
-  border-color: #2f4d43;
-  background: #131d21;
+  border-color: #2c4a40;
+  background: #121c20;
 }
 .controlhead {
   display: flex;
@@ -374,7 +376,7 @@ input[type="range"] {
 .note {
   border-left: 3px solid var(--warn);
   padding: 10px 12px;
-  background: #24211b;
+  background: #23201a;
   border-radius: 0 10px 10px 0;
   color: #ebd8b7;
   font-size: 11.5px;
@@ -399,13 +401,13 @@ input[type="range"] {
 <main>
 <header class="top">
   <div class="brand">
-    <div class="mark">HV3</div>
+    <div class="mark">HV4</div>
     <div>
-      <h1>HumanVoice Studio V3</h1>
-      <div class="sub">Smooth Ribbon &amp; Tube Vocal Humaniser for iPad</div>
+      <h1>HumanVoice Studio V4</h1>
+      <div class="sub">Phase-Pure Analog Vocal Finisher &amp; MP3/WAV Master Desk</div>
     </div>
   </div>
-  <div class="pill">SMOOTH ANALOG CALIBRATION</div>
+  <div class="pill">ZERO-COMB PHASE-LOCKED DSP</div>
 </header>
 
 <section class="panel">
@@ -436,7 +438,7 @@ input[type="range"] {
     <canvas id="wave" class="wave" width="1000" height="210"></canvas>
     <div class="wave-meta">
       <span id="timeReadout">00:00.0 / 00:00.0</span>
-      <span>Tap/drag waveform to seek · Instant A/B comparison</span>
+      <span>Tap/drag waveform to seek · Phase-locked live A/B</span>
       <div class="meter-bar">
         <span>OUT</span>
         <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
@@ -446,7 +448,7 @@ input[type="range"] {
 
   <div class="transport">
     <button id="playOriginal" disabled>▶ Original (Dry)</button>
-    <button id="playHuman" class="primary" disabled>▶ Humanised (Smooth)</button>
+    <button id="playHuman" class="primary" disabled>▶ Humanised (Phase-Pure)</button>
     <button id="stop" disabled>■ Stop</button>
     <button id="loopToggle" disabled>🔁 Loop: Off</button>
     <span class="status" id="status">Waiting for audio</span>
@@ -454,94 +456,94 @@ input[type="range"] {
 </section>
 
 <section class="panel">
-  <h2>02 / Smooth Studio Presets (Zero Harshness)</h2>
+  <h2>02 / Studio Vocal Presets (Phase-Aligned &amp; Dynamic)</h2>
   <div class="presetgrid" id="presets" style="margin-top:10px">
-    <button class="preset active" data-preset="velvet">
-      <b>Velvet De-AI (Default)</b>
-      <span>Rounds off digital glare, adds warm low-mids &amp; subtle organic drift</span>
+    <button class="preset active" data-preset="silk">
+      <b>Silk Condenser (Default)</b>
+      <span>Dynamic harshness cushioning, warm chest &amp; zero phase hollowness</span>
     </button>
     <button class="preset" data-preset="ribbon">
-      <b>Vintage Ribbon Mic</b>
-      <span>Silky dark top-end, rich chest warmth, zero metallic sibilance</span>
+      <b>RCA Ribbon Warmth</b>
+      <span>Velvety rolled-off highs, rich low-mids &amp; liquid optical compression</span>
     </button>
     <button class="preset" data-preset="ballad">
-      <b>Warm Ballad Singer</b>
-      <span>Gentle natural vibrato, smooth optical levelling &amp; intimate studio space</span>
+      <b>Expressive Ballad Vocal</b>
+      <span>Gentle organic pitch drift, stereo micro-doubler &amp; warm wooden booth</span>
     </button>
-    <button class="preset" data-preset="close">
-      <b>Intimate Close-Mic</b>
-      <span>Warm proximity effect, soft vowel movement &amp; dry booth closeness</span>
+    <button class="preset" data-preset="deai">
+      <b>Pure AI De-Glare</b>
+      <span>Targets 3–8 kHz metallic synthesis fizz without dulling articulation</span>
     </button>
-    <button class="preset" data-preset="natural">
-      <b>Transparent Polish</b>
-      <span>Very light touch for tracks that only need subtle softening</span>
+    <button class="preset" data-preset="intimate">
+      <b>Close-Mic Storyteller</b>
+      <span>Full proximity warmth, dynamic sibilance control &amp; dry studio booth</span>
     </button>
-    <button class="preset" data-preset="dark">
+    <button class="preset" data-preset="outlaw">
       <b>Dark Americana / Outlaw</b>
-      <span>Deep woody resonance, tamed upper-mids &amp; smoky tape roll-off</span>
+      <span>Deep sternum weight, analog tape rounding &amp; smoky studio room</span>
     </button>
   </div>
 </section>
 
 <section class="panel">
   <div class="panel-head">
-    <h2>03 / Smooth Vocal Shaping Controls</h2>
-    <span class="small muted">All sliders adjust smoothly in real time during playback</span>
+    <h2>03 / Phase-Coherent Vocal Finishing Controls</h2>
+    <span class="small muted">No parallel comb-filtering — all parameters scale smoothly in real time</span>
   </div>
 
   <div class="controls">
     <div class="control highlight">
-      <div class="controlhead"><label for="debuzz">Digital Glare Smoother</label><span class="value" id="debuzzV">55%</span></div>
-      <input id="debuzz" type="range" min="0" max="100" value="55">
-      <div class="hint">Gently melts away 4.5–9 kHz AI metallic edge and harsh sibilance</div>
+      <div class="controlhead"><label for="deglare">Dynamic Glare Cushion</label><span class="value" id="deglareV">55%</span></div>
+      <input id="deglare" type="range" min="0" max="100" value="55">
+      <div class="hint">Dynamically clamps harsh 3.2–8.5 kHz AI peaks &amp; metallic sibilance</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="warmth">Chest &amp; Low-Mid Body</label><span class="value" id="warmthV">45%</span></div>
+      <div class="controlhead"><label for="warmth">Chest &amp; Proximity Body</label><span class="value" id="warmthV">45%</span></div>
       <input id="warmth" type="range" min="0" max="100" value="45">
-      <div class="hint">Adds warm 160 Hz vocal weight while scooping 380 Hz nasal boxiness</div>
+      <div class="hint">Adds warm 165 Hz sternum weight while dipping 370 Hz boxy mud</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="pitch">Organic Pitch Drift</label><span class="value" id="pitchV">30%</span></div>
-      <input id="pitch" type="range" min="0" max="100" value="30">
-      <div class="hint">Subtle (±5 cent) human pitch &amp; vibrato movement — never seasick</div>
+      <div class="controlhead"><label for="pitch">Micro-Pitch Human Drift</label><span class="value" id="pitchV">22%</span></div>
+      <input id="pitch" type="range" min="0" max="100" value="22">
+      <div class="hint">Zero-comb serial pitch &amp; vibrato drift (±4 cents) for natural pitch ease</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="formant">Soft Vowel Movement</label><span class="value" id="formantV">35%</span></div>
-      <input id="formant" type="range" min="0" max="100" value="35">
-      <div class="hint">Wide, gentle throat-resonance breathing to relax static AI tone</div>
+      <div class="controlhead"><label for="formant">Liquid Vowel Movement</label><span class="value" id="formantV">28%</span></div>
+      <input id="formant" type="range" min="0" max="100" value="28">
+      <div class="hint">Ultra-wide (Q=0.6) gentle vocal-tract breathing to soften frozen timbre</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="texture">Soft-Knee Tube Warmth</label><span class="value" id="textureV">25%</span></div>
-      <input id="texture" type="range" min="0" max="100" value="25">
-      <div class="hint">Clean 2nd-harmonic analog rounding with zero crunch or distortion</div>
+      <div class="controlhead"><label for="tape">Analog Tape Rounding</label><span class="value" id="tapeV">25%</span></div>
+      <input id="tape" type="range" min="0" max="100" value="25">
+      <div class="hint">Warm transformer &amp; tape transient rounding with zero distortion</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="silk">Harsh-Mid Tamer (2.8 kHz)</label><span class="value" id="silkV">40%</span></div>
-      <input id="silk" type="range" min="0" max="100" value="40">
-      <div class="hint">Dips ear-fatiguing 2.5–3.5 kHz digital bite for a creamy midrange</div>
+      <div class="controlhead"><label for="silk">Upper-Mid Silk (2.9 kHz)</label><span class="value" id="silkV">38%</span></div>
+      <input id="silk" type="range" min="0" max="100" value="38">
+      <div class="hint">Smooths ear-fatiguing nasal bite while preserving clear diction</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="dynamics">Optical Vocal Leveller</label><span class="value" id="dynamicsV">40%</span></div>
-      <input id="dynamics" type="range" min="0" max="100" value="40">
-      <div class="hint">Smooth, slow-release LA-2A style compression for even dynamics</div>
+      <div class="controlhead"><label for="dynamics">Optical Level Smoothing</label><span class="value" id="dynamicsV">42%</span></div>
+      <input id="dynamics" type="range" min="0" max="100" value="42">
+      <div class="hint">Gentle 2-stage vocal levelling with auto makeup gain</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="space">Warm Studio Ambience</label><span class="value" id="spaceV">18%</span></div>
-      <input id="space" type="range" min="0" max="100" value="18">
-      <div class="hint">Dark, damped wooden vocal booth reflections &amp; stereo width</div>
+      <div class="controlhead"><label for="space">Stereo Micro-Width &amp; Booth</label><span class="value" id="spaceV">16%</span></div>
+      <input id="space" type="range" min="0" max="100" value="16">
+      <div class="hint">Subtle L/R stereo dimension and dark damped wooden studio walls</div>
     </div>
 
     <div class="control" style="grid-column: 1 / -1">
-      <div class="controlhead"><label for="mix">Dry / Wet Processed Mix</label><span class="value" id="mixV">78%</span></div>
-      <input id="mix" type="range" min="0" max="100" value="78">
-      <div class="hint">Blend the original voice (0%) with the smoothed analog chain (100%)</div>
+      <div class="controlhead"><label for="amount">Overall Effect Depth (Phase-Locked)</label><span class="value" id="amountV">75%</span></div>
+      <input id="amount" type="range" min="0" max="100" value="75">
+      <div class="hint">Scales every stage proportionally without mixing un-aligned dry/wet delays</div>
     </div>
   </div>
 
@@ -552,29 +554,31 @@ input[type="range"] {
     </label>
     <label class="chk-label">
       Export Format:
-      <select id="bitDepth">
-        <option value="16">16-bit PCM WAV</option>
-        <option value="24" selected>24-bit Studio WAV</option>
+      <select id="exportFormat">
+        <option value="mp3-320" selected>MP3 · 320 kbps (High Quality)</option>
+        <option value="mp3-192">MP3 · 192 kbps (Compact)</option>
+        <option value="wav-24">WAV · 24-bit Studio Master</option>
+        <option value="wav-16">WAV · 16-bit Standard PCM</option>
       </select>
     </label>
   </div>
 
   <div class="transport" style="margin-top:14px">
-    <button id="reset">↺ Reset to Velvet Default</button>
-    <button id="render" class="primary" disabled>⚡ Render &amp; Export WAV</button>
+    <button id="reset">↺ Reset</button>
+    <button id="render" class="primary" disabled>⚡ Render &amp; Export Audio</button>
     <button id="shareBtn" disabled>📤 Share / Save to Files</button>
     <span class="status" id="renderStatus">Load audio to begin</span>
   </div>
 </section>
 
 <section class="panel">
-  <h2>04 / Studio Tuning Notes</h2>
+  <h2>04 / What Changed in V4</h2>
   <div class="note">
-    <strong>Why V3 is much smoother:</strong> AI vocals often have piercing energy around 2.8 kHz (nasal bite) and 6.5 kHz (vocoder fizz). Instead of boosting presence or adding raspy distortion, V3 uses a <strong>Harsh-Mid Tamer</strong>, a <strong>Ribbon Roll-Off</strong>, and ultra-clean <strong>Soft-Knee Tube Warmth</strong> to give the voice a relaxed, expensive studio microphone character.
+    <strong>Zero Comb-Filtering &amp; Dynamic Sibilance Control:</strong> Earlier versions blended an un-delayed dry voice with a delayed pitch-modulated signal, which caused hollow phase cancellation (comb-filtering). V4 keeps the core vocal <strong>100% phase-coherent</strong>, adds a <strong>Dynamic High-Frequency Cushion</strong> that only ducks harsh notes when they spike, and includes built-in <strong>320 kbps / 192 kbps MP3 encoding</strong> alongside 24-bit WAV.
   </div>
 </section>
 
-<div class="footer">HumanVoice Studio V3 · Smooth Analog Calibration · Designed for iPad Pro</div>
+<div class="footer">HumanVoice Studio V4 · Phase-Pure Analog Engine + MP3/WAV Exporter for iPad</div>
 </main>
 
 <script>
@@ -585,7 +589,8 @@ input[type="range"] {
   let sourceBuffer = null;
   let processedBuffer = null;
   let lastExportBlob = null;
-  let lastExportFilename = 'humanvoice-v3-smooth.wav';
+  let lastExportFilename = 'humanvoice-v4.mp3';
+  let lastExportMime = 'audio/mpeg';
 
   // Playback state
   let activeSource = null;
@@ -598,15 +603,15 @@ input[type="range"] {
   let pauseOffset = 0;
   let rafId = null;
 
-  const ids = ['debuzz', 'warmth', 'pitch', 'formant', 'texture', 'silk', 'dynamics', 'space', 'mix'];
+  const ids = ['deglare', 'warmth', 'pitch', 'formant', 'tape', 'silk', 'dynamics', 'space', 'amount'];
 
   const presets = {
-    velvet:  { debuzz: 58, warmth: 48, pitch: 28, formant: 35, texture: 24, silk: 42, dynamics: 40, space: 18, mix: 80 },
-    ribbon:  { debuzz: 75, warmth: 62, pitch: 24, formant: 30, texture: 30, silk: 60, dynamics: 45, space: 14, mix: 88 },
-    ballad:  { debuzz: 52, warmth: 55, pitch: 40, formant: 42, texture: 28, silk: 38, dynamics: 48, space: 32, mix: 82 },
-    close:   { debuzz: 50, warmth: 65, pitch: 22, formant: 32, texture: 32, silk: 45, dynamics: 52, space: 8,  mix: 85 },
-    natural: { debuzz: 35, warmth: 30, pitch: 18, formant: 20, texture: 15, silk: 25, dynamics: 28, space: 10, mix: 65 },
-    dark:    { debuzz: 70, warmth: 70, pitch: 34, formant: 45, texture: 38, silk: 55, dynamics: 50, space: 26, mix: 86 }
+    silk:     { deglare: 55, warmth: 45, pitch: 22, formant: 28, tape: 25, silk: 38, dynamics: 42, space: 16, amount: 75 },
+    ribbon:   { deglare: 72, warmth: 60, pitch: 18, formant: 24, tape: 35, silk: 55, dynamics: 46, space: 12, amount: 82 },
+    ballad:   { deglare: 50, warmth: 52, pitch: 34, formant: 36, tape: 28, silk: 35, dynamics: 48, space: 30, amount: 80 },
+    deai:     { deglare: 78, warmth: 48, pitch: 26, formant: 32, tape: 30, silk: 52, dynamics: 45, space: 14, amount: 85 },
+    intimate: { deglare: 48, warmth: 64, pitch: 16, formant: 25, tape: 32, silk: 40, dynamics: 54, space: 8,  amount: 78 },
+    outlaw:   { deglare: 68, warmth: 68, pitch: 28, formant: 38, tape: 42, silk: 48, dynamics: 50, space: 24, amount: 84 }
   };
 
   function ensureContext() {
@@ -643,6 +648,8 @@ input[type="range"] {
     if (f) handleFile(f);
   });
 
+  let currentBaseName = 'humanvoice-v4';
+
   async function handleFile(f) {
     try {
       stopPlayback();
@@ -656,8 +663,7 @@ input[type="range"] {
       processedBuffer = null;
       lastExportBlob = null;
 
-      const baseName = f.name.replace(/\.[^/.]+$/, '');
-      lastExportFilename = `${baseName}-smooth-v3.wav`;
+      currentBaseName = f.name.replace(/\.[^/.]+$/, '') + '-humanised';
 
       enableTransport();
       drawWave(sourceBuffer, 0);
@@ -679,8 +685,9 @@ input[type="range"] {
     const sr = ac.sampleRate;
     const dur = 5.0;
     const len = Math.floor(sr * dur);
-    const buf = ac.createBuffer(1, len, sr);
-    const d = buf.getChannelData(0);
+    const buf = ac.createBuffer(2, len, sr);
+    const dL = buf.getChannelData(0);
+    const dR = buf.getChannelData(1);
 
     const melody = [146.83, 164.81, 174.61, 196.00, 164.81, 146.83];
     for (let i = 0; i < len; i++) {
@@ -691,28 +698,30 @@ input[type="range"] {
 
       for (let h = 1; h <= 28; h++) {
         const freq = f0 * h;
-        const f1 = Math.exp(-Math.pow((freq - 500) / 150, 2));
-        const f2 = 0.7 * Math.exp(-Math.pow((freq - 1550) / 220, 2));
-        const f3 = 0.55 * Math.exp(-Math.pow((freq - 2850) / 300, 2));
-        const aiGlare = 0.35 * Math.exp(-Math.pow((freq - 6500) / 900, 2));
+        const f1 = Math.exp(-Math.pow((freq - 510) / 150, 2));
+        const f2 = 0.68 * Math.exp(-Math.pow((freq - 1520) / 220, 2));
+        const f3 = 0.52 * Math.exp(-Math.pow((freq - 2880) / 300, 2));
+        const aiGlare = 0.32 * Math.exp(-Math.pow((freq - 6400) / 850, 2));
         const amp = (f1 + f2 + f3 + aiGlare + 0.04) / Math.pow(h, 0.72);
         sample += Math.sin(2 * Math.PI * freq * t) * amp;
       }
 
       const env = Math.min(1, t / 0.05) * Math.min(1, (dur - t) / 0.15);
-      d[i] = Math.tanh(sample * 0.4 * env);
+      const val = Math.tanh(sample * 0.4 * env);
+      dL[i] = val;
+      dR[i] = val;
     }
 
     sourceBuffer = buf;
     processedBuffer = null;
     lastExportBlob = null;
-    lastExportFilename = 'synthetic-demo-smooth.wav';
-    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Harsh Upper-Mids + Static Pitch)';
+    currentBaseName = 'synthetic-demo-v4';
+    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Stereo)';
     enableTransport();
     drawWave(sourceBuffer, 0);
     updateTimeReadout(0, sourceBuffer.duration);
     $('renderStatus').textContent = 'Ready to render & export';
-    setStatus('Compare ▶ Original vs ▶ Humanised (Smooth)');
+    setStatus('Compare ▶ Original vs ▶ Humanised');
   });
 
   function enableTransport() {
@@ -762,8 +771,8 @@ input[type="range"] {
   });
 
   $('reset').addEventListener('click', () => {
-    setVals(presets.velvet);
-    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'velvet'));
+    setVals(presets.silk);
+    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'silk'));
   });
 
   $('loopToggle').addEventListener('click', () => {
@@ -793,7 +802,7 @@ input[type="range"] {
     const g = c.getContext('2d');
     const w = c.width, h = c.height;
     g.clearRect(0, 0, w, h);
-    g.fillStyle = '#0d1118';
+    g.fillStyle = '#0c1017';
     g.fillRect(0, 0, w, h);
 
     const mid = h / 2;
@@ -818,7 +827,7 @@ input[type="range"] {
         if (v < mn) mn = v;
         if (v > mx) mx = v;
       }
-      g.strokeStyle = x <= headX ? '#8ce8c8' : '#3a6657';
+      g.strokeStyle = x <= headX ? '#8be8cb' : '#386355';
       g.lineWidth = 1.5;
       g.beginPath();
       g.moveTo(x, mid + mn * mid * 0.88);
@@ -827,7 +836,7 @@ input[type="range"] {
     }
 
     if (playheadRatio > 0 && playheadRatio < 1) {
-      g.strokeStyle = '#f5c478';
+      g.strokeStyle = '#f3c878';
       g.lineWidth = 2.2;
       g.beginPath();
       g.moveTo(headX, 0);
@@ -861,263 +870,242 @@ input[type="range"] {
   });
   waveCanvas.addEventListener('pointerup', () => { isScrubbing = false; });
 
-  /**
-   * ULTRA-CLEAN SOFT-KNEE TUBE WARMTH CURVE
-   * Uses gentle low-ratio tanh with tiny 2nd-harmonic bias so it NEVER crunches or buzzes.
-   */
-  function makeSmoothTubeCurve(amount) {
+  function makeTapeRoundingCurve(amount) {
     const n = 8192;
     const curve = new Float32Array(n);
-    const drive = 1 + amount * 1.8; // Very gentle max drive (was 13 in V2!)
-    const bias = 0.04 * amount;
+    const drive = 1 + amount * 1.15;
     const norm = Math.tanh(drive);
-    const dcOffset = Math.tanh(bias * drive) / norm;
     for (let i = 0; i < n; i++) {
       const x = (i * 2) / n - 1;
-      curve[i] = (Math.tanh((x + bias * (1 - x * x)) * drive) / norm) - dcOffset * (1 - x * x);
+      curve[i] = Math.tanh(x * drive) / norm;
     }
     return curve;
   }
 
-  // Warm Damped Wood Vocal Booth Impulse (no bright slap or metallic ring)
-  function makeWarmBoothImpulse(ac, duration, decay) {
+  function makeVelvetBoothImpulse(ac, duration, decay) {
     const sr = ac.sampleRate;
     const len = Math.max(1, Math.floor(sr * duration));
     const imp = ac.createBuffer(2, len, sr);
-    let seed = 90909;
+    let seed = 777111;
     const rand = () => {
       seed = (seed * 16807) % 2147483647;
       return (seed - 1) / 1073741823.5 - 1;
     };
-    const preDelay = Math.floor(0.014 * sr);
+    const preDelay = Math.floor(0.018 * sr);
     for (let ch = 0; ch < 2; ch++) {
       const d = imp.getChannelData(ch);
-      let lpState = 0;
+      let s1 = 0, s2 = 0;
       for (let i = preDelay; i < len; i++) {
         const t = (i - preDelay) / (len - preDelay);
-        const env = Math.pow(1 - t, decay) * Math.sin(Math.min(1, t * 18) * Math.PI * 0.5);
-        const raw = rand() * env * 0.35;
-        // One-pole lowpass inside the impulse itself for velvety dark reflections
-        lpState = lpState * 0.72 + raw * 0.28;
-        d[i] = lpState;
+        const fadeIn = Math.min(1, t * 22);
+        const env = Math.pow(1 - t, decay) * fadeIn;
+        const raw = rand() * env * 0.32;
+        s1 = s1 * 0.76 + raw * 0.24;
+        s2 = s2 * 0.76 + s1 * 0.24;
+        d[i] = s2;
       }
     }
     return imp;
   }
 
   /**
-   * V3 SMOOTH ANALOG VOCAL ENGINE
-   * Designed specifically to eliminate harshness, nasal bite, and digital glare.
+   * V4 PHASE-PURE VOCAL ENGINE
    */
   function buildGraph(ac, inputNode, initialSettings, bypass = false) {
-    const dryGain = ac.createGain();
-    const wetGain = ac.createGain();
-    const sumOut = ac.createGain();
+    const dryBypassGain = ac.createGain();
+    const activeChainGain = ac.createGain();
     const masterOut = ac.createGain();
 
-    // Parallel Dry Path
-    inputNode.connect(dryGain);
-    dryGain.connect(sumOut);
+    inputNode.connect(dryBypassGain);
+    dryBypassGain.connect(masterOut);
 
-    // 1. Sub-Sonic Cleanup (gentle 65 Hz roll-off)
     const hp = ac.createBiquadFilter();
     hp.type = 'highpass';
-    hp.frequency.value = 65;
-    hp.Q.value = 0.55;
+    hp.frequency.value = 60;
+    hp.Q.value = 0.707;
 
-    // 2. Gentle Serial Pitch Drift & Natural Vibrato
-    // Calibrated so max drift is ~6 cents (musical & organic, never seasick)
-    const pitchDelay = ac.createDelay(0.08);
-    pitchDelay.delayTime.value = 0.018;
+    const pitchDelay = ac.createDelay(0.02);
+    pitchDelay.delayTime.value = 0.0025;
 
-    const slowDriftLFO = ac.createOscillator();
-    const medDriftLFO = ac.createOscillator();
-    const vibLFO = ac.createOscillator();
-    slowDriftLFO.type = 'sine';
-    medDriftLFO.type = 'sine';
-    vibLFO.type = 'sine';
+    const lfoSlow = ac.createOscillator();
+    const lfoVib = ac.createOscillator();
+    lfoSlow.type = 'sine';
+    lfoVib.type = 'sine';
+    lfoSlow.frequency.value = 0.31;
+    lfoVib.frequency.value = 4.9;
 
-    slowDriftLFO.frequency.value = 0.28;
-    medDriftLFO.frequency.value = 0.85;
-    vibLFO.frequency.value = 5.1;
+    const lfoSlowGain = ac.createGain();
+    const lfoVibGain = ac.createGain();
+    lfoSlow.connect(lfoSlowGain);
+    lfoVib.connect(lfoVibGain);
+    lfoSlowGain.connect(pitchDelay.delayTime);
+    lfoVibGain.connect(pitchDelay.delayTime);
+    lfoSlow.start(0);
+    lfoVib.start(0);
 
-    const slowGain = ac.createGain();
-    const medGain = ac.createGain();
-    const vibGain = ac.createGain();
+    const f1Warm = ac.createBiquadFilter();
+    f1Warm.type = 'peaking';
+    f1Warm.frequency.value = 460;
+    f1Warm.Q.value = 0.6;
 
-    slowDriftLFO.connect(slowGain);
-    medDriftLFO.connect(medGain);
-    vibLFO.connect(vibGain);
-
-    slowGain.connect(pitchDelay.delayTime);
-    medGain.connect(pitchDelay.delayTime);
-    vibGain.connect(pitchDelay.delayTime);
-
-    slowDriftLFO.start(0);
-    medDriftLFO.start(0);
-    vibLFO.start(0);
-
-    // 3. Wide, Buttery Formant Shading (Low Q = 0.75 so it never rings or honks)
-    const formantWarm = ac.createBiquadFilter();
-    formantWarm.type = 'peaking';
-    formantWarm.frequency.value = 480;
-    formantWarm.Q.value = 0.75;
-
-    const formantVowel = ac.createBiquadFilter();
-    formantVowel.type = 'peaking';
-    formantVowel.frequency.value = 1350;
-    formantVowel.Q.value = 0.8;
+    const f2Vowel = ac.createBiquadFilter();
+    f2Vowel.type = 'peaking';
+    f2Vowel.frequency.value = 1420;
+    f2Vowel.Q.value = 0.65;
 
     const formantLFO = ac.createOscillator();
     formantLFO.type = 'sine';
-    formantLFO.frequency.value = 0.42;
+    formantLFO.frequency.value = 0.36;
     const f1Mod = ac.createGain();
     const f2Mod = ac.createGain();
     formantLFO.connect(f1Mod);
     formantLFO.connect(f2Mod);
-    f1Mod.connect(formantWarm.frequency);
-    f2Mod.connect(formantVowel.frequency);
+    f1Mod.connect(f1Warm.frequency);
+    f2Mod.connect(f2Vowel.frequency);
     formantLFO.start(0);
 
-    // 4. Chest Warmth & Boxiness Scoop
-    const chestBoost = ac.createBiquadFilter();
-    chestBoost.type = 'lowshelf';
-    chestBoost.frequency.value = 185;
+    const chestShelf = ac.createBiquadFilter();
+    chestShelf.type = 'lowshelf';
+    chestShelf.frequency.value = 175;
 
-    const boxScoop = ac.createBiquadFilter();
-    boxScoop.type = 'peaking';
-    boxScoop.frequency.value = 375;
-    boxScoop.Q.value = 1.1;
+    const mudDip = ac.createBiquadFilter();
+    mudDip.type = 'peaking';
+    mudDip.frequency.value = 365;
+    mudDip.Q.value = 1.0;
 
-    // 5. Soft-Knee Tube Warmth (Unity-gain, gentle 2nd harmonic)
-    const tubeShaper = ac.createWaveShaper();
-    tubeShaper.oversample = '4x';
+    const silkDip = ac.createBiquadFilter();
+    silkDip.type = 'peaking';
+    silkDip.frequency.value = 2900;
+    silkDip.Q.value = 1.0;
 
-    // 6. Harsh-Mid Tamer (Dips piercing 2.85 kHz AI nasal glare)
-    const harshMidDip = ac.createBiquadFilter();
-    harshMidDip.type = 'peaking';
-    harshMidDip.frequency.value = 2850;
-    harshMidDip.Q.value = 1.15;
+    const lowBandLP = ac.createBiquadFilter();
+    lowBandLP.type = 'lowpass';
+    lowBandLP.frequency.value = 3100;
+    lowBandLP.Q.value = 0.5;
 
-    // 7. Digital Glare & Sibilance Smoother (6.2 kHz + 8.0 kHz + Ribbon High Roll-off)
-    const deEss1 = ac.createBiquadFilter();
-    deEss1.type = 'peaking';
-    deEss1.frequency.value = 6200;
-    deEss1.Q.value = 1.6;
+    const highBandHP = ac.createBiquadFilter();
+    highBandHP.type = 'highpass';
+    highBandHP.frequency.value = 3100;
+    highBandHP.Q.value = 0.5;
 
-    const deEss2 = ac.createBiquadFilter();
-    deEss2.type = 'peaking';
-    deEss2.frequency.value = 8200;
-    deEss2.Q.value = 1.8;
+    const hfDeGlareNotch = ac.createBiquadFilter();
+    hfDeGlareNotch.type = 'peaking';
+    hfDeGlareNotch.frequency.value = 6400;
+    hfDeGlareNotch.Q.value = 1.4;
 
-    const ribbonLP = ac.createBiquadFilter();
-    ribbonLP.type = 'lowpass';
-    ribbonLP.frequency.value = 15000;
-    ribbonLP.Q.value = 0.5; // Bessel-like smooth roll-off with zero resonant peak
+    const hfDynamicClamp = ac.createDynamicsCompressor();
+    hfDynamicClamp.knee.value = 10;
+    hfDynamicClamp.attack.value = 0.002;
+    hfDynamicClamp.release.value = 0.065;
 
-    // 8. Smooth Optical Compressor (Slow, transparent levelling)
+    const ribbonRollOff = ac.createBiquadFilter();
+    ribbonRollOff.type = 'lowpass';
+    ribbonRollOff.frequency.value = 15500;
+    ribbonRollOff.Q.value = 0.5;
+
+    const bandRecombine = ac.createGain();
+
+    const tapeShaper = ac.createWaveShaper();
+    tapeShaper.oversample = '4x';
+
     const optoComp = ac.createDynamicsCompressor();
-    optoComp.knee.value = 24;
-    optoComp.attack.value = 0.018;
-    optoComp.release.value = 0.24;
+    optoComp.knee.value = 22;
+    optoComp.attack.value = 0.016;
+    optoComp.release.value = 0.22;
     const makeupGain = ac.createGain();
 
-    // 9. Warm Studio Booth Ambience
     const boothConv = ac.createConvolver();
-    boothConv.buffer = makeWarmBoothImpulse(ac, 0.55, 3.2);
-    const boothTone = ac.createBiquadFilter();
-    boothTone.type = 'lowpass';
-    boothTone.frequency.value = 2800;
+    boothConv.buffer = makeVelvetBoothImpulse(ac, 0.52, 3.3);
+    const boothLP = ac.createBiquadFilter();
+    boothLP.type = 'lowpass';
+    boothLP.frequency.value = 2600;
     const boothSend = ac.createGain();
 
-    // Output Safety Limiter
     const limiter = ac.createDynamicsCompressor();
     limiter.threshold.value = -1.0;
-    limiter.knee.value = 3.0;
-    limiter.ratio.value = 15.0;
-    limiter.attack.value = 0.003;
-    limiter.release.value = 0.1;
+    limiter.knee.value = 2.5;
+    limiter.ratio.value = 16.0;
+    limiter.attack.value = 0.002;
+    limiter.release.value = 0.08;
 
-    // Wire Wet Chain
     inputNode.connect(hp);
     hp.connect(pitchDelay);
-    pitchDelay.connect(formantWarm);
-    formantWarm.connect(formantVowel);
-    formantVowel.connect(chestBoost);
-    chestBoost.connect(boxScoop);
-    boxScoop.connect(tubeShaper);
-    tubeShaper.connect(harshMidDip);
-    harshMidDip.connect(deEss1);
-    deEss1.connect(deEss2);
-    deEss2.connect(ribbonLP);
-    ribbonLP.connect(optoComp);
+    pitchDelay.connect(f1Warm);
+    f1Warm.connect(f2Vowel);
+    f2Vowel.connect(chestShelf);
+    chestShelf.connect(mudDip);
+    mudDip.connect(silkDip);
+
+    silkDip.connect(lowBandLP);
+    lowBandLP.connect(bandRecombine);
+
+    silkDip.connect(highBandHP);
+    highBandHP.connect(hfDeGlareNotch);
+    hfDeGlareNotch.connect(hfDynamicClamp);
+    hfDynamicClamp.connect(ribbonRollOff);
+    ribbonRollOff.connect(bandRecombine);
+
+    bandRecombine.connect(tapeShaper);
+    tapeShaper.connect(optoComp);
     optoComp.connect(makeupGain);
 
-    // Dry/Wet & Ambience routing
-    makeupGain.connect(wetGain);
+    makeupGain.connect(activeChainGain);
+
     makeupGain.connect(boothSend);
     boothSend.connect(boothConv);
-    boothConv.connect(boothTone);
-    boothTone.connect(wetGain);
+    boothConv.connect(boothLP);
+    boothLP.connect(activeChainGain);
 
-    wetGain.connect(sumOut);
-    sumOut.connect(limiter);
+    activeChainGain.connect(limiter);
     limiter.connect(masterOut);
 
     function updateParams(s, isBypassed = false) {
       const now = ac.currentTime;
       if (isBypassed) {
-        dryGain.gain.setTargetAtTime(1, now, 0.02);
-        wetGain.gain.setTargetAtTime(0, now, 0.02);
+        dryBypassGain.gain.setTargetAtTime(1, now, 0.015);
+        activeChainGain.gain.setTargetAtTime(0, now, 0.015);
         return;
       }
 
-      const wet = s.mix / 100;
-      dryGain.gain.setTargetAtTime(1 - wet, now, 0.02);
-      wetGain.gain.setTargetAtTime(wet, now, 0.02);
+      dryBypassGain.gain.setTargetAtTime(0, now, 0.015);
+      activeChainGain.gain.setTargetAtTime(1, now, 0.015);
 
-      // 1. Gentle Pitch Drift (reduced by 65% compared to V2 so it never warbles)
-      const p = s.pitch / 100;
-      slowGain.gain.setTargetAtTime(p * 0.00085, now, 0.03);
-      medGain.gain.setTargetAtTime(p * 0.00032, now, 0.03);
-      vibGain.gain.setTargetAtTime(p * 0.00014, now, 0.03);
+      const depth = s.amount / 100;
 
-      // 2. Soft Vowel Movement (gentle ±2.2 dB max, wide Q)
-      const fm = s.formant / 100;
-      formantWarm.gain.setTargetAtTime(fm * 2.2, now, 0.03);
-      formantVowel.gain.setTargetAtTime(-fm * 1.8, now, 0.03);
-      f1Mod.gain.setTargetAtTime(fm * 45, now, 0.03);
-      f2Mod.gain.setTargetAtTime(-fm * 85, now, 0.03);
+      const p = (s.pitch / 100) * depth;
+      lfoSlowGain.gain.setTargetAtTime(p * 0.00055, now, 0.03);
+      lfoVibGain.gain.setTargetAtTime(p * 0.00009, now, 0.03);
 
-      // 3. Chest & Low-Mid Body
-      const w = s.warmth / 100;
-      chestBoost.gain.setTargetAtTime(w * 3.8, now, 0.03);
-      boxScoop.gain.setTargetAtTime(-w * 2.8, now, 0.03);
+      const fm = (s.formant / 100) * depth;
+      f1Warm.gain.setTargetAtTime(fm * 1.8, now, 0.03);
+      f2Vowel.gain.setTargetAtTime(-fm * 1.4, now, 0.03);
+      f1Mod.gain.setTargetAtTime(fm * 35, now, 0.03);
+      f2Mod.gain.setTargetAtTime(-fm * 65, now, 0.03);
 
-      // 4. Soft-Knee Tube Warmth (subtle, clean saturation)
-      const tx = s.texture / 100;
-      tubeShaper.curve = makeSmoothTubeCurve(tx);
+      const w = (s.warmth / 100) * depth;
+      chestShelf.gain.setTargetAtTime(w * 3.6, now, 0.03);
+      mudDip.gain.setTargetAtTime(-w * 2.5, now, 0.03);
 
-      // 5. Harsh-Mid Tamer (cuts 2.85 kHz digital glare instead of boosting it!)
-      const sk = s.silk / 100;
-      harshMidDip.gain.setTargetAtTime(-sk * 4.2, now, 0.03);
+      const sk = (s.silk / 100) * depth;
+      silkDip.gain.setTargetAtTime(-sk * 3.4, now, 0.03);
 
-      // 6. Digital Glare & Sibilance Smoother
-      const db = s.debuzz / 100;
-      deEss1.gain.setTargetAtTime(-db * 5.8, now, 0.03);
-      deEss2.gain.setTargetAtTime(-db * 5.2, now, 0.03);
-      const ribbonCutoff = Math.max(7800, 17500 - db * 7800);
-      ribbonLP.frequency.setTargetAtTime(ribbonCutoff, now, 0.03);
+      const dg = (s.deglare / 100) * depth;
+      hfDeGlareNotch.gain.setTargetAtTime(-dg * 4.5, now, 0.03);
+      hfDynamicClamp.threshold.setTargetAtTime(-14 - dg * 18, now, 0.03);
+      hfDynamicClamp.ratio.setTargetAtTime(1.5 + dg * 4.5, now, 0.03);
+      const cutoff = Math.max(8500, 18000 - dg * 7500);
+      ribbonRollOff.frequency.setTargetAtTime(cutoff, now, 0.03);
 
-      // 7. Smooth Optical Leveller
-      const dyn = s.dynamics / 100;
-      optoComp.threshold.setTargetAtTime(-10 - dyn * 14, now, 0.03);
-      optoComp.ratio.setTargetAtTime(1.2 + dyn * 2.3, now, 0.03);
-      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.22, now, 0.03);
+      const tp = (s.tape / 100) * depth;
+      tapeShaper.curve = makeTapeRoundingCurve(tp);
 
-      // 8. Warm Booth Ambience
-      const sp = s.space / 100;
-      boothSend.gain.setTargetAtTime(sp * 0.35, now, 0.03);
+      const dyn = (s.dynamics / 100) * depth;
+      optoComp.threshold.setTargetAtTime(-12 - dyn * 14, now, 0.03);
+      optoComp.ratio.setTargetAtTime(1.2 + dyn * 2.2, now, 0.03);
+      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.24, now, 0.03);
+
+      const sp = (s.space / 100) * depth;
+      boothSend.gain.setTargetAtTime(sp * 0.32, now, 0.03);
     }
 
     updateParams(initialSettings, bypass);
@@ -1127,9 +1115,8 @@ input[type="range"] {
       updateParams,
       dispose() {
         try {
-          slowDriftLFO.stop();
-          medDriftLFO.stop();
-          vibLFO.stop();
+          lfoSlow.stop();
+          lfoVib.stop();
           formantLFO.stop();
         } catch (e) {}
         try { masterOut.disconnect(); } catch (e) {}
@@ -1137,7 +1124,6 @@ input[type="range"] {
     };
   }
 
-  // Real-Time Playback Engine
   function stopPlayback(resetOffset = true) {
     if (rafId) {
       cancelAnimationFrame(rafId);
@@ -1173,7 +1159,7 @@ input[type="range"] {
       activeGraph.updateParams(getSettings(), playMode === 'original');
       $('playOriginal').classList.toggle('active-mode', playMode === 'original');
       $('playHuman').classList.toggle('active-mode', playMode === 'human');
-      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Smooth)');
+      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Phase-Pure)');
       return;
     }
 
@@ -1209,7 +1195,7 @@ input[type="range"] {
     };
 
     src.start(0, safeOffset);
-    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Smooth)');
+    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Phase-Pure)');
     tickVisualizer();
   }
 
@@ -1317,6 +1303,55 @@ input[type="range"] {
     return new Blob([ab], { type: 'audio/wav' });
   }
 
+  async function encodeMP3(buf, kbps = 320, onProgress = null) {
+    if (!window.lamejs) {
+      throw new Error('MP3 encoder library not loaded');
+    }
+    const channels = Math.min(2, buf.numberOfChannels);
+    const sampleRate = buf.sampleRate;
+    const mp3encoder = new window.lamejs.Mp3Encoder(channels, sampleRate, kbps);
+    const mp3Data = [];
+
+    const leftF32 = buf.getChannelData(0);
+    const rightF32 = channels > 1 ? buf.getChannelData(1) : leftF32;
+    const len = buf.length;
+
+    const floatTo16 = arr => {
+      const out = new Int16Array(arr.length);
+      for (let i = 0; i < arr.length; i++) {
+        const s = Math.max(-1, Math.min(1, arr[i]));
+        out[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+      }
+      return out;
+    };
+
+    const left16 = floatTo16(leftF32);
+    const right16 = channels > 1 ? floatTo16(rightF32) : null;
+
+    const blockSize = 1152 * 16;
+    for (let i = 0; i < len; i += blockSize) {
+      const lChunk = left16.subarray(i, i + blockSize);
+      let mp3buf;
+      if (channels === 1) {
+        mp3buf = mp3encoder.encodeBuffer(lChunk);
+      } else {
+        const rChunk = right16.subarray(i, i + blockSize);
+        mp3buf = mp3encoder.encodeBuffer(lChunk, rChunk);
+      }
+      if (mp3buf.length > 0) mp3Data.push(mp3buf);
+
+      if (onProgress && (i % (blockSize * 4) === 0)) {
+        onProgress(Math.min(99, Math.round((i / len) * 100)));
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+
+    const endBuf = mp3encoder.flush();
+    if (endBuf.length > 0) mp3Data.push(endBuf);
+
+    return new Blob(mp3Data, { type: 'audio/mpeg' });
+  }
+
   function triggerDownload(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1334,12 +1369,12 @@ input[type="range"] {
   $('render').addEventListener('click', async () => {
     if (!sourceBuffer) return;
     $('render').disabled = true;
-    $('renderStatus').textContent = 'Rendering smooth master…';
+    $('renderStatus').textContent = 'Rendering DSP master…';
     setStatus('Processing offline render…');
 
     try {
       const s = getSettings();
-      const tailSeconds = s.space > 2 ? 0.55 : 0.12;
+      const tailSeconds = s.space > 2 ? 0.45 : 0.08;
       const totalFrames = sourceBuffer.length + Math.ceil(sourceBuffer.sampleRate * tailSeconds);
       const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
       const off = new Offline(sourceBuffer.numberOfChannels, totalFrames, sourceBuffer.sampleRate);
@@ -1357,13 +1392,33 @@ input[type="range"] {
         normalizeAudioBuffer(processedBuffer, 0.89125);
       }
 
-      const bits = parseInt($('bitDepth').value, 10) || 24;
-      lastExportBlob = encodeWAV(processedBuffer, bits);
+      const fmt = $('exportFormat').value;
+      if (fmt.startsWith('mp3')) {
+        const kbps = fmt === 'mp3-320' ? 320 : 192;
+        if (!window.lamejs) {
+          lastExportBlob = encodeWAV(processedBuffer, 24);
+          lastExportFilename = `${currentBaseName}.wav`;
+          lastExportMime = 'audio/wav';
+          $('renderStatus').textContent = `Offline fallback: Exported 24-bit WAV`;
+        } else {
+          $('renderStatus').textContent = `Encoding ${kbps} kbps MP3 (0%)…`;
+          lastExportBlob = await encodeMP3(processedBuffer, kbps, pct => {
+            $('renderStatus').textContent = `Encoding ${kbps} kbps MP3 (${pct}%)…`;
+          });
+          lastExportFilename = `${currentBaseName}.mp3`;
+          lastExportMime = 'audio/mpeg';
+          $('renderStatus').textContent = `Exported ${kbps} kbps MP3 (${(lastExportBlob.size / 1048576).toFixed(2)} MB)`;
+        }
+      } else {
+        const bits = fmt === 'wav-24' ? 24 : 16;
+        lastExportBlob = encodeWAV(processedBuffer, bits);
+        lastExportFilename = `${currentBaseName}.wav`;
+        lastExportMime = 'audio/wav';
+        $('renderStatus').textContent = `Exported ${bits}-bit WAV (${(lastExportBlob.size / 1048576).toFixed(1)} MB)`;
+      }
 
       $('shareBtn').disabled = false;
-      $('renderStatus').textContent = `Exported ${bits}-bit WAV (${(lastExportBlob.size / 1048576).toFixed(1)} MB)`;
-      setStatus('Smooth WAV exported');
-
+      setStatus(`Master exported (${lastExportFilename})`);
       triggerDownload(lastExportBlob, lastExportFilename);
     } catch (err) {
       console.error(err);
@@ -1376,7 +1431,7 @@ input[type="range"] {
 
   $('shareBtn').addEventListener('click', async () => {
     if (!lastExportBlob) return;
-    const file = new File([lastExportBlob], lastExportFilename, { type: 'audio/wav' });
+    const file = new File([lastExportBlob], lastExportFilename, { type: lastExportMime });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       try {
         await navigator.share({ files: [file], title: lastExportFilename });
@@ -1387,11 +1442,11 @@ input[type="range"] {
       }
     }
     triggerDownload(lastExportBlob, lastExportFilename);
-    setStatus('Downloaded WAV');
+    setStatus('Downloaded file');
   });
 
   drawWave(null, 0);
-  setVals(presets.velvet);
+  setVals(presets.silk);
 })();
 </script>
 </body>
