@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0e1117">
-<title>HumanVoice Studio V2 — Deep De-AI Engine</title>
+<title>HumanVoice Studio V3 — Smooth Analog Edition</title>
 <style>
 :root {
   color-scheme: dark;
@@ -16,10 +16,9 @@
   --line: #2e384a;
   --text: #f4f6fa;
   --muted: #9aa7b8;
-  --accent: #7ee8be;
-  --accent2: #48b88d;
+  --accent: #8ce8c8;
+  --accent2: #4fb391;
   --warn: #f5c478;
-  --hot: #ff7a7a;
 }
 * {
   box-sizing: border-box;
@@ -59,11 +58,11 @@ main {
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  background: linear-gradient(135deg, #7ee8be, #358f6c);
+  background: linear-gradient(135deg, #a4f2d6, #3d9978);
   display: grid;
   place-items: center;
   color: #0b1e16;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 900;
 }
 h1 {
@@ -169,7 +168,7 @@ h2 {
   overflow-wrap: anywhere;
 }
 
-/* Waveform & Live Spectrum */
+/* Waveform */
 .wavewrap {
   margin-top: 13px;
   background: #0d1118;
@@ -208,7 +207,7 @@ h2 {
 .meter-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #5fd3a6 0%, #f5c478 78%, #ff6b6b 100%);
+  background: linear-gradient(90deg, #5fd3a6 0%, #f5c478 82%, #ff6b6b 100%);
 }
 
 /* Transport */
@@ -400,24 +399,24 @@ input[type="range"] {
 <main>
 <header class="top">
   <div class="brand">
-    <div class="mark">HV2</div>
+    <div class="mark">HV3</div>
     <div>
-      <h1>HumanVoice Studio V2</h1>
-      <div class="sub">Deep De-AI Vocal Resynthesis &amp; Organic Modelling for iPad</div>
+      <h1>HumanVoice Studio V3</h1>
+      <div class="sub">Smooth Ribbon &amp; Tube Vocal Humaniser for iPad</div>
     </div>
   </div>
-  <div class="pill">SERIAL DE-AI DSP ENGINE</div>
+  <div class="pill">SMOOTH ANALOG CALIBRATION</div>
 </header>
 
 <section class="panel">
   <div class="panel-head">
-    <h2>01 / Load AI Vocal or Stem</h2>
-    <button id="loadDemo" type="button" style="min-height:36px;padding:6px 12px;font-size:12px">♫ Load Synthetic AI Test Voice</button>
+    <h2>01 / Load Vocal Track or Stem</h2>
+    <button id="loadDemo" type="button" style="min-height:36px;padding:6px 12px;font-size:12px">♫ Load Synthetic Test Voice</button>
   </div>
 
   <div class="upload-zone" id="dropZone">
-    <strong style="display:block;margin:2px 0">Select your vocal audio file from iPad Files</strong>
-    <div class="small muted">Works best on isolated vocal stems (from Demucs) or solo voice tracks</div>
+    <strong style="display:block;margin:2px 0">Select your audio file from iPad Files</strong>
+    <div class="small muted">WAV, MP3, M4A, AAC, FLAC, AIFF, CAF supported</div>
 
     <div class="upload-actions">
       <label for="file" class="file-btn">📂 Browse Audio Files</label>
@@ -437,7 +436,7 @@ input[type="range"] {
     <canvas id="wave" class="wave" width="1000" height="210"></canvas>
     <div class="wave-meta">
       <span id="timeReadout">00:00.0 / 00:00.0</span>
-      <span>Tap/drag waveform to scrub · Live A/B switching</span>
+      <span>Tap/drag waveform to seek · Instant A/B comparison</span>
       <div class="meter-bar">
         <span>OUT</span>
         <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
@@ -446,8 +445,8 @@ input[type="range"] {
   </div>
 
   <div class="transport">
-    <button id="playOriginal" disabled>▶ Original (Raw AI)</button>
-    <button id="playHuman" class="primary" disabled>▶ Humanised (Live De-AI)</button>
+    <button id="playOriginal" disabled>▶ Original (Dry)</button>
+    <button id="playHuman" class="primary" disabled>▶ Humanised (Smooth)</button>
     <button id="stop" disabled>■ Stop</button>
     <button id="loopToggle" disabled>🔁 Loop: Off</button>
     <span class="status" id="status">Waiting for audio</span>
@@ -455,100 +454,94 @@ input[type="range"] {
 </section>
 
 <section class="panel">
-  <h2>02 / Select De-AI Transformation Preset</h2>
+  <h2>02 / Smooth Studio Presets (Zero Harshness)</h2>
   <div class="presetgrid" id="presets" style="margin-top:10px">
-    <button class="preset active" data-preset="killai">
-      <b>Kill AI Metallic (Strong)</b>
-      <span>Erases digital phase buzz, shifts throat formants &amp; breaks pitch lock</span>
+    <button class="preset active" data-preset="velvet">
+      <b>Velvet De-AI (Default)</b>
+      <span>Rounds off digital glare, adds warm low-mids &amp; subtle organic drift</span>
     </button>
-    <button class="preset" data-preset="singer">
-      <b>Organic Soul Singer</b>
-      <span>Natural vibrato drift, warm tube chest, moving vowel tract &amp; air</span>
+    <button class="preset" data-preset="ribbon">
+      <b>Vintage Ribbon Mic</b>
+      <span>Silky dark top-end, rich chest warmth, zero metallic sibilance</span>
     </button>
-    <button class="preset" data-preset="intimate">
-      <b>Close-Mic Raspy / Raw</b>
-      <span>Heavy throat body, envelope breath noise &amp; analog tape grit</span>
+    <button class="preset" data-preset="ballad">
+      <b>Warm Ballad Singer</b>
+      <span>Gentle natural vibrato, smooth optical levelling &amp; intimate studio space</span>
     </button>
-    <button class="preset" data-preset="darkballad">
-      <b>Dark Outlaw / Ballad</b>
-      <span>Deep chest resonance, smoky highs, slow pitch drift &amp; studio booth</span>
+    <button class="preset" data-preset="close">
+      <b>Intimate Close-Mic</b>
+      <span>Warm proximity effect, soft vowel movement &amp; dry booth closeness</span>
     </button>
-    <button class="preset" data-preset="spoken">
-      <b>Natural Spoken / Narrator</b>
-      <span>Tight formant movement, de-essed sibilance, zero room tail</span>
+    <button class="preset" data-preset="natural">
+      <b>Transparent Polish</b>
+      <span>Very light touch for tracks that only need subtle softening</span>
     </button>
-    <button class="preset" data-preset="extreme">
-      <b>Extreme Humaniser (Max)</b>
-      <span>Maximum pitch/formant resynthesis for heavily robotic tracks</span>
+    <button class="preset" data-preset="dark">
+      <b>Dark Americana / Outlaw</b>
+      <span>Deep woody resonance, tamed upper-mids &amp; smoky tape roll-off</span>
     </button>
   </div>
 </section>
 
 <section class="panel">
   <div class="panel-head">
-    <h2>03 / Deep Vocal Resynthesis Controls</h2>
-    <span class="small muted">100% Serial Processing — Changes are immediate while playing</span>
+    <h2>03 / Smooth Vocal Shaping Controls</h2>
+    <span class="small muted">All sliders adjust smoothly in real time during playback</span>
   </div>
 
   <div class="controls">
     <div class="control highlight">
-      <div class="controlhead"><label for="amount">Master De-AI Intensity</label><span class="value" id="amountV">70%</span></div>
-      <input id="amount" type="range" min="0" max="100" value="70">
-      <div class="hint">Scales the overall strength of all organic resynthesis stages</div>
+      <div class="controlhead"><label for="debuzz">Digital Glare Smoother</label><span class="value" id="debuzzV">55%</span></div>
+      <input id="debuzz" type="range" min="0" max="100" value="55">
+      <div class="hint">Gently melts away 4.5–9 kHz AI metallic edge and harsh sibilance</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="pitch">Serial Pitch &amp; Vibrato Drift</label><span class="value" id="pitchV">55%</span></div>
-      <input id="pitch" type="range" min="0" max="100" value="55">
-      <div class="hint">100% serial pitch bending (slow drift + human vibrato) to break robotic tuning</div>
+      <div class="controlhead"><label for="warmth">Chest &amp; Low-Mid Body</label><span class="value" id="warmthV">45%</span></div>
+      <input id="warmth" type="range" min="0" max="100" value="45">
+      <div class="hint">Adds warm 160 Hz vocal weight while scooping 380 Hz nasal boxiness</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="formant">Throat Formant Shift (F1/F2)</label><span class="value" id="formantV">50%</span></div>
-      <input id="formant" type="range" min="0" max="100" value="50">
-      <div class="hint">Dynamically moves vocal-tract vowel resonances to stop "frozen plastic" tone</div>
+      <div class="controlhead"><label for="pitch">Organic Pitch Drift</label><span class="value" id="pitchV">30%</span></div>
+      <input id="pitch" type="range" min="0" max="100" value="30">
+      <div class="hint">Subtle (±5 cent) human pitch &amp; vibrato movement — never seasick</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="debuzz">AI Codec De-Buzzer</label><span class="value" id="debuzzV">60%</span></div>
-      <input id="debuzz" type="range" min="0" max="100" value="60">
-      <div class="hint">Suppresses 5.5–9.5 kHz neural vocoder metallic fizz &amp; phase-ringing</div>
+      <div class="controlhead"><label for="formant">Soft Vowel Movement</label><span class="value" id="formantV">35%</span></div>
+      <input id="formant" type="range" min="0" max="100" value="35">
+      <div class="hint">Wide, gentle throat-resonance breathing to relax static AI tone</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="warmth">Chest &amp; Sub-Body</label><span class="value" id="warmthV">55%</span></div>
-      <input id="warmth" type="range" min="0" max="100" value="55">
-      <div class="hint">Restores missing low-end sternum weight (140–220 Hz) &amp; cuts 380 Hz plastic boxiness</div>
+      <div class="controlhead"><label for="texture">Soft-Knee Tube Warmth</label><span class="value" id="textureV">25%</span></div>
+      <input id="texture" type="range" min="0" max="100" value="25">
+      <div class="hint">Clean 2nd-harmonic analog rounding with zero crunch or distortion</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="breath">Envelope Breath &amp; Rasp</label><span class="value" id="breathV">35%</span></div>
-      <input id="breath" type="range" min="0" max="100" value="35">
-      <div class="hint">Injects dynamic vocal-cord air turbulence that rides strictly on the voice envelope</div>
+      <div class="controlhead"><label for="silk">Harsh-Mid Tamer (2.8 kHz)</label><span class="value" id="silkV">40%</span></div>
+      <input id="silk" type="range" min="0" max="100" value="40">
+      <div class="hint">Dips ear-fatiguing 2.5–3.5 kHz digital bite for a creamy midrange</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="texture">Asymmetric Tube Drive</label><span class="value" id="textureV">45%</span></div>
-      <input id="texture" type="range" min="0" max="100" value="45">
-      <div class="hint">Generates 2nd-order even tube harmonics to thicken thin digital transients</div>
+      <div class="controlhead"><label for="dynamics">Optical Vocal Leveller</label><span class="value" id="dynamicsV">40%</span></div>
+      <input id="dynamics" type="range" min="0" max="100" value="40">
+      <div class="hint">Smooth, slow-release LA-2A style compression for even dynamics</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="presence">Mic Proximity &amp; Articulation</label><span class="value" id="presenceV">45%</span></div>
-      <input id="presence" type="range" min="0" max="100" value="45">
-      <div class="hint">2.8 kHz condenser microphone forwardness without digital harshness</div>
+      <div class="controlhead"><label for="space">Warm Studio Ambience</label><span class="value" id="spaceV">18%</span></div>
+      <input id="space" type="range" min="0" max="100" value="18">
+      <div class="hint">Dark, damped wooden vocal booth reflections &amp; stereo width</div>
     </div>
 
-    <div class="control">
-      <div class="controlhead"><label for="dynamics">Optical Tube Compression</label><span class="value" id="dynamicsV">50%</span></div>
-      <input id="dynamics" type="range" min="0" max="100" value="50">
-      <div class="hint">LA-2A style vocal levelling with automatic makeup gain</div>
-    </div>
-
-    <div class="control">
-      <div class="controlhead"><label for="space">Acoustic Doubler &amp; Booth</label><span class="value" id="spaceV">20%</span></div>
-      <input id="space" type="range" min="0" max="100" value="20">
-      <div class="hint">Adds physical early-reflection studio walls around the voice</div>
+    <div class="control" style="grid-column: 1 / -1">
+      <div class="controlhead"><label for="mix">Dry / Wet Processed Mix</label><span class="value" id="mixV">78%</span></div>
+      <input id="mix" type="range" min="0" max="100" value="78">
+      <div class="hint">Blend the original voice (0%) with the smoothed analog chain (100%)</div>
     </div>
   </div>
 
@@ -567,7 +560,7 @@ input[type="range"] {
   </div>
 
   <div class="transport" style="margin-top:14px">
-    <button id="reset">↺ Reset to Default</button>
+    <button id="reset">↺ Reset to Velvet Default</button>
     <button id="render" class="primary" disabled>⚡ Render &amp; Export WAV</button>
     <button id="shareBtn" disabled>📤 Share / Save to Files</button>
     <span class="status" id="renderStatus">Load audio to begin</span>
@@ -575,13 +568,13 @@ input[type="range"] {
 </section>
 
 <section class="panel">
-  <h2>04 / How to get the strongest De-AI result</h2>
+  <h2>04 / Studio Tuning Notes</h2>
   <div class="note">
-    <strong>Why this works best on isolated vocals:</strong> If you feed a full song mix (drums + guitars + vocals) into heavy pitch/formant modulation, the instruments will shift too. For full AI songs, run the track through <strong>Demucs</strong> first to extract the <code>vocals.wav</code> stem, run that stem through <strong>Kill AI Metallic</strong> or <strong>Organic Soul Singer</strong> here, and export the 24-bit WAV.
+    <strong>Why V3 is much smoother:</strong> AI vocals often have piercing energy around 2.8 kHz (nasal bite) and 6.5 kHz (vocoder fizz). Instead of boosting presence or adding raspy distortion, V3 uses a <strong>Harsh-Mid Tamer</strong>, a <strong>Ribbon Roll-Off</strong>, and ultra-clean <strong>Soft-Knee Tube Warmth</strong> to give the voice a relaxed, expensive studio microphone character.
   </div>
 </section>
 
-<div class="footer">HumanVoice Studio V2 · Deep De-AI Vocal Resynthesis · Designed for iPad Pro</div>
+<div class="footer">HumanVoice Studio V3 · Smooth Analog Calibration · Designed for iPad Pro</div>
 </main>
 
 <script>
@@ -592,7 +585,7 @@ input[type="range"] {
   let sourceBuffer = null;
   let processedBuffer = null;
   let lastExportBlob = null;
-  let lastExportFilename = 'humanvoice-v2-master.wav';
+  let lastExportFilename = 'humanvoice-v3-smooth.wav';
 
   // Playback state
   let activeSource = null;
@@ -605,15 +598,15 @@ input[type="range"] {
   let pauseOffset = 0;
   let rafId = null;
 
-  const ids = ['amount', 'pitch', 'formant', 'debuzz', 'warmth', 'breath', 'texture', 'presence', 'dynamics', 'space'];
+  const ids = ['debuzz', 'warmth', 'pitch', 'formant', 'texture', 'silk', 'dynamics', 'space', 'mix'];
 
   const presets = {
-    killai:     { amount: 75, pitch: 55, formant: 55, debuzz: 72, warmth: 58, breath: 35, texture: 48, presence: 42, dynamics: 52, space: 18 },
-    singer:     { amount: 72, pitch: 65, formant: 60, debuzz: 55, warmth: 62, breath: 40, texture: 50, presence: 48, dynamics: 55, space: 28 },
-    intimate:   { amount: 80, pitch: 45, formant: 50, debuzz: 65, warmth: 72, breath: 65, texture: 65, presence: 52, dynamics: 60, space: 10 },
-    darkballad: { amount: 78, pitch: 60, formant: 62, debuzz: 75, warmth: 78, breath: 45, texture: 58, presence: 35, dynamics: 55, space: 36 },
-    spoken:     { amount: 60, pitch: 35, formant: 45, debuzz: 60, warmth: 50, breath: 25, texture: 35, presence: 55, dynamics: 50, space: 8  },
-    extreme:    { amount: 95, pitch: 82, formant: 80, debuzz: 85, warmth: 75, breath: 60, texture: 72, presence: 50, dynamics: 68, space: 25 }
+    velvet:  { debuzz: 58, warmth: 48, pitch: 28, formant: 35, texture: 24, silk: 42, dynamics: 40, space: 18, mix: 80 },
+    ribbon:  { debuzz: 75, warmth: 62, pitch: 24, formant: 30, texture: 30, silk: 60, dynamics: 45, space: 14, mix: 88 },
+    ballad:  { debuzz: 52, warmth: 55, pitch: 40, formant: 42, texture: 28, silk: 38, dynamics: 48, space: 32, mix: 82 },
+    close:   { debuzz: 50, warmth: 65, pitch: 22, formant: 32, texture: 32, silk: 45, dynamics: 52, space: 8,  mix: 85 },
+    natural: { debuzz: 35, warmth: 30, pitch: 18, formant: 20, texture: 15, silk: 25, dynamics: 28, space: 10, mix: 65 },
+    dark:    { debuzz: 70, warmth: 70, pitch: 34, formant: 45, texture: 38, silk: 55, dynamics: 50, space: 26, mix: 86 }
   };
 
   function ensureContext() {
@@ -664,7 +657,7 @@ input[type="range"] {
       lastExportBlob = null;
 
       const baseName = f.name.replace(/\.[^/.]+$/, '');
-      lastExportFilename = `${baseName}-deai-v2.wav`;
+      lastExportFilename = `${baseName}-smooth-v3.wav`;
 
       enableTransport();
       drawWave(sourceBuffer, 0);
@@ -678,7 +671,7 @@ input[type="range"] {
     }
   }
 
-  // Synthetic AI Test Voice Generator (deliberately robotic, static pitch + 7kHz vocoder buzz)
+  // Synthetic Test Voice Generator
   $('loadDemo').addEventListener('click', () => {
     stopPlayback();
     pauseOffset = 0;
@@ -689,7 +682,6 @@ input[type="range"] {
     const buf = ac.createBuffer(1, len, sr);
     const d = buf.getChannelData(0);
 
-    // Melodic phrase with dead-flat robotic pitch and harsh high-frequency vocoder buzz
     const melody = [146.83, 164.81, 174.61, 196.00, 164.81, 146.83];
     for (let i = 0; i < len; i++) {
       const t = i / sr;
@@ -697,32 +689,30 @@ input[type="range"] {
       const f0 = melody[step];
       let sample = 0;
 
-      // Rigid harmonic stack with metallic upper partials
-      for (let h = 1; h <= 32; h++) {
+      for (let h = 1; h <= 28; h++) {
         const freq = f0 * h;
         const f1 = Math.exp(-Math.pow((freq - 500) / 150, 2));
         const f2 = 0.7 * Math.exp(-Math.pow((freq - 1550) / 220, 2));
-        const f3 = 0.5 * Math.exp(-Math.pow((freq - 2900) / 300, 2));
-        // Artificial neural vocoder buzz peak around 6.8 kHz
-        const aiBuzz = 0.45 * Math.exp(-Math.pow((freq - 6800) / 900, 2));
-        const amp = (f1 + f2 + f3 + aiBuzz + 0.05) / Math.pow(h, 0.68);
+        const f3 = 0.55 * Math.exp(-Math.pow((freq - 2850) / 300, 2));
+        const aiGlare = 0.35 * Math.exp(-Math.pow((freq - 6500) / 900, 2));
+        const amp = (f1 + f2 + f3 + aiGlare + 0.04) / Math.pow(h, 0.72);
         sample += Math.sin(2 * Math.PI * freq * t) * amp;
       }
 
       const env = Math.min(1, t / 0.05) * Math.min(1, (dur - t) / 0.15);
-      d[i] = Math.tanh(sample * 0.42 * env);
+      d[i] = Math.tanh(sample * 0.4 * env);
     }
 
     sourceBuffer = buf;
     processedBuffer = null;
     lastExportBlob = null;
-    lastExportFilename = 'synthetic-demo-deai.wav';
-    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Robotic Pitch + 6.8kHz Vocoder Buzz)';
+    lastExportFilename = 'synthetic-demo-smooth.wav';
+    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Harsh Upper-Mids + Static Pitch)';
     enableTransport();
     drawWave(sourceBuffer, 0);
     updateTimeReadout(0, sourceBuffer.duration);
     $('renderStatus').textContent = 'Ready to render & export';
-    setStatus('Compare ▶ Original vs ▶ Humanised!');
+    setStatus('Compare ▶ Original vs ▶ Humanised (Smooth)');
   });
 
   function enableTransport() {
@@ -772,8 +762,8 @@ input[type="range"] {
   });
 
   $('reset').addEventListener('click', () => {
-    setVals(presets.killai);
-    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'killai'));
+    setVals(presets.velvet);
+    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'velvet'));
   });
 
   $('loopToggle').addEventListener('click', () => {
@@ -828,7 +818,7 @@ input[type="range"] {
         if (v < mn) mn = v;
         if (v > mx) mx = v;
       }
-      g.strokeStyle = x <= headX ? '#7ee8be' : '#3a6657';
+      g.strokeStyle = x <= headX ? '#8ce8c8' : '#3a6657';
       g.lineWidth = 1.5;
       g.beginPath();
       g.moveTo(x, mid + mn * mid * 0.88);
@@ -871,307 +861,263 @@ input[type="range"] {
   });
   waveCanvas.addEventListener('pointerup', () => { isScrubbing = false; });
 
-  // Asymmetric Class-A Tube Saturation Curve (adds rich 2nd harmonic + vocal fry density)
-  function makeAsymmetricTubeCurve(driveAmt) {
+  /**
+   * ULTRA-CLEAN SOFT-KNEE TUBE WARMTH CURVE
+   * Uses gentle low-ratio tanh with tiny 2nd-harmonic bias so it NEVER crunches or buzzes.
+   */
+  function makeSmoothTubeCurve(amount) {
     const n = 8192;
     const curve = new Float32Array(n);
-    const k = 1 + driveAmt * 12;
-    const asym = 0.18 * driveAmt; // Even-harmonic asymmetry
-    const norm = Math.tanh(k);
+    const drive = 1 + amount * 1.8; // Very gentle max drive (was 13 in V2!)
+    const bias = 0.04 * amount;
+    const norm = Math.tanh(drive);
+    const dcOffset = Math.tanh(bias * drive) / norm;
     for (let i = 0; i < n; i++) {
       const x = (i * 2) / n - 1;
-      const biased = x + asym * (x * x - 0.35);
-      curve[i] = Math.tanh(biased * k) / norm;
+      curve[i] = (Math.tanh((x + bias * (1 - x * x)) * drive) / norm) - dcOffset * (1 - x * x);
     }
     return curve;
   }
 
-  // Early-Reflection Studio Booth Impulse
-  function makeStudioBoothImpulse(ac, duration, decay) {
+  // Warm Damped Wood Vocal Booth Impulse (no bright slap or metallic ring)
+  function makeWarmBoothImpulse(ac, duration, decay) {
     const sr = ac.sampleRate;
     const len = Math.max(1, Math.floor(sr * duration));
     const imp = ac.createBuffer(2, len, sr);
-    let seed = 424242;
+    let seed = 90909;
     const rand = () => {
       seed = (seed * 16807) % 2147483647;
       return (seed - 1) / 1073741823.5 - 1;
     };
-    const earlyTaps = [0.007, 0.013, 0.019, 0.027, 0.035];
+    const preDelay = Math.floor(0.014 * sr);
     for (let ch = 0; ch < 2; ch++) {
       const d = imp.getChannelData(ch);
-      // Discrete wood booth early reflections
-      earlyTaps.forEach((tapSec, idx) => {
-        const samp = Math.floor((tapSec + ch * 0.0015) * sr);
-        if (samp < len) d[samp] = (idx % 2 === 0 ? 0.5 : -0.45) * Math.pow(0.78, idx);
-      });
-      const tailStart = Math.floor(0.015 * sr);
-      for (let i = tailStart; i < len; i++) {
-        const t = (i - tailStart) / (len - tailStart);
-        d[i] += rand() * Math.pow(1 - t, decay) * 0.32;
+      let lpState = 0;
+      for (let i = preDelay; i < len; i++) {
+        const t = (i - preDelay) / (len - preDelay);
+        const env = Math.pow(1 - t, decay) * Math.sin(Math.min(1, t * 18) * Math.PI * 0.5);
+        const raw = rand() * env * 0.35;
+        // One-pole lowpass inside the impulse itself for velvety dark reflections
+        lpState = lpState * 0.72 + raw * 0.28;
+        d[i] = lpState;
       }
     }
     return imp;
   }
 
   /**
-   * V2 DEEP DE-AI VOCAL RESYNTHESIS GRAPH
-   * 100% Serial Pitch Drift + Dynamic Formant Filter Bank + Envelope-Gated Breath Turbulence + Codec De-Buzzer
+   * V3 SMOOTH ANALOG VOCAL ENGINE
+   * Designed specifically to eliminate harshness, nasal bite, and digital glare.
    */
   function buildGraph(ac, inputNode, initialSettings, bypass = false) {
-    const dryOut = ac.createGain();
-    const wetOut = ac.createGain();
+    const dryGain = ac.createGain();
+    const wetGain = ac.createGain();
+    const sumOut = ac.createGain();
     const masterOut = ac.createGain();
 
-    // Bypass path
-    inputNode.connect(dryOut);
-    dryOut.connect(masterOut);
+    // Parallel Dry Path
+    inputNode.connect(dryGain);
+    dryGain.connect(sumOut);
 
-    // 1. High-Pass Rumble Filter
+    // 1. Sub-Sonic Cleanup (gentle 65 Hz roll-off)
     const hp = ac.createBiquadFilter();
     hp.type = 'highpass';
-    hp.frequency.value = 78;
-    hp.Q.value = 0.7;
+    hp.frequency.value = 65;
+    hp.Q.value = 0.55;
 
-    // 2. 100% SERIAL PITCH DRIFT & HUMAN VIBRATO STAGE
-    // Because the entire signal goes through this delay line serially (no parallel dry voice),
-    // modulating delayTime physically bends the pitch of the voice without flanging/chorusing!
-    const serialPitchDelay = ac.createDelay(0.1);
-    serialPitchDelay.delayTime.value = 0.024;
+    // 2. Gentle Serial Pitch Drift & Natural Vibrato
+    // Calibrated so max drift is ~6 cents (musical & organic, never seasick)
+    const pitchDelay = ac.createDelay(0.08);
+    pitchDelay.delayTime.value = 0.018;
 
-    const driftLFO1 = ac.createOscillator(); // Slow phrase pitch drift (0.37 Hz)
-    const driftLFO2 = ac.createOscillator(); // Medium syllable drift (1.15 Hz)
-    const vibratoLFO = ac.createOscillator(); // Natural human larynx vibrato (5.4 Hz)
-    driftLFO1.type = 'sine';
-    driftLFO2.type = 'triangle';
-    vibratoLFO.type = 'sine';
+    const slowDriftLFO = ac.createOscillator();
+    const medDriftLFO = ac.createOscillator();
+    const vibLFO = ac.createOscillator();
+    slowDriftLFO.type = 'sine';
+    medDriftLFO.type = 'sine';
+    vibLFO.type = 'sine';
 
-    const driftGain1 = ac.createGain();
-    const driftGain2 = ac.createGain();
-    const vibratoGain = ac.createGain();
+    slowDriftLFO.frequency.value = 0.28;
+    medDriftLFO.frequency.value = 0.85;
+    vibLFO.frequency.value = 5.1;
 
-    driftLFO1.connect(driftGain1);
-    driftLFO2.connect(driftGain2);
-    vibratoLFO.connect(vibratoGain);
+    const slowGain = ac.createGain();
+    const medGain = ac.createGain();
+    const vibGain = ac.createGain();
 
-    driftGain1.connect(serialPitchDelay.delayTime);
-    driftGain2.connect(serialPitchDelay.delayTime);
-    vibratoGain.connect(serialPitchDelay.delayTime);
+    slowDriftLFO.connect(slowGain);
+    medDriftLFO.connect(medGain);
+    vibLFO.connect(vibGain);
 
-    driftLFO1.start(0);
-    driftLFO2.start(0);
-    vibratoLFO.start(0);
+    slowGain.connect(pitchDelay.delayTime);
+    medGain.connect(pitchDelay.delayTime);
+    vibGain.connect(pitchDelay.delayTime);
 
-    // 3. DYNAMIC FORMANT TRACT SHIFTER (F1 & F2 Moving Cavity Filters)
-    // Modulates throat (550 Hz) and mouth (1650 Hz) resonances in opposite directions
-    const formant1 = ac.createBiquadFilter();
-    formant1.type = 'peaking';
-    formant1.frequency.value = 540;
-    formant1.Q.value = 2.2;
+    slowDriftLFO.start(0);
+    medDriftLFO.start(0);
+    vibLFO.start(0);
 
-    const formant2 = ac.createBiquadFilter();
-    formant2.type = 'peaking';
-    formant2.frequency.value = 1680;
-    formant2.Q.value = 2.5;
+    // 3. Wide, Buttery Formant Shading (Low Q = 0.75 so it never rings or honks)
+    const formantWarm = ac.createBiquadFilter();
+    formantWarm.type = 'peaking';
+    formantWarm.frequency.value = 480;
+    formantWarm.Q.value = 0.75;
+
+    const formantVowel = ac.createBiquadFilter();
+    formantVowel.type = 'peaking';
+    formantVowel.frequency.value = 1350;
+    formantVowel.Q.value = 0.8;
 
     const formantLFO = ac.createOscillator();
     formantLFO.type = 'sine';
-    formantLFO.frequency.value = 0.78;
-    const f1ModGain = ac.createGain();
-    const f2ModGain = ac.createGain();
-    formantLFO.connect(f1ModGain);
-    formantLFO.connect(f2ModGain);
-    f1ModGain.connect(formant1.frequency);
-    f2ModGain.connect(formant2.frequency);
+    formantLFO.frequency.value = 0.42;
+    const f1Mod = ac.createGain();
+    const f2Mod = ac.createGain();
+    formantLFO.connect(f1Mod);
+    formantLFO.connect(f2Mod);
+    f1Mod.connect(formantWarm.frequency);
+    f2Mod.connect(formantVowel.frequency);
     formantLFO.start(0);
 
-    // 4. CHEST WEIGHT & PLASTIC BOXINESS CUT
-    const chestShelf = ac.createBiquadFilter();
-    chestShelf.type = 'peaking';
-    chestShelf.frequency.value = 165;
-    chestShelf.Q.value = 0.85;
+    // 4. Chest Warmth & Boxiness Scoop
+    const chestBoost = ac.createBiquadFilter();
+    chestBoost.type = 'lowshelf';
+    chestBoost.frequency.value = 185;
 
-    const boxCut = ac.createBiquadFilter();
-    boxCut.type = 'peaking';
-    boxCut.frequency.value = 390;
-    boxCut.Q.value = 1.4;
+    const boxScoop = ac.createBiquadFilter();
+    boxScoop.type = 'peaking';
+    boxScoop.frequency.value = 375;
+    boxScoop.Q.value = 1.1;
 
-    // 5. ASYMMETRIC TUBE SATURATION & HARMONIC EXCITER
+    // 5. Soft-Knee Tube Warmth (Unity-gain, gentle 2nd harmonic)
     const tubeShaper = ac.createWaveShaper();
     tubeShaper.oversample = '4x';
 
-    // 6. DYNAMIC BREATH / RASP MODULATION (Signal-Multiplied Air Turbulence)
-    // By modulating a high-passed vocal path at audio-rate noise frequencies,
-    // breath air is generated ONLY when the singer is actually making sound (zero noise in silence).
-    const breathBP = ac.createBiquadFilter();
-    breathBP.type = 'bandpass';
-    breathBP.frequency.value = 2800;
-    breathBP.Q.value = 0.9;
+    // 6. Harsh-Mid Tamer (Dips piercing 2.85 kHz AI nasal glare)
+    const harshMidDip = ac.createBiquadFilter();
+    harshMidDip.type = 'peaking';
+    harshMidDip.frequency.value = 2850;
+    harshMidDip.Q.value = 1.15;
 
-    const breathShaper = ac.createWaveShaper();
-    // High-order gritty rasp transfer curve
-    const raspCurve = new Float32Array(4096);
-    for (let i = 0; i < 4096; i++) {
-      const x = (i * 2) / 4096 - 1;
-      raspCurve[i] = Math.sin(x * Math.PI * 3.5) * (1 - Math.abs(x) * 0.4);
-    }
-    breathShaper.curve = raspCurve;
-    const breathGain = ac.createGain();
+    // 7. Digital Glare & Sibilance Smoother (6.2 kHz + 8.0 kHz + Ribbon High Roll-off)
+    const deEss1 = ac.createBiquadFilter();
+    deEss1.type = 'peaking';
+    deEss1.frequency.value = 6200;
+    deEss1.Q.value = 1.6;
 
-    // 7. AI CODEC DE-BUZZER (Dual Notch + Warm Tape Roll-Off)
-    // Erases 6.4 kHz and 8.2 kHz metallic HiFi-GAN / neural vocoder phase ringing
-    const debuzzNotch1 = ac.createBiquadFilter();
-    debuzzNotch1.type = 'peaking';
-    debuzzNotch1.frequency.value = 6350;
-    debuzzNotch1.Q.value = 2.1;
+    const deEss2 = ac.createBiquadFilter();
+    deEss2.type = 'peaking';
+    deEss2.frequency.value = 8200;
+    deEss2.Q.value = 1.8;
 
-    const debuzzNotch2 = ac.createBiquadFilter();
-    debuzzNotch2.type = 'peaking';
-    debuzzNotch2.frequency.value = 8400;
-    debuzzNotch2.Q.value = 2.4;
+    const ribbonLP = ac.createBiquadFilter();
+    ribbonLP.type = 'lowpass';
+    ribbonLP.frequency.value = 15000;
+    ribbonLP.Q.value = 0.5; // Bessel-like smooth roll-off with zero resonant peak
 
-    const tapeLowpass = ac.createBiquadFilter();
-    tapeLowpass.type = 'lowpass';
-    tapeLowpass.frequency.value = 13500;
-    tapeLowpass.Q.value = 0.6;
-
-    // 8. CONDENSER MIC PROXIMITY & PRESENCE
-    const micPresence = ac.createBiquadFilter();
-    micPresence.type = 'peaking';
-    micPresence.frequency.value = 2750;
-    micPresence.Q.value = 0.9;
-
-    // 9. OPTICAL VOCAL COMPRESSOR
-    const comp = ac.createDynamicsCompressor();
-    comp.knee.value = 12;
-    comp.attack.value = 0.008;
-    comp.release.value = 0.15;
+    // 8. Smooth Optical Compressor (Slow, transparent levelling)
+    const optoComp = ac.createDynamicsCompressor();
+    optoComp.knee.value = 24;
+    optoComp.attack.value = 0.018;
+    optoComp.release.value = 0.24;
     const makeupGain = ac.createGain();
 
-    // 10. ACOUSTIC MICRO-DOUBLER & STUDIO BOOTH
-    const doublerDelay = ac.createDelay(0.06);
-    doublerDelay.delayTime.value = 0.017;
-    const doublerGain = ac.createGain();
+    // 9. Warm Studio Booth Ambience
+    const boothConv = ac.createConvolver();
+    boothConv.buffer = makeWarmBoothImpulse(ac, 0.55, 3.2);
+    const boothTone = ac.createBiquadFilter();
+    boothTone.type = 'lowpass';
+    boothTone.frequency.value = 2800;
+    const boothSend = ac.createGain();
 
-    const boothConvolver = ac.createConvolver();
-    boothConvolver.buffer = makeStudioBoothImpulse(ac, 0.52, 3.4);
-    const boothLP = ac.createBiquadFilter();
-    boothLP.type = 'lowpass';
-    boothLP.frequency.value = 3600;
-    const boothGain = ac.createGain();
-
-    // Brickwall output safety limiter
+    // Output Safety Limiter
     const limiter = ac.createDynamicsCompressor();
     limiter.threshold.value = -1.0;
-    limiter.knee.value = 1.5;
-    limiter.ratio.value = 20.0;
-    limiter.attack.value = 0.001;
-    limiter.release.value = 0.06;
+    limiter.knee.value = 3.0;
+    limiter.ratio.value = 15.0;
+    limiter.attack.value = 0.003;
+    limiter.release.value = 0.1;
 
-    // Connect Serial Chain
+    // Wire Wet Chain
     inputNode.connect(hp);
-    hp.connect(serialPitchDelay);
-    serialPitchDelay.connect(formant1);
-    formant1.connect(formant2);
-    formant2.connect(chestShelf);
-    chestShelf.connect(boxCut);
-    boxCut.connect(tubeShaper);
+    hp.connect(pitchDelay);
+    pitchDelay.connect(formantWarm);
+    formantWarm.connect(formantVowel);
+    formantVowel.connect(chestBoost);
+    chestBoost.connect(boxScoop);
+    boxScoop.connect(tubeShaper);
+    tubeShaper.connect(harshMidDip);
+    harshMidDip.connect(deEss1);
+    deEss1.connect(deEss2);
+    deEss2.connect(ribbonLP);
+    ribbonLP.connect(optoComp);
+    optoComp.connect(makeupGain);
 
-    // Dynamic Breath / Rasp parallel injector (strictly envelope-locked)
-    serialPitchDelay.connect(breathBP);
-    breathBP.connect(breathShaper);
-    breathShaper.connect(breathGain);
+    // Dry/Wet & Ambience routing
+    makeupGain.connect(wetGain);
+    makeupGain.connect(boothSend);
+    boothSend.connect(boothConv);
+    boothConv.connect(boothTone);
+    boothTone.connect(wetGain);
 
-    const postDriveSum = ac.createGain();
-    tubeShaper.connect(postDriveSum);
-    breathGain.connect(postDriveSum);
-
-    postDriveSum.connect(micPresence);
-    micPresence.connect(debuzzNotch1);
-    debuzzNotch1.connect(debuzzNotch2);
-    debuzzNotch2.connect(tapeLowpass);
-    tapeLowpass.connect(comp);
-    comp.connect(makeupGain);
-
-    // Spatial / Booth connections
-    makeupGain.connect(wetOut);
-
-    makeupGain.connect(doublerDelay);
-    doublerDelay.connect(doublerGain);
-    doublerGain.connect(wetOut);
-
-    makeupGain.connect(boothConvolver);
-    boothConvolver.connect(boothLP);
-    boothLP.connect(boothGain);
-    boothGain.connect(wetOut);
-
-    wetOut.connect(limiter);
+    wetGain.connect(sumOut);
+    sumOut.connect(limiter);
     limiter.connect(masterOut);
 
     function updateParams(s, isBypassed = false) {
       const now = ac.currentTime;
       if (isBypassed) {
-        dryOut.gain.setTargetAtTime(1, now, 0.015);
-        wetOut.gain.setTargetAtTime(0, now, 0.015);
+        dryGain.gain.setTargetAtTime(1, now, 0.02);
+        wetGain.gain.setTargetAtTime(0, now, 0.02);
         return;
       }
 
-      dryOut.gain.setTargetAtTime(0, now, 0.015);
-      wetOut.gain.setTargetAtTime(1, now, 0.015);
+      const wet = s.mix / 100;
+      dryGain.gain.setTargetAtTime(1 - wet, now, 0.02);
+      wetGain.gain.setTargetAtTime(wet, now, 0.02);
 
-      const master = 0.35 + (s.amount / 100) * 0.95;
+      // 1. Gentle Pitch Drift (reduced by 65% compared to V2 so it never warbles)
+      const p = s.pitch / 100;
+      slowGain.gain.setTargetAtTime(p * 0.00085, now, 0.03);
+      medGain.gain.setTargetAtTime(p * 0.00032, now, 0.03);
+      vibGain.gain.setTargetAtTime(p * 0.00014, now, 0.03);
 
-      // 1. Serial Pitch & Vibrato Drift
-      const p = (s.pitch / 100) * master;
-      driftLFO1.frequency.setTargetAtTime(0.34 + (s.amount / 100) * 0.15, now, 0.02);
-      driftLFO2.frequency.setTargetAtTime(1.18 + (s.pitch / 100) * 0.35, now, 0.02);
-      vibratoLFO.frequency.setTargetAtTime(5.35, now, 0.02);
+      // 2. Soft Vowel Movement (gentle ±2.2 dB max, wide Q)
+      const fm = s.formant / 100;
+      formantWarm.gain.setTargetAtTime(fm * 2.2, now, 0.03);
+      formantVowel.gain.setTargetAtTime(-fm * 1.8, now, 0.03);
+      f1Mod.gain.setTargetAtTime(fm * 45, now, 0.03);
+      f2Mod.gain.setTargetAtTime(-fm * 85, now, 0.03);
 
-      // Delay time modulation depth -> directly creates pitch deviation (Δf/f = -dD/dt)
-      driftGain1.gain.setTargetAtTime(p * 0.0032, now, 0.02);
-      driftGain2.gain.setTargetAtTime(p * 0.0011, now, 0.02);
-      vibratoGain.gain.setTargetAtTime(p * 0.00042, now, 0.02);
+      // 3. Chest & Low-Mid Body
+      const w = s.warmth / 100;
+      chestBoost.gain.setTargetAtTime(w * 3.8, now, 0.03);
+      boxScoop.gain.setTargetAtTime(-w * 2.8, now, 0.03);
 
-      // 2. Dynamic Throat Formant Shifting
-      const fm = (s.formant / 100) * master;
-      formant1.gain.setTargetAtTime(fm * 5.2, now, 0.02);
-      formant2.gain.setTargetAtTime(-fm * 4.4, now, 0.02);
-      f1ModGain.gain.setTargetAtTime(fm * 145, now, 0.02);   // Swings F1 +/- 145 Hz
-      f2ModGain.gain.setTargetAtTime(-fm * 290, now, 0.02);  // Counter-swings F2 +/- 290 Hz
+      // 4. Soft-Knee Tube Warmth (subtle, clean saturation)
+      const tx = s.texture / 100;
+      tubeShaper.curve = makeSmoothTubeCurve(tx);
 
-      // 3. Chest Weight & Boxiness Cut
-      const w = (s.warmth / 100) * master;
-      chestShelf.gain.setTargetAtTime(w * 6.8, now, 0.02);
-      boxCut.gain.setTargetAtTime(-w * 5.2, now, 0.02);
+      // 5. Harsh-Mid Tamer (cuts 2.85 kHz digital glare instead of boosting it!)
+      const sk = s.silk / 100;
+      harshMidDip.gain.setTargetAtTime(-sk * 4.2, now, 0.03);
 
-      // 4. Asymmetric Tube Drive
-      const tx = (s.texture / 100) * master;
-      tubeShaper.curve = makeAsymmetricTubeCurve(tx * 0.65);
+      // 6. Digital Glare & Sibilance Smoother
+      const db = s.debuzz / 100;
+      deEss1.gain.setTargetAtTime(-db * 5.8, now, 0.03);
+      deEss2.gain.setTargetAtTime(-db * 5.2, now, 0.03);
+      const ribbonCutoff = Math.max(7800, 17500 - db * 7800);
+      ribbonLP.frequency.setTargetAtTime(ribbonCutoff, now, 0.03);
 
-      // 5. Envelope-Locked Breath & Vocal Rasp
-      const br = (s.breath / 100) * master;
-      breathGain.gain.setTargetAtTime(br * 0.16, now, 0.02);
+      // 7. Smooth Optical Leveller
+      const dyn = s.dynamics / 100;
+      optoComp.threshold.setTargetAtTime(-10 - dyn * 14, now, 0.03);
+      optoComp.ratio.setTargetAtTime(1.2 + dyn * 2.3, now, 0.03);
+      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.22, now, 0.03);
 
-      // 6. AI Codec De-Buzzer (6.35kHz + 8.4kHz suppression + analog tape roll-off)
-      const db = (s.debuzz / 100) * master;
-      debuzzNotch1.gain.setTargetAtTime(-db * 11.5, now, 0.02);
-      debuzzNotch2.gain.setTargetAtTime(-db * 10.0, now, 0.02);
-      const cutoff = Math.max(6200, 16500 - db * 8200);
-      tapeLowpass.frequency.setTargetAtTime(cutoff, now, 0.02);
-
-      // 7. Condenser Mic Presence (2.75 kHz)
-      const pr = (s.presence / 100) * master;
-      micPresence.gain.setTargetAtTime(pr * 5.5 - 1.0, now, 0.02);
-
-      // 8. Optical Compression
-      const dyn = (s.dynamics / 100) * master;
-      comp.threshold.setTargetAtTime(-10 - dyn * 20, now, 0.02);
-      comp.ratio.setTargetAtTime(1.5 + dyn * 4.5, now, 0.02);
-      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.55, now, 0.02);
-
-      // 9. Acoustic Doubler & Studio Booth
-      const sp = (s.space / 100) * master;
-      doublerGain.gain.setTargetAtTime(sp * 0.26, now, 0.02);
-      boothGain.gain.setTargetAtTime(sp * 0.45, now, 0.02);
+      // 8. Warm Booth Ambience
+      const sp = s.space / 100;
+      boothSend.gain.setTargetAtTime(sp * 0.35, now, 0.03);
     }
 
     updateParams(initialSettings, bypass);
@@ -1181,9 +1127,9 @@ input[type="range"] {
       updateParams,
       dispose() {
         try {
-          driftLFO1.stop();
-          driftLFO2.stop();
-          vibratoLFO.stop();
+          slowDriftLFO.stop();
+          medDriftLFO.stop();
+          vibLFO.stop();
           formantLFO.stop();
         } catch (e) {}
         try { masterOut.disconnect(); } catch (e) {}
@@ -1222,13 +1168,12 @@ input[type="range"] {
     if (!sourceBuffer) return;
     const ac = ensureContext();
 
-    // Instant A/B switching while playing
     if (isPlaying && activeGraph && offset === pauseOffset) {
       playMode = mode;
       activeGraph.updateParams(getSettings(), playMode === 'original');
       $('playOriginal').classList.toggle('active-mode', playMode === 'original');
       $('playHuman').classList.toggle('active-mode', playMode === 'human');
-      setStatus(playMode === 'original' ? 'Playing Original (Raw AI)' : 'Playing Humanised (Live De-AI)');
+      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Smooth)');
       return;
     }
 
@@ -1264,7 +1209,7 @@ input[type="range"] {
     };
 
     src.start(0, safeOffset);
-    setStatus(mode === 'original' ? 'Playing Original (Raw AI)' : 'Playing Humanised (Live De-AI)');
+    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Smooth)');
     tickVisualizer();
   }
 
@@ -1389,7 +1334,7 @@ input[type="range"] {
   $('render').addEventListener('click', async () => {
     if (!sourceBuffer) return;
     $('render').disabled = true;
-    $('renderStatus').textContent = 'Rendering De-AI master…';
+    $('renderStatus').textContent = 'Rendering smooth master…';
     setStatus('Processing offline render…');
 
     try {
@@ -1417,7 +1362,7 @@ input[type="range"] {
 
       $('shareBtn').disabled = false;
       $('renderStatus').textContent = `Exported ${bits}-bit WAV (${(lastExportBlob.size / 1048576).toFixed(1)} MB)`;
-      setStatus('De-AI WAV exported');
+      setStatus('Smooth WAV exported');
 
       triggerDownload(lastExportBlob, lastExportFilename);
     } catch (err) {
@@ -1446,7 +1391,7 @@ input[type="range"] {
   });
 
   drawWave(null, 0);
-  setVals(presets.killai);
+  setVals(presets.velvet);
 })();
 </script>
 </body>
