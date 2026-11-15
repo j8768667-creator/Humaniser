@@ -1,0 +1,1453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e1117">
+<title>HumanVoice Studio V2 — Deep De-AI Engine</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0e1117;
+  --panel: #171c26;
+  --panel2: #1f2633;
+  --line: #2e384a;
+  --text: #f4f6fa;
+  --muted: #9aa7b8;
+  --accent: #7ee8be;
+  --accent2: #48b88d;
+  --warn: #f5c478;
+  --hot: #ff7a7a;
+}
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overscroll-behavior-y: none;
+}
+body {
+  padding: max(12px, env(safe-area-inset-top)) 14px calc(26px + env(safe-area-inset-bottom));
+}
+button, select, input, label, canvas {
+  touch-action: manipulation;
+}
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 2px 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #7ee8be, #358f6c);
+  display: grid;
+  place-items: center;
+  color: #0b1e16;
+  font-size: 19px;
+  font-weight: 900;
+}
+h1 {
+  font-size: 20px;
+  margin: 0;
+  letter-spacing: -0.4px;
+}
+.sub {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.pill {
+  border: 1px solid var(--accent2);
+  border-radius: 999px;
+  padding: 6px 11px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #132620;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+h2 {
+  font-size: 14px;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+.muted { color: var(--muted); }
+.small { font-size: 12px; line-height: 1.45; }
+
+/* Upload / File Picker */
+.upload-zone {
+  border: 1.5px dashed #45556b;
+  border-radius: 14px;
+  padding: 15px;
+  text-align: center;
+  background: #121720;
+}
+.upload-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #0b1f17;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 11px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.file-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.compat-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.compat-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent2);
+}
+.fileinfo {
+  margin-top: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Waveform & Live Spectrum */
+.wavewrap {
+  margin-top: 13px;
+  background: #0d1118;
+  border: 1px solid #253042;
+  border-radius: 12px;
+  padding: 8px 8px 6px;
+}
+.wave {
+  width: 100%;
+  height: 105px;
+  display: block;
+  cursor: pointer;
+  touch-action: none;
+}
+.wave-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+  padding: 5px 4px 0;
+  font-variant-numeric: tabular-nums;
+}
+.meter-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.meter-track {
+  width: 95px;
+  height: 7px;
+  background: #1a2230;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #5fd3a6 0%, #f5c478 78%, #ff6b6b 100%);
+}
+
+/* Transport */
+.transport {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  align-items: center;
+}
+button, select { font: inherit; }
+button {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: var(--panel2);
+  color: var(--text);
+  font-weight: 650;
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+button:active:not(:disabled) { transform: scale(0.98); }
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b1f17;
+  font-weight: 700;
+}
+button.active-mode {
+  border-color: var(--accent);
+  background: #1a372d;
+  color: var(--accent);
+}
+button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.status {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+select {
+  background: #121720;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0 12px;
+  min-height: 44px;
+  font-size: 13px;
+}
+
+/* Presets */
+.presetgrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.preset {
+  padding: 11px 10px;
+  text-align: left;
+  min-height: 68px;
+  display: block;
+}
+.preset b {
+  display: block;
+  font-size: 12.5px;
+  color: var(--text);
+}
+.preset span {
+  display: block;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 400;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.preset.active {
+  border-color: var(--accent);
+  background: #1a352b;
+}
+
+/* Controls */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px 16px;
+}
+.control {
+  min-width: 0;
+  background: #121720;
+  padding: 11px 13px;
+  border-radius: 13px;
+  border: 1px solid #222b3a;
+}
+.control.highlight {
+  border-color: #2f4d43;
+  background: #131d21;
+}
+.controlhead {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.controlhead label {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--text);
+}
+.value {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+  min-height: 32px;
+  margin: 0;
+  cursor: pointer;
+}
+.hint {
+  font-size: 10.5px;
+  color: #8b99ab;
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+.export-options {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+}
+.chk-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  min-height: 36px;
+  color: var(--text);
+}
+.chk-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent2);
+}
+.note {
+  border-left: 3px solid var(--warn);
+  padding: 10px 12px;
+  background: #24211b;
+  border-radius: 0 10px 10px 0;
+  color: #ebd8b7;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+.footer {
+  color: #788596;
+  font-size: 11px;
+  text-align: center;
+  padding: 14px 4px;
+}
+
+@media (max-width: 680px) {
+  .controls { grid-template-columns: 1fr; }
+  .presetgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .status { width: 100%; margin-left: 0; margin-top: 4px; }
+  .panel { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <div class="brand">
+    <div class="mark">HV2</div>
+    <div>
+      <h1>HumanVoice Studio V2</h1>
+      <div class="sub">Deep De-AI Vocal Resynthesis &amp; Organic Modelling for iPad</div>
+    </div>
+  </div>
+  <div class="pill">SERIAL DE-AI DSP ENGINE</div>
+</header>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>01 / Load AI Vocal or Stem</h2>
+    <button id="loadDemo" type="button" style="min-height:36px;padding:6px 12px;font-size:12px">♫ Load Synthetic AI Test Voice</button>
+  </div>
+
+  <div class="upload-zone" id="dropZone">
+    <strong style="display:block;margin:2px 0">Select your vocal audio file from iPad Files</strong>
+    <div class="small muted">Works best on isolated vocal stems (from Demucs) or solo voice tracks</div>
+
+    <div class="upload-actions">
+      <label for="file" class="file-btn">📂 Browse Audio Files</label>
+      <input id="file" class="file-input-hidden" type="file"
+        accept=".wav,.mp3,.m4a,.aac,.flac,.ogg,.aiff,.aif,.caf,.mp4,.mov,audio/*,audio/wav,audio/x-wav,audio/wave,audio/mpeg,audio/mp3,audio/mp4,audio/x-m4a,audio/aac,audio/flac,audio/ogg,audio/aiff,video/mp4,video/quicktime">
+    </div>
+
+    <div class="compat-row">
+      <input type="checkbox" id="unlockAllFiles">
+      <label for="unlockAllFiles">Unlock all file types (tick if files are greyed out in iPad Files)</label>
+    </div>
+
+    <div class="fileinfo" id="fileInfo">No audio loaded yet</div>
+  </div>
+
+  <div class="wavewrap">
+    <canvas id="wave" class="wave" width="1000" height="210"></canvas>
+    <div class="wave-meta">
+      <span id="timeReadout">00:00.0 / 00:00.0</span>
+      <span>Tap/drag waveform to scrub · Live A/B switching</span>
+      <div class="meter-bar">
+        <span>OUT</span>
+        <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="transport">
+    <button id="playOriginal" disabled>▶ Original (Raw AI)</button>
+    <button id="playHuman" class="primary" disabled>▶ Humanised (Live De-AI)</button>
+    <button id="stop" disabled>■ Stop</button>
+    <button id="loopToggle" disabled>🔁 Loop: Off</button>
+    <span class="status" id="status">Waiting for audio</span>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>02 / Select De-AI Transformation Preset</h2>
+  <div class="presetgrid" id="presets" style="margin-top:10px">
+    <button class="preset active" data-preset="killai">
+      <b>Kill AI Metallic (Strong)</b>
+      <span>Erases digital phase buzz, shifts throat formants &amp; breaks pitch lock</span>
+    </button>
+    <button class="preset" data-preset="singer">
+      <b>Organic Soul Singer</b>
+      <span>Natural vibrato drift, warm tube chest, moving vowel tract &amp; air</span>
+    </button>
+    <button class="preset" data-preset="intimate">
+      <b>Close-Mic Raspy / Raw</b>
+      <span>Heavy throat body, envelope breath noise &amp; analog tape grit</span>
+    </button>
+    <button class="preset" data-preset="darkballad">
+      <b>Dark Outlaw / Ballad</b>
+      <span>Deep chest resonance, smoky highs, slow pitch drift &amp; studio booth</span>
+    </button>
+    <button class="preset" data-preset="spoken">
+      <b>Natural Spoken / Narrator</b>
+      <span>Tight formant movement, de-essed sibilance, zero room tail</span>
+    </button>
+    <button class="preset" data-preset="extreme">
+      <b>Extreme Humaniser (Max)</b>
+      <span>Maximum pitch/formant resynthesis for heavily robotic tracks</span>
+    </button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>03 / Deep Vocal Resynthesis Controls</h2>
+    <span class="small muted">100% Serial Processing — Changes are immediate while playing</span>
+  </div>
+
+  <div class="controls">
+    <div class="control highlight">
+      <div class="controlhead"><label for="amount">Master De-AI Intensity</label><span class="value" id="amountV">70%</span></div>
+      <input id="amount" type="range" min="0" max="100" value="70">
+      <div class="hint">Scales the overall strength of all organic resynthesis stages</div>
+    </div>
+
+    <div class="control highlight">
+      <div class="controlhead"><label for="pitch">Serial Pitch &amp; Vibrato Drift</label><span class="value" id="pitchV">55%</span></div>
+      <input id="pitch" type="range" min="0" max="100" value="55">
+      <div class="hint">100% serial pitch bending (slow drift + human vibrato) to break robotic tuning</div>
+    </div>
+
+    <div class="control highlight">
+      <div class="controlhead"><label for="formant">Throat Formant Shift (F1/F2)</label><span class="value" id="formantV">50%</span></div>
+      <input id="formant" type="range" min="0" max="100" value="50">
+      <div class="hint">Dynamically moves vocal-tract vowel resonances to stop "frozen plastic" tone</div>
+    </div>
+
+    <div class="control highlight">
+      <div class="controlhead"><label for="debuzz">AI Codec De-Buzzer</label><span class="value" id="debuzzV">60%</span></div>
+      <input id="debuzz" type="range" min="0" max="100" value="60">
+      <div class="hint">Suppresses 5.5–9.5 kHz neural vocoder metallic fizz &amp; phase-ringing</div>
+    </div>
+
+    <div class="control">
+      <div class="controlhead"><label for="warmth">Chest &amp; Sub-Body</label><span class="value" id="warmthV">55%</span></div>
+      <input id="warmth" type="range" min="0" max="100" value="55">
+      <div class="hint">Restores missing low-end sternum weight (140–220 Hz) &amp; cuts 380 Hz plastic boxiness</div>
+    </div>
+
+    <div class="control">
+      <div class="controlhead"><label for="breath">Envelope Breath &amp; Rasp</label><span class="value" id="breathV">35%</span></div>
+      <input id="breath" type="range" min="0" max="100" value="35">
+      <div class="hint">Injects dynamic vocal-cord air turbulence that rides strictly on the voice envelope</div>
+    </div>
+
+    <div class="control">
+      <div class="controlhead"><label for="texture">Asymmetric Tube Drive</label><span class="value" id="textureV">45%</span></div>
+      <input id="texture" type="range" min="0" max="100" value="45">
+      <div class="hint">Generates 2nd-order even tube harmonics to thicken thin digital transients</div>
+    </div>
+
+    <div class="control">
+      <div class="controlhead"><label for="presence">Mic Proximity &amp; Articulation</label><span class="value" id="presenceV">45%</span></div>
+      <input id="presence" type="range" min="0" max="100" value="45">
+      <div class="hint">2.8 kHz condenser microphone forwardness without digital harshness</div>
+    </div>
+
+    <div class="control">
+      <div class="controlhead"><label for="dynamics">Optical Tube Compression</label><span class="value" id="dynamicsV">50%</span></div>
+      <input id="dynamics" type="range" min="0" max="100" value="50">
+      <div class="hint">LA-2A style vocal levelling with automatic makeup gain</div>
+    </div>
+
+    <div class="control">
+      <div class="controlhead"><label for="space">Acoustic Doubler &amp; Booth</label><span class="value" id="spaceV">20%</span></div>
+      <input id="space" type="range" min="0" max="100" value="20">
+      <div class="hint">Adds physical early-reflection studio walls around the voice</div>
+    </div>
+  </div>
+
+  <div class="export-options">
+    <label class="chk-label">
+      <input type="checkbox" id="normalizeChk" checked>
+      Normalize peak to -1.0 dBFS
+    </label>
+    <label class="chk-label">
+      Export Format:
+      <select id="bitDepth">
+        <option value="16">16-bit PCM WAV</option>
+        <option value="24" selected>24-bit Studio WAV</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="transport" style="margin-top:14px">
+    <button id="reset">↺ Reset to Default</button>
+    <button id="render" class="primary" disabled>⚡ Render &amp; Export WAV</button>
+    <button id="shareBtn" disabled>📤 Share / Save to Files</button>
+    <span class="status" id="renderStatus">Load audio to begin</span>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>04 / How to get the strongest De-AI result</h2>
+  <div class="note">
+    <strong>Why this works best on isolated vocals:</strong> If you feed a full song mix (drums + guitars + vocals) into heavy pitch/formant modulation, the instruments will shift too. For full AI songs, run the track through <strong>Demucs</strong> first to extract the <code>vocals.wav</code> stem, run that stem through <strong>Kill AI Metallic</strong> or <strong>Organic Soul Singer</strong> here, and export the 24-bit WAV.
+  </div>
+</section>
+
+<div class="footer">HumanVoice Studio V2 · Deep De-AI Vocal Resynthesis · Designed for iPad Pro</div>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+
+  let ctx = null;
+  let sourceBuffer = null;
+  let processedBuffer = null;
+  let lastExportBlob = null;
+  let lastExportFilename = 'humanvoice-v2-master.wav';
+
+  // Playback state
+  let activeSource = null;
+  let activeGraph = null;
+  let analyser = null;
+  let isPlaying = false;
+  let isLooping = false;
+  let playMode = 'human';
+  let startTime = 0;
+  let pauseOffset = 0;
+  let rafId = null;
+
+  const ids = ['amount', 'pitch', 'formant', 'debuzz', 'warmth', 'breath', 'texture', 'presence', 'dynamics', 'space'];
+
+  const presets = {
+    killai:     { amount: 75, pitch: 55, formant: 55, debuzz: 72, warmth: 58, breath: 35, texture: 48, presence: 42, dynamics: 52, space: 18 },
+    singer:     { amount: 72, pitch: 65, formant: 60, debuzz: 55, warmth: 62, breath: 40, texture: 50, presence: 48, dynamics: 55, space: 28 },
+    intimate:   { amount: 80, pitch: 45, formant: 50, debuzz: 65, warmth: 72, breath: 65, texture: 65, presence: 52, dynamics: 60, space: 10 },
+    darkballad: { amount: 78, pitch: 60, formant: 62, debuzz: 75, warmth: 78, breath: 45, texture: 58, presence: 35, dynamics: 55, space: 36 },
+    spoken:     { amount: 60, pitch: 35, formant: 45, debuzz: 60, warmth: 50, breath: 25, texture: 35, presence: 55, dynamics: 50, space: 8  },
+    extreme:    { amount: 95, pitch: 82, formant: 80, debuzz: 85, warmth: 75, breath: 60, texture: 72, presence: 50, dynamics: 68, space: 25 }
+  };
+
+  function ensureContext() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ctx = new AC();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  // Unlock all file types toggle
+  const defaultAccept = $('file').getAttribute('accept');
+  $('unlockAllFiles').addEventListener('change', e => {
+    if (e.target.checked) {
+      $('file').removeAttribute('accept');
+      setStatus('All file types unlocked');
+    } else {
+      $('file').setAttribute('accept', defaultAccept);
+      setStatus('Audio filter active');
+    }
+  });
+
+  // Drag & drop
+  const dropZone = $('dropZone');
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); });
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  $('file').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if (f) handleFile(f);
+  });
+
+  async function handleFile(f) {
+    try {
+      stopPlayback();
+      pauseOffset = 0;
+      setStatus('Decoding audio…');
+      $('fileInfo').textContent = `${f.name} · ${(f.size / 1048576).toFixed(2)} MB`;
+
+      const ac = ensureContext();
+      const bytes = await f.arrayBuffer();
+      sourceBuffer = await ac.decodeAudioData(bytes.slice(0));
+      processedBuffer = null;
+      lastExportBlob = null;
+
+      const baseName = f.name.replace(/\.[^/.]+$/, '');
+      lastExportFilename = `${baseName}-deai-v2.wav`;
+
+      enableTransport();
+      drawWave(sourceBuffer, 0);
+      updateTimeReadout(0, sourceBuffer.duration);
+      $('renderStatus').textContent = 'Ready to render & export';
+      setStatus(`Loaded · ${sourceBuffer.duration.toFixed(1)}s · ${sourceBuffer.sampleRate} Hz`);
+    } catch (err) {
+      console.error(err);
+      setStatus('Decode error');
+      $('fileInfo').textContent = 'Could not decode file. Try WAV, MP3, or M4A.';
+    }
+  }
+
+  // Synthetic AI Test Voice Generator (deliberately robotic, static pitch + 7kHz vocoder buzz)
+  $('loadDemo').addEventListener('click', () => {
+    stopPlayback();
+    pauseOffset = 0;
+    const ac = ensureContext();
+    const sr = ac.sampleRate;
+    const dur = 5.0;
+    const len = Math.floor(sr * dur);
+    const buf = ac.createBuffer(1, len, sr);
+    const d = buf.getChannelData(0);
+
+    // Melodic phrase with dead-flat robotic pitch and harsh high-frequency vocoder buzz
+    const melody = [146.83, 164.81, 174.61, 196.00, 164.81, 146.83];
+    for (let i = 0; i < len; i++) {
+      const t = i / sr;
+      const step = Math.min(melody.length - 1, Math.floor(t / (dur / melody.length)));
+      const f0 = melody[step];
+      let sample = 0;
+
+      // Rigid harmonic stack with metallic upper partials
+      for (let h = 1; h <= 32; h++) {
+        const freq = f0 * h;
+        const f1 = Math.exp(-Math.pow((freq - 500) / 150, 2));
+        const f2 = 0.7 * Math.exp(-Math.pow((freq - 1550) / 220, 2));
+        const f3 = 0.5 * Math.exp(-Math.pow((freq - 2900) / 300, 2));
+        // Artificial neural vocoder buzz peak around 6.8 kHz
+        const aiBuzz = 0.45 * Math.exp(-Math.pow((freq - 6800) / 900, 2));
+        const amp = (f1 + f2 + f3 + aiBuzz + 0.05) / Math.pow(h, 0.68);
+        sample += Math.sin(2 * Math.PI * freq * t) * amp;
+      }
+
+      const env = Math.min(1, t / 0.05) * Math.min(1, (dur - t) / 0.15);
+      d[i] = Math.tanh(sample * 0.42 * env);
+    }
+
+    sourceBuffer = buf;
+    processedBuffer = null;
+    lastExportBlob = null;
+    lastExportFilename = 'synthetic-demo-deai.wav';
+    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Robotic Pitch + 6.8kHz Vocoder Buzz)';
+    enableTransport();
+    drawWave(sourceBuffer, 0);
+    updateTimeReadout(0, sourceBuffer.duration);
+    $('renderStatus').textContent = 'Ready to render & export';
+    setStatus('Compare ▶ Original vs ▶ Humanised!');
+  });
+
+  function enableTransport() {
+    $('playOriginal').disabled = false;
+    $('playHuman').disabled = false;
+    $('stop').disabled = false;
+    $('loopToggle').disabled = false;
+    $('render').disabled = false;
+  }
+
+  function updateValue(k) {
+    $(k + 'V').textContent = $(k).value + '%';
+  }
+
+  function setVals(obj) {
+    ids.forEach(k => {
+      if (obj[k] !== undefined) {
+        $(k).value = obj[k];
+        updateValue(k);
+      }
+    });
+    if (activeGraph && ctx) {
+      activeGraph.updateParams(getSettings(), playMode === 'original');
+    }
+  }
+
+  function getSettings() {
+    return Object.fromEntries(ids.map(k => [k, +$(k).value]));
+  }
+
+  ids.forEach(k => {
+    $(k).addEventListener('input', () => {
+      updateValue(k);
+      document.querySelectorAll('.preset').forEach(b => b.classList.remove('active'));
+      if (activeGraph && ctx) {
+        activeGraph.updateParams(getSettings(), playMode === 'original');
+      }
+    });
+  });
+
+  document.querySelectorAll('.preset').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.preset').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      setVals(presets[b.dataset.preset]);
+    });
+  });
+
+  $('reset').addEventListener('click', () => {
+    setVals(presets.killai);
+    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'killai'));
+  });
+
+  $('loopToggle').addEventListener('click', () => {
+    isLooping = !isLooping;
+    $('loopToggle').textContent = isLooping ? '🔁 Loop: On' : '🔁 Loop: Off';
+    $('loopToggle').classList.toggle('active-mode', isLooping);
+    if (activeSource) activeSource.loop = isLooping;
+  });
+
+  function setStatus(s) {
+    $('status').textContent = s;
+  }
+
+  function formatTime(sec) {
+    const s = Math.max(0, sec || 0);
+    const m = Math.floor(s / 60);
+    const rem = (s % 60).toFixed(1).padStart(4, '0');
+    return `${String(m).padStart(2, '0')}:${rem}`;
+  }
+
+  function updateTimeReadout(curr, total) {
+    $('timeReadout').textContent = `${formatTime(curr)} / ${formatTime(total)}`;
+  }
+
+  function drawWave(buf, playheadRatio = 0) {
+    const c = $('wave');
+    const g = c.getContext('2d');
+    const w = c.width, h = c.height;
+    g.clearRect(0, 0, w, h);
+    g.fillStyle = '#0d1118';
+    g.fillRect(0, 0, w, h);
+
+    const mid = h / 2;
+    g.strokeStyle = '#232e40';
+    g.lineWidth = 1;
+    g.beginPath();
+    g.moveTo(0, mid);
+    g.lineTo(w, mid);
+    g.stroke();
+
+    if (!buf) return;
+
+    const data = buf.getChannelData(0);
+    const step = Math.max(1, Math.floor(data.length / w));
+    const headX = Math.floor(playheadRatio * w);
+
+    for (let x = 0; x < w; x++) {
+      let mn = 1, mx = -1;
+      const start = x * step;
+      for (let j = 0; j < step; j++) {
+        const v = data[start + j] || 0;
+        if (v < mn) mn = v;
+        if (v > mx) mx = v;
+      }
+      g.strokeStyle = x <= headX ? '#7ee8be' : '#3a6657';
+      g.lineWidth = 1.5;
+      g.beginPath();
+      g.moveTo(x, mid + mn * mid * 0.88);
+      g.lineTo(x, mid + mx * mid * 0.88);
+      g.stroke();
+    }
+
+    if (playheadRatio > 0 && playheadRatio < 1) {
+      g.strokeStyle = '#f5c478';
+      g.lineWidth = 2.2;
+      g.beginPath();
+      g.moveTo(headX, 0);
+      g.lineTo(headX, h);
+      g.stroke();
+    }
+  }
+
+  // Waveform Scrubbing
+  let isScrubbing = false;
+  function scrubToEvent(e) {
+    if (!sourceBuffer) return;
+    const rect = $('wave').getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    pauseOffset = ratio * sourceBuffer.duration;
+    drawWave(sourceBuffer, ratio);
+    updateTimeReadout(pauseOffset, sourceBuffer.duration);
+    if (isPlaying) startLivePlayback(playMode, pauseOffset);
+  }
+
+  const waveCanvas = $('wave');
+  waveCanvas.addEventListener('pointerdown', e => {
+    if (!sourceBuffer) return;
+    isScrubbing = true;
+    waveCanvas.setPointerCapture(e.pointerId);
+    scrubToEvent(e);
+  });
+  waveCanvas.addEventListener('pointermove', e => {
+    if (isScrubbing) scrubToEvent(e);
+  });
+  waveCanvas.addEventListener('pointerup', () => { isScrubbing = false; });
+
+  // Asymmetric Class-A Tube Saturation Curve (adds rich 2nd harmonic + vocal fry density)
+  function makeAsymmetricTubeCurve(driveAmt) {
+    const n = 8192;
+    const curve = new Float32Array(n);
+    const k = 1 + driveAmt * 12;
+    const asym = 0.18 * driveAmt; // Even-harmonic asymmetry
+    const norm = Math.tanh(k);
+    for (let i = 0; i < n; i++) {
+      const x = (i * 2) / n - 1;
+      const biased = x + asym * (x * x - 0.35);
+      curve[i] = Math.tanh(biased * k) / norm;
+    }
+    return curve;
+  }
+
+  // Early-Reflection Studio Booth Impulse
+  function makeStudioBoothImpulse(ac, duration, decay) {
+    const sr = ac.sampleRate;
+    const len = Math.max(1, Math.floor(sr * duration));
+    const imp = ac.createBuffer(2, len, sr);
+    let seed = 424242;
+    const rand = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 1073741823.5 - 1;
+    };
+    const earlyTaps = [0.007, 0.013, 0.019, 0.027, 0.035];
+    for (let ch = 0; ch < 2; ch++) {
+      const d = imp.getChannelData(ch);
+      // Discrete wood booth early reflections
+      earlyTaps.forEach((tapSec, idx) => {
+        const samp = Math.floor((tapSec + ch * 0.0015) * sr);
+        if (samp < len) d[samp] = (idx % 2 === 0 ? 0.5 : -0.45) * Math.pow(0.78, idx);
+      });
+      const tailStart = Math.floor(0.015 * sr);
+      for (let i = tailStart; i < len; i++) {
+        const t = (i - tailStart) / (len - tailStart);
+        d[i] += rand() * Math.pow(1 - t, decay) * 0.32;
+      }
+    }
+    return imp;
+  }
+
+  /**
+   * V2 DEEP DE-AI VOCAL RESYNTHESIS GRAPH
+   * 100% Serial Pitch Drift + Dynamic Formant Filter Bank + Envelope-Gated Breath Turbulence + Codec De-Buzzer
+   */
+  function buildGraph(ac, inputNode, initialSettings, bypass = false) {
+    const dryOut = ac.createGain();
+    const wetOut = ac.createGain();
+    const masterOut = ac.createGain();
+
+    // Bypass path
+    inputNode.connect(dryOut);
+    dryOut.connect(masterOut);
+
+    // 1. High-Pass Rumble Filter
+    const hp = ac.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 78;
+    hp.Q.value = 0.7;
+
+    // 2. 100% SERIAL PITCH DRIFT & HUMAN VIBRATO STAGE
+    // Because the entire signal goes through this delay line serially (no parallel dry voice),
+    // modulating delayTime physically bends the pitch of the voice without flanging/chorusing!
+    const serialPitchDelay = ac.createDelay(0.1);
+    serialPitchDelay.delayTime.value = 0.024;
+
+    const driftLFO1 = ac.createOscillator(); // Slow phrase pitch drift (0.37 Hz)
+    const driftLFO2 = ac.createOscillator(); // Medium syllable drift (1.15 Hz)
+    const vibratoLFO = ac.createOscillator(); // Natural human larynx vibrato (5.4 Hz)
+    driftLFO1.type = 'sine';
+    driftLFO2.type = 'triangle';
+    vibratoLFO.type = 'sine';
+
+    const driftGain1 = ac.createGain();
+    const driftGain2 = ac.createGain();
+    const vibratoGain = ac.createGain();
+
+    driftLFO1.connect(driftGain1);
+    driftLFO2.connect(driftGain2);
+    vibratoLFO.connect(vibratoGain);
+
+    driftGain1.connect(serialPitchDelay.delayTime);
+    driftGain2.connect(serialPitchDelay.delayTime);
+    vibratoGain.connect(serialPitchDelay.delayTime);
+
+    driftLFO1.start(0);
+    driftLFO2.start(0);
+    vibratoLFO.start(0);
+
+    // 3. DYNAMIC FORMANT TRACT SHIFTER (F1 & F2 Moving Cavity Filters)
+    // Modulates throat (550 Hz) and mouth (1650 Hz) resonances in opposite directions
+    const formant1 = ac.createBiquadFilter();
+    formant1.type = 'peaking';
+    formant1.frequency.value = 540;
+    formant1.Q.value = 2.2;
+
+    const formant2 = ac.createBiquadFilter();
+    formant2.type = 'peaking';
+    formant2.frequency.value = 1680;
+    formant2.Q.value = 2.5;
+
+    const formantLFO = ac.createOscillator();
+    formantLFO.type = 'sine';
+    formantLFO.frequency.value = 0.78;
+    const f1ModGain = ac.createGain();
+    const f2ModGain = ac.createGain();
+    formantLFO.connect(f1ModGain);
+    formantLFO.connect(f2ModGain);
+    f1ModGain.connect(formant1.frequency);
+    f2ModGain.connect(formant2.frequency);
+    formantLFO.start(0);
+
+    // 4. CHEST WEIGHT & PLASTIC BOXINESS CUT
+    const chestShelf = ac.createBiquadFilter();
+    chestShelf.type = 'peaking';
+    chestShelf.frequency.value = 165;
+    chestShelf.Q.value = 0.85;
+
+    const boxCut = ac.createBiquadFilter();
+    boxCut.type = 'peaking';
+    boxCut.frequency.value = 390;
+    boxCut.Q.value = 1.4;
+
+    // 5. ASYMMETRIC TUBE SATURATION & HARMONIC EXCITER
+    const tubeShaper = ac.createWaveShaper();
+    tubeShaper.oversample = '4x';
+
+    // 6. DYNAMIC BREATH / RASP MODULATION (Signal-Multiplied Air Turbulence)
+    // By modulating a high-passed vocal path at audio-rate noise frequencies,
+    // breath air is generated ONLY when the singer is actually making sound (zero noise in silence).
+    const breathBP = ac.createBiquadFilter();
+    breathBP.type = 'bandpass';
+    breathBP.frequency.value = 2800;
+    breathBP.Q.value = 0.9;
+
+    const breathShaper = ac.createWaveShaper();
+    // High-order gritty rasp transfer curve
+    const raspCurve = new Float32Array(4096);
+    for (let i = 0; i < 4096; i++) {
+      const x = (i * 2) / 4096 - 1;
+      raspCurve[i] = Math.sin(x * Math.PI * 3.5) * (1 - Math.abs(x) * 0.4);
+    }
+    breathShaper.curve = raspCurve;
+    const breathGain = ac.createGain();
+
+    // 7. AI CODEC DE-BUZZER (Dual Notch + Warm Tape Roll-Off)
+    // Erases 6.4 kHz and 8.2 kHz metallic HiFi-GAN / neural vocoder phase ringing
+    const debuzzNotch1 = ac.createBiquadFilter();
+    debuzzNotch1.type = 'peaking';
+    debuzzNotch1.frequency.value = 6350;
+    debuzzNotch1.Q.value = 2.1;
+
+    const debuzzNotch2 = ac.createBiquadFilter();
+    debuzzNotch2.type = 'peaking';
+    debuzzNotch2.frequency.value = 8400;
+    debuzzNotch2.Q.value = 2.4;
+
+    const tapeLowpass = ac.createBiquadFilter();
+    tapeLowpass.type = 'lowpass';
+    tapeLowpass.frequency.value = 13500;
+    tapeLowpass.Q.value = 0.6;
+
+    // 8. CONDENSER MIC PROXIMITY & PRESENCE
+    const micPresence = ac.createBiquadFilter();
+    micPresence.type = 'peaking';
+    micPresence.frequency.value = 2750;
+    micPresence.Q.value = 0.9;
+
+    // 9. OPTICAL VOCAL COMPRESSOR
+    const comp = ac.createDynamicsCompressor();
+    comp.knee.value = 12;
+    comp.attack.value = 0.008;
+    comp.release.value = 0.15;
+    const makeupGain = ac.createGain();
+
+    // 10. ACOUSTIC MICRO-DOUBLER & STUDIO BOOTH
+    const doublerDelay = ac.createDelay(0.06);
+    doublerDelay.delayTime.value = 0.017;
+    const doublerGain = ac.createGain();
+
+    const boothConvolver = ac.createConvolver();
+    boothConvolver.buffer = makeStudioBoothImpulse(ac, 0.52, 3.4);
+    const boothLP = ac.createBiquadFilter();
+    boothLP.type = 'lowpass';
+    boothLP.frequency.value = 3600;
+    const boothGain = ac.createGain();
+
+    // Brickwall output safety limiter
+    const limiter = ac.createDynamicsCompressor();
+    limiter.threshold.value = -1.0;
+    limiter.knee.value = 1.5;
+    limiter.ratio.value = 20.0;
+    limiter.attack.value = 0.001;
+    limiter.release.value = 0.06;
+
+    // Connect Serial Chain
+    inputNode.connect(hp);
+    hp.connect(serialPitchDelay);
+    serialPitchDelay.connect(formant1);
+    formant1.connect(formant2);
+    formant2.connect(chestShelf);
+    chestShelf.connect(boxCut);
+    boxCut.connect(tubeShaper);
+
+    // Dynamic Breath / Rasp parallel injector (strictly envelope-locked)
+    serialPitchDelay.connect(breathBP);
+    breathBP.connect(breathShaper);
+    breathShaper.connect(breathGain);
+
+    const postDriveSum = ac.createGain();
+    tubeShaper.connect(postDriveSum);
+    breathGain.connect(postDriveSum);
+
+    postDriveSum.connect(micPresence);
+    micPresence.connect(debuzzNotch1);
+    debuzzNotch1.connect(debuzzNotch2);
+    debuzzNotch2.connect(tapeLowpass);
+    tapeLowpass.connect(comp);
+    comp.connect(makeupGain);
+
+    // Spatial / Booth connections
+    makeupGain.connect(wetOut);
+
+    makeupGain.connect(doublerDelay);
+    doublerDelay.connect(doublerGain);
+    doublerGain.connect(wetOut);
+
+    makeupGain.connect(boothConvolver);
+    boothConvolver.connect(boothLP);
+    boothLP.connect(boothGain);
+    boothGain.connect(wetOut);
+
+    wetOut.connect(limiter);
+    limiter.connect(masterOut);
+
+    function updateParams(s, isBypassed = false) {
+      const now = ac.currentTime;
+      if (isBypassed) {
+        dryOut.gain.setTargetAtTime(1, now, 0.015);
+        wetOut.gain.setTargetAtTime(0, now, 0.015);
+        return;
+      }
+
+      dryOut.gain.setTargetAtTime(0, now, 0.015);
+      wetOut.gain.setTargetAtTime(1, now, 0.015);
+
+      const master = 0.35 + (s.amount / 100) * 0.95;
+
+      // 1. Serial Pitch & Vibrato Drift
+      const p = (s.pitch / 100) * master;
+      driftLFO1.frequency.setTargetAtTime(0.34 + (s.amount / 100) * 0.15, now, 0.02);
+      driftLFO2.frequency.setTargetAtTime(1.18 + (s.pitch / 100) * 0.35, now, 0.02);
+      vibratoLFO.frequency.setTargetAtTime(5.35, now, 0.02);
+
+      // Delay time modulation depth -> directly creates pitch deviation (Δf/f = -dD/dt)
+      driftGain1.gain.setTargetAtTime(p * 0.0032, now, 0.02);
+      driftGain2.gain.setTargetAtTime(p * 0.0011, now, 0.02);
+      vibratoGain.gain.setTargetAtTime(p * 0.00042, now, 0.02);
+
+      // 2. Dynamic Throat Formant Shifting
+      const fm = (s.formant / 100) * master;
+      formant1.gain.setTargetAtTime(fm * 5.2, now, 0.02);
+      formant2.gain.setTargetAtTime(-fm * 4.4, now, 0.02);
+      f1ModGain.gain.setTargetAtTime(fm * 145, now, 0.02);   // Swings F1 +/- 145 Hz
+      f2ModGain.gain.setTargetAtTime(-fm * 290, now, 0.02);  // Counter-swings F2 +/- 290 Hz
+
+      // 3. Chest Weight & Boxiness Cut
+      const w = (s.warmth / 100) * master;
+      chestShelf.gain.setTargetAtTime(w * 6.8, now, 0.02);
+      boxCut.gain.setTargetAtTime(-w * 5.2, now, 0.02);
+
+      // 4. Asymmetric Tube Drive
+      const tx = (s.texture / 100) * master;
+      tubeShaper.curve = makeAsymmetricTubeCurve(tx * 0.65);
+
+      // 5. Envelope-Locked Breath & Vocal Rasp
+      const br = (s.breath / 100) * master;
+      breathGain.gain.setTargetAtTime(br * 0.16, now, 0.02);
+
+      // 6. AI Codec De-Buzzer (6.35kHz + 8.4kHz suppression + analog tape roll-off)
+      const db = (s.debuzz / 100) * master;
+      debuzzNotch1.gain.setTargetAtTime(-db * 11.5, now, 0.02);
+      debuzzNotch2.gain.setTargetAtTime(-db * 10.0, now, 0.02);
+      const cutoff = Math.max(6200, 16500 - db * 8200);
+      tapeLowpass.frequency.setTargetAtTime(cutoff, now, 0.02);
+
+      // 7. Condenser Mic Presence (2.75 kHz)
+      const pr = (s.presence / 100) * master;
+      micPresence.gain.setTargetAtTime(pr * 5.5 - 1.0, now, 0.02);
+
+      // 8. Optical Compression
+      const dyn = (s.dynamics / 100) * master;
+      comp.threshold.setTargetAtTime(-10 - dyn * 20, now, 0.02);
+      comp.ratio.setTargetAtTime(1.5 + dyn * 4.5, now, 0.02);
+      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.55, now, 0.02);
+
+      // 9. Acoustic Doubler & Studio Booth
+      const sp = (s.space / 100) * master;
+      doublerGain.gain.setTargetAtTime(sp * 0.26, now, 0.02);
+      boothGain.gain.setTargetAtTime(sp * 0.45, now, 0.02);
+    }
+
+    updateParams(initialSettings, bypass);
+
+    return {
+      output: masterOut,
+      updateParams,
+      dispose() {
+        try {
+          driftLFO1.stop();
+          driftLFO2.stop();
+          vibratoLFO.stop();
+          formantLFO.stop();
+        } catch (e) {}
+        try { masterOut.disconnect(); } catch (e) {}
+      }
+    };
+  }
+
+  // Real-Time Playback Engine
+  function stopPlayback(resetOffset = true) {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    if (activeSource) {
+      activeSource.onended = null;
+      try { activeSource.stop(); } catch (e) {}
+      try { activeSource.disconnect(); } catch (e) {}
+      activeSource = null;
+    }
+    if (activeGraph) {
+      activeGraph.dispose();
+      activeGraph = null;
+    }
+    isPlaying = false;
+    $('meterFill').style.width = '0%';
+    $('playOriginal').classList.remove('active-mode');
+    $('playHuman').classList.remove('active-mode');
+    if (resetOffset && sourceBuffer) {
+      pauseOffset = 0;
+      drawWave(sourceBuffer, 0);
+      updateTimeReadout(0, sourceBuffer.duration);
+    }
+  }
+
+  function startLivePlayback(mode, offset = pauseOffset) {
+    if (!sourceBuffer) return;
+    const ac = ensureContext();
+
+    // Instant A/B switching while playing
+    if (isPlaying && activeGraph && offset === pauseOffset) {
+      playMode = mode;
+      activeGraph.updateParams(getSettings(), playMode === 'original');
+      $('playOriginal').classList.toggle('active-mode', playMode === 'original');
+      $('playHuman').classList.toggle('active-mode', playMode === 'human');
+      setStatus(playMode === 'original' ? 'Playing Original (Raw AI)' : 'Playing Humanised (Live De-AI)');
+      return;
+    }
+
+    stopPlayback(false);
+    playMode = mode;
+
+    const src = ac.createBufferSource();
+    src.buffer = sourceBuffer;
+    src.loop = isLooping;
+
+    const graph = buildGraph(ac, src, getSettings(), mode === 'original');
+    analyser = ac.createAnalyser();
+    analyser.fftSize = 256;
+
+    graph.output.connect(analyser);
+    analyser.connect(ac.destination);
+
+    activeSource = src;
+    activeGraph = graph;
+    isPlaying = true;
+
+    const safeOffset = Math.max(0, Math.min(offset, sourceBuffer.duration - 0.05));
+    startTime = ac.currentTime - safeOffset;
+
+    $('playOriginal').classList.toggle('active-mode', mode === 'original');
+    $('playHuman').classList.toggle('active-mode', mode === 'human');
+
+    src.onended = () => {
+      if (activeSource === src && !isLooping) {
+        stopPlayback(true);
+        setStatus('Playback finished');
+      }
+    };
+
+    src.start(0, safeOffset);
+    setStatus(mode === 'original' ? 'Playing Original (Raw AI)' : 'Playing Humanised (Live De-AI)');
+    tickVisualizer();
+  }
+
+  function tickVisualizer() {
+    if (!isPlaying || !sourceBuffer || !ctx) return;
+    let elapsed = ctx.currentTime - startTime;
+    if (isLooping) {
+      elapsed = elapsed % sourceBuffer.duration;
+    } else if (elapsed >= sourceBuffer.duration) {
+      elapsed = sourceBuffer.duration;
+    }
+    pauseOffset = elapsed;
+    drawWave(sourceBuffer, elapsed / sourceBuffer.duration);
+    updateTimeReadout(elapsed, sourceBuffer.duration);
+
+    if (analyser) {
+      const td = new Uint8Array(analyser.fftSize);
+      analyser.getByteTimeDomainData(td);
+      let peak = 0;
+      for (let i = 0; i < td.length; i++) {
+        const v = Math.abs((td[i] - 128) / 128);
+        if (v > peak) peak = v;
+      }
+      $('meterFill').style.width = Math.min(100, peak * 115).toFixed(1) + '%';
+    }
+    rafId = requestAnimationFrame(tickVisualizer);
+  }
+
+  $('playOriginal').addEventListener('click', () => startLivePlayback('original', pauseOffset));
+  $('playHuman').addEventListener('click', () => startLivePlayback('human', pauseOffset));
+  $('stop').addEventListener('click', () => {
+    stopPlayback(true);
+    setStatus('Stopped');
+  });
+
+  function normalizeAudioBuffer(buf, targetPeak = 0.89125) {
+    let maxPeak = 0;
+    for (let c = 0; c < buf.numberOfChannels; c++) {
+      const d = buf.getChannelData(c);
+      for (let i = 0; i < d.length; i++) {
+        const a = Math.abs(d[i]);
+        if (a > maxPeak) maxPeak = a;
+      }
+    }
+    if (maxPeak > 0.0001) {
+      const gain = targetPeak / maxPeak;
+      for (let c = 0; c < buf.numberOfChannels; c++) {
+        const d = buf.getChannelData(c);
+        for (let i = 0; i < d.length; i++) d[i] *= gain;
+      }
+    }
+  }
+
+  function encodeWAV(buf, bitDepth = 24) {
+    const channels = buf.numberOfChannels;
+    const rate = buf.sampleRate;
+    const frames = buf.length;
+    const bytesPerSample = bitDepth === 24 ? 3 : 2;
+    const blockAlign = channels * bytesPerSample;
+    const dataSize = frames * blockAlign;
+    const ab = new ArrayBuffer(44 + dataSize);
+    const v = new DataView(ab);
+
+    function str(offset, s) {
+      for (let i = 0; i < s.length; i++) v.setUint8(offset + i, s.charCodeAt(i));
+    }
+
+    str(0, 'RIFF');
+    v.setUint32(4, 36 + dataSize, true);
+    str(8, 'WAVE');
+    str(12, 'fmt ');
+    v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true);
+    v.setUint16(22, channels, true);
+    v.setUint32(24, rate, true);
+    v.setUint32(28, rate * blockAlign, true);
+    v.setUint16(32, blockAlign, true);
+    v.setUint16(34, bitDepth, true);
+    str(36, 'data');
+    v.setUint32(40, dataSize, true);
+
+    const chData = Array.from({ length: channels }, (_, c) => buf.getChannelData(c));
+    let off = 44;
+
+    if (bitDepth === 24) {
+      for (let i = 0; i < frames; i++) {
+        for (let c = 0; c < channels; c++) {
+          const x = Math.max(-1, Math.min(1, chData[c][i]));
+          const sample = Math.round(x < 0 ? x * 8388608 : x * 8388607);
+          v.setUint8(off, sample & 0xff);
+          v.setUint8(off + 1, (sample >> 8) & 0xff);
+          v.setUint8(off + 2, (sample >> 16) & 0xff);
+          off += 3;
+        }
+      }
+    } else {
+      for (let i = 0; i < frames; i++) {
+        for (let c = 0; c < channels; c++) {
+          const x = Math.max(-1, Math.min(1, chData[c][i]));
+          v.setInt16(off, x < 0 ? x * 32768 : x * 32767, true);
+          off += 2;
+        }
+      }
+    }
+    return new Blob([ab], { type: 'audio/wav' });
+  }
+
+  function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      a.remove();
+      URL.revokeObjectURL(url);
+    }, 60000);
+  }
+
+  $('render').addEventListener('click', async () => {
+    if (!sourceBuffer) return;
+    $('render').disabled = true;
+    $('renderStatus').textContent = 'Rendering De-AI master…';
+    setStatus('Processing offline render…');
+
+    try {
+      const s = getSettings();
+      const tailSeconds = s.space > 2 ? 0.55 : 0.12;
+      const totalFrames = sourceBuffer.length + Math.ceil(sourceBuffer.sampleRate * tailSeconds);
+      const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      const off = new Offline(sourceBuffer.numberOfChannels, totalFrames, sourceBuffer.sampleRate);
+
+      const src = off.createBufferSource();
+      src.buffer = sourceBuffer;
+
+      const graph = buildGraph(off, src, s, false);
+      graph.output.connect(off.destination);
+      src.start(0);
+
+      processedBuffer = await off.startRendering();
+
+      if ($('normalizeChk').checked) {
+        normalizeAudioBuffer(processedBuffer, 0.89125);
+      }
+
+      const bits = parseInt($('bitDepth').value, 10) || 24;
+      lastExportBlob = encodeWAV(processedBuffer, bits);
+
+      $('shareBtn').disabled = false;
+      $('renderStatus').textContent = `Exported ${bits}-bit WAV (${(lastExportBlob.size / 1048576).toFixed(1)} MB)`;
+      setStatus('De-AI WAV exported');
+
+      triggerDownload(lastExportBlob, lastExportFilename);
+    } catch (err) {
+      console.error(err);
+      $('renderStatus').textContent = 'Render failed';
+      setStatus('Error — try a shorter clip');
+    } finally {
+      $('render').disabled = false;
+    }
+  });
+
+  $('shareBtn').addEventListener('click', async () => {
+    if (!lastExportBlob) return;
+    const file = new File([lastExportBlob], lastExportFilename, { type: 'audio/wav' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: lastExportFilename });
+        setStatus('Shared via iPad Share Sheet');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+    triggerDownload(lastExportBlob, lastExportFilename);
+    setStatus('Downloaded WAV');
+  });
+
+  drawWave(null, 0);
+  setVals(presets.killai);
+})();
+</script>
+</body>
+</html>
