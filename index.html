@@ -495,7 +495,7 @@ input[type="range"] {
     <div class="control highlight">
       <div class="controlhead"><label for="throat">Voice Depth (Forward ↔ Warm)</label><span class="value" id="throatV">55%</span></div>
       <input id="throat" type="range" min="0" max="100" value="55">
-      <div class="hint">EQ tilt (±2.5 dB). Below 50% = closer &amp; more forward · above 50% = rounder &amp; warmer. Not a true formant shifter.</div>
+      <div class="hint">EQ tilt (±5.5 dB). Below 50% = closer &amp; more forward · above 50% = rounder &amp; warmer. Not a true formant shifter.</div>
     </div>
 
     <div class="control highlight">
@@ -507,7 +507,7 @@ input[type="range"] {
     <div class="control highlight">
       <div class="controlhead"><label for="chest">Body &amp; Warmth</label><span class="value" id="chestV">40%</span></div>
       <input id="chest" type="range" min="0" max="100" value="40">
-      <div class="hint">Up to +4.5 dB at 150 Hz and a small cut at 300 Hz to avoid mud</div>
+      <div class="hint">Up to +8 dB at 150 Hz and a 4 dB cut at 300 Hz to avoid mud</div>
     </div>
 
     <div class="control highlight">
@@ -519,7 +519,7 @@ input[type="range"] {
     <div class="control">
       <div class="controlhead"><label for="pitch">Pitch Drift &amp; Vibrato</label><span class="value" id="pitchV">20%</span></div>
       <input id="pitch" type="range" min="0" max="100" value="20">
-      <div class="hint">Up to ±12 cents of vibrato plus slow drift. Keep low on already-expressive vocals</div>
+      <div class="hint">Up to ±20 cents of vibrato plus slow drift. Keep low on already-expressive vocals</div>
     </div>
 
     <div class="control">
@@ -531,7 +531,7 @@ input[type="range"] {
     <div class="control">
       <div class="controlhead"><label for="air">Top Air (11 kHz)</label><span class="value" id="airV">50%</span></div>
       <input id="air" type="range" min="0" max="100" value="50">
-      <div class="hint">40% = neutral · 0% = −3 dB darker · 100% = +5 dB open air</div>
+      <div class="hint">40% = neutral · 0% = −6 dB darker · 100% = +9 dB open air</div>
     </div>
 
     <div class="control">
@@ -603,12 +603,12 @@ input[type="range"] {
   const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space'];
 
   const presets = {
-    natural:    { throat: 55, deglare: 45, chest: 40, doubler: 0,  pitch: 20, vowelmod: 15, air: 50, dynamics: 40, space: 12 },
-    velvet:     { throat: 68, deglare: 55, chest: 60, doubler: 15, pitch: 25, vowelmod: 20, air: 35, dynamics: 50, space: 18 },
-    deglare:    { throat: 52, deglare: 85, chest: 35, doubler: 0,  pitch: 20, vowelmod: 10, air: 40, dynamics: 35, space: 10 },
-    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 70, pitch: 35, vowelmod: 20, air: 50, dynamics: 45, space: 28 },
-    expressive: { throat: 58, deglare: 50, chest: 45, doubler: 25, pitch: 80, vowelmod: 55, air: 45, dynamics: 45, space: 35 },
-    intimate:   { throat: 38, deglare: 45, chest: 30, doubler: 10, pitch: 25, vowelmod: 15, air: 70, dynamics: 65, space: 8 }
+    natural:    { throat: 58, deglare: 50, chest: 50, doubler: 0,  pitch: 25, vowelmod: 20, air: 55, dynamics: 50, space: 15 },
+    velvet:     { throat: 80, deglare: 60, chest: 75, doubler: 20, pitch: 25, vowelmod: 25, air: 15, dynamics: 55, space: 22 },
+    deglare:    { throat: 50, deglare: 95, chest: 35, doubler: 0,  pitch: 20, vowelmod: 10, air: 35, dynamics: 40, space: 10 },
+    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 90, pitch: 35, vowelmod: 20, air: 55, dynamics: 50, space: 30 },
+    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30, pitch: 90, vowelmod: 70, air: 50, dynamics: 50, space: 40 },
+    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10, pitch: 25, vowelmod: 15, air: 90, dynamics: 80, space: 8 }
   };
   const DEFAULT_PRESET = 'natural';
 
@@ -913,7 +913,7 @@ input[type="range"] {
     // ---- 9. Restore loudness + safety ceiling ----
     const outGain = G(matchGain / inTrim);
     const ceiling = ac.createWaveShaper();
-    ceiling.curve = CEIL_CURVE;
+    ceiling.curve = opts.noCeiling ? null : CEIL_CURVE;
     ceiling.oversample = 'none';
     bus.connect(outGain); outGain.connect(ceiling); ceiling.connect(wetMaster); wetMaster.connect(masterOut);
 
@@ -928,40 +928,40 @@ input[type="range"] {
 
       // Pitch: 12 cents vibrato @5.2 Hz + two slow drifts (~6 cents total)
       const p = s.pitch / 100;
-      set(d1g.gain, p * 0.00074);
-      set(d2g.gain, p * 0.00045);
-      set(vg.gain, p * 0.000211);
+      set(d1g.gain, p * 0.0011);
+      set(d2g.gain, p * 0.00068);
+      set(vg.gain, p * 0.00035);
 
       // Tone
       const ch = s.chest / 100;
-      set(body.gain, ch * 4.5);
-      set(mud.gain, -ch * 2.5);
+      set(body.gain, ch * 8);
+      set(mud.gain, -ch * 4);
       const depth = (s.throat - 50) / 50;
-      set(dLow.gain, depth * 2.5);
-      set(dHigh.gain, -depth * 2.5);
+      set(dLow.gain, depth * 5.5);
+      set(dHigh.gain, -depth * 5.5);
       const vm = s.vowelmod / 100;
-      set(f1Mod.gain, vm * 110);
-      set(f2Mod.gain, -vm * 450);
+      set(f1Mod.gain, vm * 160);
+      set(f2Mod.gain, -vm * 700);
 
       // De-glare
       const dg = s.deglare / 100;
-      set(harsh.gain, -dg * 3.5);
-      set(fizz.gain, -dg * 4.5);
-      set(fizzLP.frequency, Math.min(21000, sr / 2 - 200) - dg * 7000);
+      set(harsh.gain, -dg * 6);
+      set(fizz.gain, -dg * 7);
+      set(fizzLP.frequency, Math.min(21000, sr / 2 - 200) - dg * 9000);
       const amt = Math.min(1, dg * 1.15);
       set(hiDryG.gain, 1 - amt);
       set(hiWetG.gain, amt / cal.des.gain);
-      set(air.gain, ((s.air - 40) / 60) * 5);
+      set(air.gain, ((s.air - 40) / 60) * 9);
 
       // Density
       const dyn = s.dynamics / 100;
-      set(satWetG.gain, dyn * 0.5);
-      set(satDryG.gain, 1 - dyn * 0.5);
-      set(levWetG.gain, (dyn * 0.7) / cal.lev.gain);
+      set(satWetG.gain, dyn * 0.8);
+      set(satDryG.gain, 1 - dyn * 0.8);
+      set(levWetG.gain, (dyn * 1.0) / cal.lev.gain);
 
       // Sends
-      set(dblGain.gain, (s.doubler / 100) * 0.5);
-      set(revGain.gain, (s.space / 100) * 0.5);
+      set(dblGain.gain, (s.doubler / 100) * 0.85);
+      set(revGain.gain, (s.space / 100) * 0.9);
       first = false;
     }
     updateParams(s0, !!opts.bypass);
@@ -1004,7 +1004,38 @@ input[type="range"] {
     return out;
   }
 
-  // Render a loud ~8 s excerpt and return the gain that makes processed loudness equal original
+  // Perceptual loudness weighting (high-pass 150 Hz + 2 kHz high shelf +4 dB) so that bass boosts
+  // don't make the match turn the top end down
+  function weightedChannels(chs, sr) {
+    const w0 = 2 * Math.PI * 150 / sr, c = Math.cos(w0), al = Math.sin(w0) / (2 * 0.70710678);
+    const hp = [(1 + c) / 2, -(1 + c), (1 + c) / 2, 1 + al, -2 * c, 1 - al];
+    const w1 = 2 * Math.PI * 2000 / sr, c1 = Math.cos(w1), A = Math.pow(10, 4 / 40), al1 = Math.sin(w1) / 2 * Math.SQRT2, sq = 2 * Math.sqrt(A) * al1;
+    const hs = [A * ((A + 1) + (A - 1) * c1 + sq), -2 * A * ((A - 1) + (A + 1) * c1), A * ((A + 1) + (A - 1) * c1 - sq),
+                (A + 1) - (A - 1) * c1 + sq, 2 * ((A - 1) - (A + 1) * c1), (A + 1) - (A - 1) * c1 - sq];
+    const run = (x, k) => {
+      const y = new Float32Array(x.length), b0 = k[0] / k[3], b1 = k[1] / k[3], b2 = k[2] / k[3], a1 = k[4] / k[3], a2 = k[5] / k[3];
+      let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+      for (let i = 0; i < x.length; i++) {
+        const v = b0 * x[i] + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2;
+        x2 = x1; x1 = x[i]; y2 = y1; y1 = v; y[i] = v;
+      }
+      return y;
+    };
+    return chs.map(x => run(run(x, hp), hs));
+  }
+  function wGatedDb(chs, sr, from, to) {
+    const bs = Math.floor(sr * 0.05);
+    let sum = 0, cnt = 0;
+    for (let i = Math.max(0, Math.floor(from * sr)); i + bs <= Math.min(chs[0].length, Math.floor(to * sr)); i += bs) {
+      let p = 0;
+      for (const d of chs) for (let j = i; j < i + bs; j++) p += d[j] * d[j];
+      p /= bs * chs.length;
+      if (p > 1e-5) { sum += p; cnt++; }
+    }
+    return cnt ? 10 * Math.log10(sum / cnt) : -100;
+  }
+
+  // Render a loud ~8 s excerpt: gain that makes processed loudness equal original, never letting peaks clip
   async function measureMatch(buf, a, s) {
     const sr = buf.sampleRate;
     await ensureCal(sr);
@@ -1016,15 +1047,24 @@ input[type="range"] {
     const off = new Offline(2, len, sr);
     const src = off.createBufferSource();
     src.buffer = buf;
-    const g = buildGraph(off, src, s, { inTrimDb: a.inTrimDb, matchGain: 1 });
+    const g = buildGraph(off, src, s, { inTrimDb: a.inTrimDb, matchGain: 1, noCeiling: true });
     g.output.connect(off.destination);
     src.start(0, start);
     const out = await off.startRendering();
-    const po = blockPowers(out);
-    const outDb = gatedDb(po, Math.ceil(pre / 0.05) + 1, Math.floor((pre + exDur) / 0.05));
-    const inDb = gatedDb(a.powers, Math.round(a.exStart / 0.05), Math.round((a.exStart + exDur) / 0.05));
+    const oc = [out.getChannelData(0), out.getChannelData(1)];
+    const ic = [];
+    for (let c = 0; c < Math.min(2, buf.numberOfChannels); c++) {
+      ic.push(buf.getChannelData(c).subarray(Math.floor(start * sr), Math.floor(start * sr) + len));
+    }
+    const lat = g.latency;
+    const outDb = wGatedDb(weightedChannels(oc, sr), sr, pre + lat, pre + exDur + lat);
+    const inDb = wGatedDb(weightedChannels(ic, sr), sr, pre, pre + exDur);
     if (outDb <= -99 || inDb <= -99) return 1;
-    return clamp(Math.pow(10, (inDb - outDb) / 20), 0.4, 2.5);
+    let gain = Math.pow(10, (inDb - outDb) / 20);
+    let pk = 0;
+    for (const d of oc) for (let i = Math.floor((pre + lat) * sr); i < d.length; i++) { const v = Math.abs(d[i]); if (v > pk) pk = v; }
+    if (pk > 0) gain = Math.min(gain, 0.9 / pk);   // keep the soft ceiling out of the picture
+    return clamp(gain, 0.25, 2.5);
   }
 
   async function processFull(buf, s, normalize = false) {
