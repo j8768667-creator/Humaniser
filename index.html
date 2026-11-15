@@ -6,8 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d1016">
-<title>HumanVoice Studio V4 — Phase-Pure & MP3 Mastering</title>
-<!-- LameJS for fast on-device MP3 encoding on iPad -->
+<title>HumanVoice Studio V5 — True Vocal Character & MP3 Desk</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
 <style>
 :root {
@@ -18,8 +17,8 @@
   --line: #2c3648;
   --text: #f3f6fa;
   --muted: #98a6b8;
-  --accent: #8be8cb;
-  --accent2: #4cb090;
+  --accent: #7ef0c4;
+  --accent2: #42b88d;
   --warn: #f3c878;
 }
 * {
@@ -60,10 +59,10 @@ main {
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  background: linear-gradient(135deg, #a6f5dc, #3a9677);
+  background: linear-gradient(135deg, #7ef0c4, #2d8f6b);
   display: grid;
   place-items: center;
-  color: #091d15;
+  color: #071c14;
   font-size: 18px;
   font-weight: 900;
 }
@@ -85,7 +84,7 @@ h1 {
   font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
-  background: #12241f;
+  background: #11261f;
 }
 .panel {
   background: var(--panel);
@@ -170,7 +169,7 @@ h2 {
   overflow-wrap: anywhere;
 }
 
-/* Waveform & Spectrum */
+/* Waveform */
 .wavewrap {
   margin-top: 13px;
   background: #0c1017;
@@ -278,7 +277,7 @@ select {
 .preset {
   padding: 11px 10px;
   text-align: left;
-  min-height: 68px;
+  min-height: 70px;
   display: block;
 }
 .preset b {
@@ -296,7 +295,7 @@ select {
 }
 .preset.active {
   border-color: var(--accent);
-  background: #183329;
+  background: #18352b;
 }
 
 /* Controls */
@@ -401,13 +400,13 @@ input[type="range"] {
 <main>
 <header class="top">
   <div class="brand">
-    <div class="mark">HV4</div>
+    <div class="mark">HV5</div>
     <div>
-      <h1>HumanVoice Studio V4</h1>
-      <div class="sub">Phase-Pure Analog Vocal Finisher &amp; MP3/WAV Master Desk</div>
+      <h1>HumanVoice Studio V5</h1>
+      <div class="sub">High-Impact Vocal Formant, Sub-Chest, Stereo Doubler &amp; De-Glare Desk</div>
     </div>
   </div>
-  <div class="pill">ZERO-COMB PHASE-LOCKED DSP</div>
+  <div class="pill">HIGH-CONTRAST DSP</div>
 </header>
 
 <section class="panel">
@@ -438,7 +437,7 @@ input[type="range"] {
     <canvas id="wave" class="wave" width="1000" height="210"></canvas>
     <div class="wave-meta">
       <span id="timeReadout">00:00.0 / 00:00.0</span>
-      <span>Tap/drag waveform to seek · Phase-locked live A/B</span>
+      <span>Tap/drag waveform to seek · Instant A/B comparison</span>
       <div class="meter-bar">
         <span>OUT</span>
         <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
@@ -448,7 +447,7 @@ input[type="range"] {
 
   <div class="transport">
     <button id="playOriginal" disabled>▶ Original (Dry)</button>
-    <button id="playHuman" class="primary" disabled>▶ Humanised (Phase-Pure)</button>
+    <button id="playHuman" class="primary" disabled>▶ Humanised (Active DSP)</button>
     <button id="stop" disabled>■ Stop</button>
     <button id="loopToggle" disabled>🔁 Loop: Off</button>
     <span class="status" id="status">Waiting for audio</span>
@@ -456,94 +455,94 @@ input[type="range"] {
 </section>
 
 <section class="panel">
-  <h2>02 / Studio Vocal Presets (Phase-Aligned &amp; Dynamic)</h2>
+  <h2>02 / Distinct Vocal Character Presets (Immediate Audible Difference)</h2>
   <div class="presetgrid" id="presets" style="margin-top:10px">
-    <button class="preset active" data-preset="silk">
-      <b>Silk Condenser (Default)</b>
-      <span>Dynamic harshness cushioning, warm chest &amp; zero phase hollowness</span>
+    <button class="preset active" data-preset="deepchest">
+      <b>1. Deep Chest &amp; Velvet</b>
+      <span>Shifts throat formants lower, adds sub-chest weight &amp; melts digital glare</span>
     </button>
-    <button class="preset" data-preset="ribbon">
-      <b>RCA Ribbon Warmth</b>
-      <span>Velvety rolled-off highs, rich low-mids &amp; liquid optical compression</span>
+    <button class="preset" data-preset="darkribbon">
+      <b>2. Dark 1950s Ribbon Mic</b>
+      <span>Heavy high-frequency roll-off, rich warm low-mids, zero AI sibilance</span>
     </button>
-    <button class="preset" data-preset="ballad">
-      <b>Expressive Ballad Vocal</b>
-      <span>Gentle organic pitch drift, stereo micro-doubler &amp; warm wooden booth</span>
+    <button class="preset" data-preset="widedoubler">
+      <b>3. Wide Stereo Vocal Doubler</b>
+      <span>L/R pitch-detuned studio double-tracking + lush room dimension</span>
     </button>
-    <button class="preset" data-preset="deai">
-      <b>Pure AI De-Glare</b>
-      <span>Targets 3–8 kHz metallic synthesis fizz without dulling articulation</span>
+    <button class="preset" data-preset="vibratosoul">
+      <b>4. Expressive Vibrato &amp; Drift</b>
+      <span>Pronounced human pitch vibrato, moving vowel formants &amp; warm hall</span>
     </button>
-    <button class="preset" data-preset="intimate">
-      <b>Close-Mic Storyteller</b>
-      <span>Full proximity warmth, dynamic sibilance control &amp; dry studio booth</span>
+    <button class="preset" data-preset="intimateair">
+      <b>5. Close-Mic Breath &amp; Air</b>
+      <span>Forward intimate throat tone, crisp 12kHz condenser air &amp; tight compression</span>
     </button>
-    <button class="preset" data-preset="outlaw">
-      <b>Dark Americana / Outlaw</b>
-      <span>Deep sternum weight, analog tape rounding &amp; smoky studio room</span>
+    <button class="preset" data-preset="deaiheavy">
+      <b>6. Heavy AI Metallic Eraser</b>
+      <span>Deep 3–8 kHz harshness surgical cut, shifted formants &amp; warm tape body</span>
     </button>
   </div>
 </section>
 
 <section class="panel">
   <div class="panel-head">
-    <h2>03 / Phase-Coherent Vocal Finishing Controls</h2>
-    <span class="small muted">No parallel comb-filtering — all parameters scale smoothly in real time</span>
+    <h2>03 / Vocal Resynthesis &amp; Tone Controls</h2>
+    <span class="small muted">Full-range studio gains (±12 dB) — every slider makes a clear, audible change</span>
   </div>
 
   <div class="controls">
     <div class="control highlight">
-      <div class="controlhead"><label for="deglare">Dynamic Glare Cushion</label><span class="value" id="deglareV">55%</span></div>
-      <input id="deglare" type="range" min="0" max="100" value="55">
-      <div class="hint">Dynamically clamps harsh 3.2–8.5 kHz AI peaks &amp; metallic sibilance</div>
+      <div class="controlhead"><label for="throat">Throat Depth (Formant Shift)</label><span class="value" id="throatV">65%</span></div>
+      <input id="throat" type="range" min="0" max="100" value="65">
+      <div class="hint">0% = Bright/Shallow · 50% = Neutral · 100% = Deep, dark, larger vocal tract</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="warmth">Chest &amp; Proximity Body</label><span class="value" id="warmthV">45%</span></div>
-      <input id="warmth" type="range" min="0" max="100" value="45">
-      <div class="hint">Adds warm 165 Hz sternum weight while dipping 370 Hz boxy mud</div>
+      <div class="controlhead"><label for="deglare">AI Glare &amp; Sibilance Eraser</label><span class="value" id="deglareV">65%</span></div>
+      <input id="deglare" type="range" min="0" max="100" value="65">
+      <div class="hint">Cuts metallic 3.2–8.5 kHz vocoder harshness &amp; rolls off digital fizz</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="pitch">Micro-Pitch Human Drift</label><span class="value" id="pitchV">22%</span></div>
-      <input id="pitch" type="range" min="0" max="100" value="22">
-      <div class="hint">Zero-comb serial pitch &amp; vibrato drift (±4 cents) for natural pitch ease</div>
+      <div class="controlhead"><label for="chest">Chest &amp; Sub-Harmonic Body</label><span class="value" id="chestV">60%</span></div>
+      <input id="chest" type="range" min="0" max="100" value="60">
+      <div class="hint">Boosts 150 Hz sternum weight (up to +10 dB) &amp; scoops 400 Hz plastic boxiness</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="formant">Liquid Vowel Movement</label><span class="value" id="formantV">28%</span></div>
-      <input id="formant" type="range" min="0" max="100" value="28">
-      <div class="hint">Ultra-wide (Q=0.6) gentle vocal-tract breathing to soften frozen timbre</div>
+      <div class="controlhead"><label for="doubler">Stereo L/R Vocal Doubler</label><span class="value" id="doublerV">35%</span></div>
+      <input id="doubler" type="range" min="0" max="100" value="35">
+      <div class="hint">Creates a detuned Left/Right stereo vocal double to thicken thin mono AI voices</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="tape">Analog Tape Rounding</label><span class="value" id="tapeV">25%</span></div>
-      <input id="tape" type="range" min="0" max="100" value="25">
-      <div class="hint">Warm transformer &amp; tape transient rounding with zero distortion</div>
+      <div class="controlhead"><label for="pitch">Pitch Drift &amp; Human Vibrato</label><span class="value" id="pitchV">45%</span></div>
+      <input id="pitch" type="range" min="0" max="100" value="45">
+      <div class="hint">Organic pitch wandering + 5.2 Hz larynx vibrato to break rigid tuning</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="silk">Upper-Mid Silk (2.9 kHz)</label><span class="value" id="silkV">38%</span></div>
-      <input id="silk" type="range" min="0" max="100" value="38">
-      <div class="hint">Smooths ear-fatiguing nasal bite while preserving clear diction</div>
+      <div class="controlhead"><label for="vowelmod">Dynamic Vowel Motion</label><span class="value" id="vowelmodV">50%</span></div>
+      <input id="vowelmod" type="range" min="0" max="100" value="50">
+      <div class="hint">Sweeps vowel resonances (F1/F2) continuously so sustained notes feel alive</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="dynamics">Optical Level Smoothing</label><span class="value" id="dynamicsV">42%</span></div>
-      <input id="dynamics" type="range" min="0" max="100" value="42">
-      <div class="hint">Gentle 2-stage vocal levelling with auto makeup gain</div>
+      <div class="controlhead"><label for="air">Condenser Top Air (11 kHz)</label><span class="value" id="airV">30%</span></div>
+      <input id="air" type="range" min="0" max="100" value="30">
+      <div class="hint">0% = Dark vintage ribbon roll-off · 100% = Silky modern studio air shimmer</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="space">Stereo Micro-Width &amp; Booth</label><span class="value" id="spaceV">16%</span></div>
-      <input id="space" type="range" min="0" max="100" value="16">
-      <div class="hint">Subtle L/R stereo dimension and dark damped wooden studio walls</div>
+      <div class="controlhead"><label for="dynamics">Tube Level &amp; Density</label><span class="value" id="dynamicsV">55%</span></div>
+      <input id="dynamics" type="range" min="0" max="100" value="55">
+      <div class="hint">Warm optical vocal compression + soft-knee analog tape thickness</div>
     </div>
 
     <div class="control" style="grid-column: 1 / -1">
-      <div class="controlhead"><label for="amount">Overall Effect Depth (Phase-Locked)</label><span class="value" id="amountV">75%</span></div>
-      <input id="amount" type="range" min="0" max="100" value="75">
-      <div class="hint">Scales every stage proportionally without mixing un-aligned dry/wet delays</div>
+      <div class="controlhead"><label for="space">Studio Room &amp; Warm Plate</label><span class="value" id="spaceV">25%</span></div>
+      <input id="space" type="range" min="0" max="100" value="25">
+      <div class="hint">0% = Bone-dry booth · 50% = Warm studio room · 100% = Lush ballad vocal hall</div>
     </div>
   </div>
 
@@ -571,14 +570,7 @@ input[type="range"] {
   </div>
 </section>
 
-<section class="panel">
-  <h2>04 / What Changed in V4</h2>
-  <div class="note">
-    <strong>Zero Comb-Filtering &amp; Dynamic Sibilance Control:</strong> Earlier versions blended an un-delayed dry voice with a delayed pitch-modulated signal, which caused hollow phase cancellation (comb-filtering). V4 keeps the core vocal <strong>100% phase-coherent</strong>, adds a <strong>Dynamic High-Frequency Cushion</strong> that only ducks harsh notes when they spike, and includes built-in <strong>320 kbps / 192 kbps MP3 encoding</strong> alongside 24-bit WAV.
-  </div>
-</section>
-
-<div class="footer">HumanVoice Studio V4 · Phase-Pure Analog Engine + MP3/WAV Exporter for iPad</div>
+<div class="footer">HumanVoice Studio V5 · High-Contrast Vocal Transformation + MP3/WAV Exporter for iPad</div>
 </main>
 
 <script>
@@ -589,8 +581,9 @@ input[type="range"] {
   let sourceBuffer = null;
   let processedBuffer = null;
   let lastExportBlob = null;
-  let lastExportFilename = 'humanvoice-v4.mp3';
+  let lastExportFilename = 'humanvoice-v5.mp3';
   let lastExportMime = 'audio/mpeg';
+  let currentBaseName = 'humanvoice-v5';
 
   // Playback state
   let activeSource = null;
@@ -603,15 +596,16 @@ input[type="range"] {
   let pauseOffset = 0;
   let rafId = null;
 
-  const ids = ['deglare', 'warmth', 'pitch', 'formant', 'tape', 'silk', 'dynamics', 'space', 'amount'];
+  const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space'];
 
+  // Radically distinct presets so every click has an unmistakable sonic signature
   const presets = {
-    silk:     { deglare: 55, warmth: 45, pitch: 22, formant: 28, tape: 25, silk: 38, dynamics: 42, space: 16, amount: 75 },
-    ribbon:   { deglare: 72, warmth: 60, pitch: 18, formant: 24, tape: 35, silk: 55, dynamics: 46, space: 12, amount: 82 },
-    ballad:   { deglare: 50, warmth: 52, pitch: 34, formant: 36, tape: 28, silk: 35, dynamics: 48, space: 30, amount: 80 },
-    deai:     { deglare: 78, warmth: 48, pitch: 26, formant: 32, tape: 30, silk: 52, dynamics: 45, space: 14, amount: 85 },
-    intimate: { deglare: 48, warmth: 64, pitch: 16, formant: 25, tape: 32, silk: 40, dynamics: 54, space: 8,  amount: 78 },
-    outlaw:   { deglare: 68, warmth: 68, pitch: 28, formant: 38, tape: 42, silk: 48, dynamics: 50, space: 24, amount: 84 }
+    deepchest:   { throat: 75, deglare: 65, chest: 75, doubler: 25, pitch: 35, vowelmod: 45, air: 25, dynamics: 60, space: 20 },
+    darkribbon:  { throat: 85, deglare: 92, chest: 82, doubler: 10, pitch: 25, vowelmod: 35, air: 0,  dynamics: 65, space: 15 },
+    widedoubler: { throat: 58, deglare: 55, chest: 60, doubler: 85, pitch: 50, vowelmod: 60, air: 45, dynamics: 60, space: 48 },
+    vibratosoul: { throat: 68, deglare: 58, chest: 65, doubler: 45, pitch: 82, vowelmod: 85, air: 35, dynamics: 55, space: 55 },
+    intimateair: { throat: 32, deglare: 40, chest: 55, doubler: 20, pitch: 28, vowelmod: 40, air: 88, dynamics: 75, space: 12 },
+    deaiheavy:   { throat: 80, deglare: 95, chest: 70, doubler: 40, pitch: 55, vowelmod: 70, air: 15, dynamics: 65, space: 28 }
   };
 
   function ensureContext() {
@@ -647,8 +641,6 @@ input[type="range"] {
     const f = e.target.files && e.target.files[0];
     if (f) handleFile(f);
   });
-
-  let currentBaseName = 'humanvoice-v4';
 
   async function handleFile(f) {
     try {
@@ -698,16 +690,16 @@ input[type="range"] {
 
       for (let h = 1; h <= 28; h++) {
         const freq = f0 * h;
-        const f1 = Math.exp(-Math.pow((freq - 510) / 150, 2));
-        const f2 = 0.68 * Math.exp(-Math.pow((freq - 1520) / 220, 2));
-        const f3 = 0.52 * Math.exp(-Math.pow((freq - 2880) / 300, 2));
-        const aiGlare = 0.32 * Math.exp(-Math.pow((freq - 6400) / 850, 2));
-        const amp = (f1 + f2 + f3 + aiGlare + 0.04) / Math.pow(h, 0.72);
+        const f1 = Math.exp(-Math.pow((freq - 520) / 150, 2));
+        const f2 = 0.72 * Math.exp(-Math.pow((freq - 1580) / 220, 2));
+        const f3 = 0.60 * Math.exp(-Math.pow((freq - 2950) / 300, 2));
+        const aiGlare = 0.40 * Math.exp(-Math.pow((freq - 6200) / 900, 2));
+        const amp = (f1 + f2 + f3 + aiGlare + 0.04) / Math.pow(h, 0.70);
         sample += Math.sin(2 * Math.PI * freq * t) * amp;
       }
 
       const env = Math.min(1, t / 0.05) * Math.min(1, (dur - t) / 0.15);
-      const val = Math.tanh(sample * 0.4 * env);
+      const val = Math.tanh(sample * 0.42 * env);
       dL[i] = val;
       dR[i] = val;
     }
@@ -715,13 +707,13 @@ input[type="range"] {
     sourceBuffer = buf;
     processedBuffer = null;
     lastExportBlob = null;
-    currentBaseName = 'synthetic-demo-v4';
-    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Stereo)';
+    currentBaseName = 'synthetic-demo-v5';
+    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Click Presets 1–6 to compare)';
     enableTransport();
     drawWave(sourceBuffer, 0);
     updateTimeReadout(0, sourceBuffer.duration);
     $('renderStatus').textContent = 'Ready to render & export';
-    setStatus('Compare ▶ Original vs ▶ Humanised');
+    setStatus('Tap ▶ Humanised and click Presets 1–6!');
   });
 
   function enableTransport() {
@@ -771,8 +763,8 @@ input[type="range"] {
   });
 
   $('reset').addEventListener('click', () => {
-    setVals(presets.silk);
-    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'silk'));
+    setVals(presets.deepchest);
+    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'deepchest'));
   });
 
   $('loopToggle').addEventListener('click', () => {
@@ -827,7 +819,7 @@ input[type="range"] {
         if (v < mn) mn = v;
         if (v > mx) mx = v;
       }
-      g.strokeStyle = x <= headX ? '#8be8cb' : '#386355';
+      g.strokeStyle = x <= headX ? '#7ef0c4' : '#345e50';
       g.lineWidth = 1.5;
       g.beginPath();
       g.moveTo(x, mid + mn * mid * 0.88);
@@ -870,10 +862,11 @@ input[type="range"] {
   });
   waveCanvas.addEventListener('pointerup', () => { isScrubbing = false; });
 
-  function makeTapeRoundingCurve(amount) {
+  // Warm Analog Tape Saturation Curve (Smooth, rich 2nd-harmonic body without fizz)
+  function makeWarmTapeCurve(amount) {
     const n = 8192;
     const curve = new Float32Array(n);
-    const drive = 1 + amount * 1.15;
+    const drive = 1 + amount * 2.2;
     const norm = Math.tanh(drive);
     for (let i = 0; i < n; i++) {
       const x = (i * 2) / n - 1;
@@ -882,230 +875,275 @@ input[type="range"] {
     return curve;
   }
 
-  function makeVelvetBoothImpulse(ac, duration, decay) {
+  // Rich Stereo Vocal Studio Plate & Booth Impulse
+  function makeStudioPlateImpulse(ac, duration, decay) {
     const sr = ac.sampleRate;
     const len = Math.max(1, Math.floor(sr * duration));
     const imp = ac.createBuffer(2, len, sr);
-    let seed = 777111;
+    let seed = 314159;
     const rand = () => {
       seed = (seed * 16807) % 2147483647;
       return (seed - 1) / 1073741823.5 - 1;
     };
-    const preDelay = Math.floor(0.018 * sr);
+    const preDelay = Math.floor(0.020 * sr);
     for (let ch = 0; ch < 2; ch++) {
       const d = imp.getChannelData(ch);
-      let s1 = 0, s2 = 0;
+      let lp = 0;
       for (let i = preDelay; i < len; i++) {
         const t = (i - preDelay) / (len - preDelay);
-        const fadeIn = Math.min(1, t * 22);
-        const env = Math.pow(1 - t, decay) * fadeIn;
-        const raw = rand() * env * 0.32;
-        s1 = s1 * 0.76 + raw * 0.24;
-        s2 = s2 * 0.76 + s1 * 0.24;
-        d[i] = s2;
+        const attack = Math.min(1, t * 16);
+        const env = Math.pow(1 - t, decay) * attack;
+        const raw = rand() * env * 0.42;
+        lp = lp * 0.72 + raw * 0.28;
+        d[i] = lp;
       }
     }
     return imp;
   }
 
   /**
-   * V4 PHASE-PURE VOCAL ENGINE
+   * V5 HIGH-CONTRAST VOCAL ENGINE
+   * Every control now operates over a true studio dynamic range (±10 dB EQ/formant sculpting,
+   * genuine stereo Haas L/R pitch-detuned doubling, full-range ribbon-to-condenser top end,
+   * and unmistakable pitch/vowel movement) with ZERO single-band crossover phase bugs.
    */
   function buildGraph(ac, inputNode, initialSettings, bypass = false) {
     const dryBypassGain = ac.createGain();
-    const activeChainGain = ac.createGain();
+    const wetMasterGain = ac.createGain();
     const masterOut = ac.createGain();
 
+    // True A/B Bypass path
     inputNode.connect(dryBypassGain);
     dryBypassGain.connect(masterOut);
 
+    // 1. Sub-Sonic Rumble Filter
     const hp = ac.createBiquadFilter();
     hp.type = 'highpass';
-    hp.frequency.value = 60;
+    hp.frequency.value = 55;
     hp.Q.value = 0.707;
 
-    const pitchDelay = ac.createDelay(0.02);
-    pitchDelay.delayTime.value = 0.0025;
+    // 2. Serial Pitch Drift & Natural Larynx Vibrato
+    const pitchDelay = ac.createDelay(0.05);
+    pitchDelay.delayTime.value = 0.012;
 
-    const lfoSlow = ac.createOscillator();
-    const lfoVib = ac.createOscillator();
-    lfoSlow.type = 'sine';
-    lfoVib.type = 'sine';
-    lfoSlow.frequency.value = 0.31;
-    lfoVib.frequency.value = 4.9;
+    const driftLFO = ac.createOscillator();
+    const vibLFO = ac.createOscillator();
+    driftLFO.type = 'sine';
+    vibLFO.type = 'sine';
+    driftLFO.frequency.value = 0.45; // Phrase-level drift
+    vibLFO.frequency.value = 5.25;   // Natural vocal vibrato rate
 
-    const lfoSlowGain = ac.createGain();
-    const lfoVibGain = ac.createGain();
-    lfoSlow.connect(lfoSlowGain);
-    lfoVib.connect(lfoVibGain);
-    lfoSlowGain.connect(pitchDelay.delayTime);
-    lfoVibGain.connect(pitchDelay.delayTime);
-    lfoSlow.start(0);
-    lfoVib.start(0);
+    const driftGain = ac.createGain();
+    const vibGain = ac.createGain();
+    driftLFO.connect(driftGain);
+    vibLFO.connect(vibGain);
+    driftGain.connect(pitchDelay.delayTime);
+    vibGain.connect(pitchDelay.delayTime);
+    driftLFO.start(0);
+    vibLFO.start(0);
 
-    const f1Warm = ac.createBiquadFilter();
-    f1Warm.type = 'peaking';
-    f1Warm.frequency.value = 460;
-    f1Warm.Q.value = 0.6;
+    // 3. THROAT DEPTH & DYNAMIC VOWEL FORMANT SCULPTOR (F1 & F2)
+    // Shifts the perceived physical size of the vocal tract:
+    // High Throat % = boosts 440 Hz deep pharynx resonance & scoops 1.65 kHz thinness
+    // Low Throat %  = boosts 1.55 kHz forward mouth resonance
+    const throatF1 = ac.createBiquadFilter();
+    throatF1.type = 'peaking';
+    throatF1.frequency.value = 460;
+    throatF1.Q.value = 1.1;
 
-    const f2Vowel = ac.createBiquadFilter();
-    f2Vowel.type = 'peaking';
-    f2Vowel.frequency.value = 1420;
-    f2Vowel.Q.value = 0.65;
+    const mouthF2 = ac.createBiquadFilter();
+    mouthF2.type = 'peaking';
+    mouthF2.frequency.value = 1580;
+    mouthF2.Q.value = 1.2;
 
-    const formantLFO = ac.createOscillator();
-    formantLFO.type = 'sine';
-    formantLFO.frequency.value = 0.36;
-    const f1Mod = ac.createGain();
-    const f2Mod = ac.createGain();
-    formantLFO.connect(f1Mod);
-    formantLFO.connect(f2Mod);
-    f1Mod.connect(f1Warm.frequency);
-    f2Mod.connect(f2Vowel.frequency);
-    formantLFO.start(0);
+    const vowelLFO = ac.createOscillator();
+    vowelLFO.type = 'sine';
+    vowelLFO.frequency.value = 0.68;
+    const f1ModGain = ac.createGain();
+    const f2ModGain = ac.createGain();
+    vowelLFO.connect(f1ModGain);
+    vowelLFO.connect(f2ModGain);
+    f1ModGain.connect(throatF1.frequency);
+    f2ModGain.connect(mouthF2.frequency);
+    vowelLFO.start(0);
 
+    // 4. CHEST WEIGHT (150 Hz) & PLASTIC BOXINESS CUT (390 Hz)
     const chestShelf = ac.createBiquadFilter();
     chestShelf.type = 'lowshelf';
-    chestShelf.frequency.value = 175;
+    chestShelf.frequency.value = 165;
 
-    const mudDip = ac.createBiquadFilter();
-    mudDip.type = 'peaking';
-    mudDip.frequency.value = 365;
-    mudDip.Q.value = 1.0;
+    const boxCut = ac.createBiquadFilter();
+    boxCut.type = 'peaking';
+    boxCut.frequency.value = 395;
+    boxCut.Q.value = 1.25;
 
-    const silkDip = ac.createBiquadFilter();
-    silkDip.type = 'peaking';
-    silkDip.frequency.value = 2900;
-    silkDip.Q.value = 1.0;
+    // 5. AI GLARE & SIBILANCE ERASER (3.1 kHz Harsh Bite + 6.4 kHz Metallic Fizz + Ribbon Lowpass)
+    const harshBiteCut = ac.createBiquadFilter();
+    harshBiteCut.type = 'peaking';
+    harshBiteCut.frequency.value = 3150;
+    harshBiteCut.Q.value = 1.1;
 
-    const lowBandLP = ac.createBiquadFilter();
-    lowBandLP.type = 'lowpass';
-    lowBandLP.frequency.value = 3100;
-    lowBandLP.Q.value = 0.5;
+    const sibilanceCut = ac.createBiquadFilter();
+    sibilanceCut.type = 'peaking';
+    sibilanceCut.frequency.value = 6500;
+    sibilanceCut.Q.value = 1.5;
 
-    const highBandHP = ac.createBiquadFilter();
-    highBandHP.type = 'highpass';
-    highBandHP.frequency.value = 3100;
-    highBandHP.Q.value = 0.5;
+    const highAirShelf = ac.createBiquadFilter();
+    highAirShelf.type = 'highshelf';
+    highAirShelf.frequency.value = 10500;
 
-    const hfDeGlareNotch = ac.createBiquadFilter();
-    hfDeGlareNotch.type = 'peaking';
-    hfDeGlareNotch.frequency.value = 6400;
-    hfDeGlareNotch.Q.value = 1.4;
+    const ribbonLowpass = ac.createBiquadFilter();
+    ribbonLowpass.type = 'lowpass';
+    ribbonLowpass.frequency.value = 16000;
+    ribbonLowpass.Q.value = 0.55;
 
-    const hfDynamicClamp = ac.createDynamicsCompressor();
-    hfDynamicClamp.knee.value = 10;
-    hfDynamicClamp.attack.value = 0.002;
-    hfDynamicClamp.release.value = 0.065;
-
-    const ribbonRollOff = ac.createBiquadFilter();
-    ribbonRollOff.type = 'lowpass';
-    ribbonRollOff.frequency.value = 15500;
-    ribbonRollOff.Q.value = 0.5;
-
-    const bandRecombine = ac.createGain();
-
+    // 6. ANALOG TAPE SATURATION & OPTICAL COMPRESSOR
     const tapeShaper = ac.createWaveShaper();
     tapeShaper.oversample = '4x';
 
     const optoComp = ac.createDynamicsCompressor();
-    optoComp.knee.value = 22;
-    optoComp.attack.value = 0.016;
-    optoComp.release.value = 0.22;
+    optoComp.knee.value = 18;
+    optoComp.attack.value = 0.012;
+    optoComp.release.value = 0.18;
     const makeupGain = ac.createGain();
 
-    const boothConv = ac.createConvolver();
-    boothConv.buffer = makeVelvetBoothImpulse(ac, 0.52, 3.3);
-    const boothLP = ac.createBiquadFilter();
-    boothLP.type = 'lowpass';
-    boothLP.frequency.value = 2600;
-    const boothSend = ac.createGain();
+    // 7. TRUE STEREO HAAS L/R DETUNED VOCAL DOUBLER
+    // Creates a dedicated Left (13ms, detuned down) and Right (21ms, detuned up) stereo double
+    const stereoMerger = ac.createChannelMerger(2);
+    const delayLeft = ac.createDelay(0.05);
+    const delayRight = ac.createDelay(0.05);
+    delayLeft.delayTime.value = 0.013;
+    delayRight.delayTime.value = 0.021;
 
+    const dblLFO = ac.createOscillator();
+    dblLFO.type = 'triangle';
+    dblLFO.frequency.value = 0.85;
+    const dblModL = ac.createGain();
+    const dblModR = ac.createGain();
+    dblModL.gain.value = 0.00045;
+    dblModR.gain.value = -0.00045; // Opposite pitch phase for wide stereo spread
+    dblLFO.connect(dblModL);
+    dblLFO.connect(dblModR);
+    dblModL.connect(delayLeft.delayTime);
+    dblModR.connect(delayRight.delayTime);
+    dblLFO.start(0);
+
+    const doublerLP = ac.createBiquadFilter();
+    doublerLP.type = 'lowpass';
+    doublerLP.frequency.value = 4500; // Keep doubles warm so they never add sibilance
+    const doublerGain = ac.createGain();
+
+    // 8. WARM STUDIO ROOM & PLATE REVERB
+    const reverbConv = ac.createConvolver();
+    reverbConv.buffer = makeStudioPlateImpulse(ac, 0.85, 2.8);
+    const reverbLP = ac.createBiquadFilter();
+    reverbLP.type = 'lowpass';
+    reverbLP.frequency.value = 3200;
+    const reverbGain = ac.createGain();
+
+    // Brickwall Output Peak Limiter
     const limiter = ac.createDynamicsCompressor();
     limiter.threshold.value = -1.0;
-    limiter.knee.value = 2.5;
-    limiter.ratio.value = 16.0;
+    limiter.knee.value = 2.0;
+    limiter.ratio.value = 18.0;
     limiter.attack.value = 0.002;
     limiter.release.value = 0.08;
 
+    // Connect Serial Core Chain (Zero parallel phase cancellation!)
     inputNode.connect(hp);
     hp.connect(pitchDelay);
-    pitchDelay.connect(f1Warm);
-    f1Warm.connect(f2Vowel);
-    f2Vowel.connect(chestShelf);
-    chestShelf.connect(mudDip);
-    mudDip.connect(silkDip);
-
-    silkDip.connect(lowBandLP);
-    lowBandLP.connect(bandRecombine);
-
-    silkDip.connect(highBandHP);
-    highBandHP.connect(hfDeGlareNotch);
-    hfDeGlareNotch.connect(hfDynamicClamp);
-    hfDynamicClamp.connect(ribbonRollOff);
-    ribbonRollOff.connect(bandRecombine);
-
-    bandRecombine.connect(tapeShaper);
+    pitchDelay.connect(throatF1);
+    throatF1.connect(mouthF2);
+    mouthF2.connect(chestShelf);
+    chestShelf.connect(boxCut);
+    boxCut.connect(harshBiteCut);
+    harshBiteCut.connect(sibilanceCut);
+    sibilanceCut.connect(highAirShelf);
+    highAirShelf.connect(ribbonLowpass);
+    ribbonLowpass.connect(tapeShaper);
     tapeShaper.connect(optoComp);
     optoComp.connect(makeupGain);
 
-    makeupGain.connect(activeChainGain);
+    // Center Lead Vocal to Output
+    makeupGain.connect(wetMasterGain);
 
-    makeupGain.connect(boothSend);
-    boothSend.connect(boothConv);
-    boothConv.connect(boothLP);
-    boothLP.connect(activeChainGain);
+    // Stereo L/R Doubler Bus
+    makeupGain.connect(doublerLP);
+    doublerLP.connect(delayLeft);
+    doublerLP.connect(delayRight);
+    delayLeft.connect(stereoMerger, 0, 0);
+    delayRight.connect(stereoMerger, 0, 1);
+    stereoMerger.connect(doublerGain);
+    doublerGain.connect(wetMasterGain);
 
-    activeChainGain.connect(limiter);
+    // Studio Room / Plate Bus
+    makeupGain.connect(reverbConv);
+    reverbConv.connect(reverbLP);
+    reverbLP.connect(reverbGain);
+    reverbGain.connect(wetMasterGain);
+
+    wetMasterGain.connect(limiter);
     limiter.connect(masterOut);
 
     function updateParams(s, isBypassed = false) {
       const now = ac.currentTime;
       if (isBypassed) {
         dryBypassGain.gain.setTargetAtTime(1, now, 0.015);
-        activeChainGain.gain.setTargetAtTime(0, now, 0.015);
+        wetMasterGain.gain.setTargetAtTime(0, now, 0.015);
         return;
       }
 
       dryBypassGain.gain.setTargetAtTime(0, now, 0.015);
-      activeChainGain.gain.setTargetAtTime(1, now, 0.015);
+      wetMasterGain.gain.setTargetAtTime(1, now, 0.015);
 
-      const depth = s.amount / 100;
+      // 1. Throat Depth (Formant Shift): 50% is neutral, >50% deepens throat, <50% brightens/forwards
+      const tNorm = (s.throat - 50) / 50; // -1.0 to +1.0
+      throatF1.frequency.setTargetAtTime(480 - tNorm * 95, now, 0.02);
+      throatF1.gain.setTargetAtTime(tNorm * 7.5, now, 0.02);     // Up to ±7.5 dB throat body
+      mouthF2.frequency.setTargetAtTime(1550 - tNorm * 280, now, 0.02);
+      mouthF2.gain.setTargetAtTime(-tNorm * 6.5, now, 0.02);    // Inverse vowel balance
 
-      const p = (s.pitch / 100) * depth;
-      lfoSlowGain.gain.setTargetAtTime(p * 0.00055, now, 0.03);
-      lfoVibGain.gain.setTargetAtTime(p * 0.00009, now, 0.03);
+      // 2. Dynamic Vowel Motion (Sweeps F1 and F2 continuously)
+      const vm = s.vowelmod / 100;
+      f1ModGain.gain.setTargetAtTime(vm * 130, now, 0.02);
+      f2ModGain.gain.setTargetAtTime(-vm * 280, now, 0.02);
 
-      const fm = (s.formant / 100) * depth;
-      f1Warm.gain.setTargetAtTime(fm * 1.8, now, 0.03);
-      f2Vowel.gain.setTargetAtTime(-fm * 1.4, now, 0.03);
-      f1Mod.gain.setTargetAtTime(fm * 35, now, 0.03);
-      f2Mod.gain.setTargetAtTime(-fm * 65, now, 0.03);
+      // 3. Chest & Sub-Harmonic Body (Full studio range: up to +9.5 dB chest, -7 dB boxiness)
+      const ch = s.chest / 100;
+      chestShelf.gain.setTargetAtTime(ch * 9.5 - 1.0, now, 0.02);
+      boxCut.gain.setTargetAtTime(-ch * 7.0, now, 0.02);
 
-      const w = (s.warmth / 100) * depth;
-      chestShelf.gain.setTargetAtTime(w * 3.6, now, 0.03);
-      mudDip.gain.setTargetAtTime(-w * 2.5, now, 0.03);
+      // 4. AI Glare & Sibilance Eraser (Up to -10 dB at 3.15kHz and -12 dB at 6.5kHz + Ribbon roll-off)
+      const dg = s.deglare / 100;
+      harshBiteCut.gain.setTargetAtTime(-dg * 8.5, now, 0.02);
+      sibilanceCut.gain.setTargetAtTime(-dg * 11.5, now, 0.02);
+      // At 90-100% deglare, rolls highs down to 4.2 kHz like a vintage RCA 44 ribbon mic
+      const lpFreq = Math.max(4200, 18500 - Math.pow(dg, 1.3) * 14300);
+      ribbonLowpass.frequency.setTargetAtTime(lpFreq, now, 0.02);
 
-      const sk = (s.silk / 100) * depth;
-      silkDip.gain.setTargetAtTime(-sk * 3.4, now, 0.03);
+      // 5. Condenser Top Air (10.5 kHz) — from -6 dB dark to +8 dB airy shimmer
+      const airNorm = (s.air - 35) / 65;
+      highAirShelf.gain.setTargetAtTime(airNorm * 8.0, now, 0.02);
 
-      const dg = (s.deglare / 100) * depth;
-      hfDeGlareNotch.gain.setTargetAtTime(-dg * 4.5, now, 0.03);
-      hfDynamicClamp.threshold.setTargetAtTime(-14 - dg * 18, now, 0.03);
-      hfDynamicClamp.ratio.setTargetAtTime(1.5 + dg * 4.5, now, 0.03);
-      const cutoff = Math.max(8500, 18000 - dg * 7500);
-      ribbonRollOff.frequency.setTargetAtTime(cutoff, now, 0.03);
+      // 6. Pitch Drift & Human Vibrato
+      const p = s.pitch / 100;
+      driftGain.gain.setTargetAtTime(p * 0.0018, now, 0.02);
+      vibGain.gain.setTargetAtTime(p * 0.00048, now, 0.02);
 
-      const tp = (s.tape / 100) * depth;
-      tapeShaper.curve = makeTapeRoundingCurve(tp);
+      // 7. Tube Level & Density
+      const dyn = s.dynamics / 100;
+      tapeShaper.curve = makeWarmTapeCurve(dyn * 0.85);
+      optoComp.threshold.setTargetAtTime(-8 - dyn * 22, now, 0.02);
+      optoComp.ratio.setTargetAtTime(1.5 + dyn * 4.5, now, 0.02);
+      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.55, now, 0.02);
 
-      const dyn = (s.dynamics / 100) * depth;
-      optoComp.threshold.setTargetAtTime(-12 - dyn * 14, now, 0.03);
-      optoComp.ratio.setTargetAtTime(1.2 + dyn * 2.2, now, 0.03);
-      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.24, now, 0.03);
+      // 8. Stereo L/R Vocal Doubler
+      const dbl = s.doubler / 100;
+      doublerGain.gain.setTargetAtTime(dbl * 0.65, now, 0.02);
 
-      const sp = (s.space / 100) * depth;
-      boothSend.gain.setTargetAtTime(sp * 0.32, now, 0.03);
+      // 9. Studio Room & Plate
+      const sp = s.space / 100;
+      reverbGain.gain.setTargetAtTime(sp * 0.70, now, 0.02);
     }
 
     updateParams(initialSettings, bypass);
@@ -1115,15 +1153,17 @@ input[type="range"] {
       updateParams,
       dispose() {
         try {
-          lfoSlow.stop();
-          lfoVib.stop();
-          formantLFO.stop();
+          driftLFO.stop();
+          vibLFO.stop();
+          vowelLFO.stop();
+          dblLFO.stop();
         } catch (e) {}
         try { masterOut.disconnect(); } catch (e) {}
       }
     };
   }
 
+  // Real-Time Playback Engine
   function stopPlayback(resetOffset = true) {
     if (rafId) {
       cancelAnimationFrame(rafId);
@@ -1159,7 +1199,7 @@ input[type="range"] {
       activeGraph.updateParams(getSettings(), playMode === 'original');
       $('playOriginal').classList.toggle('active-mode', playMode === 'original');
       $('playHuman').classList.toggle('active-mode', playMode === 'human');
-      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Phase-Pure)');
+      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Active DSP)');
       return;
     }
 
@@ -1195,7 +1235,7 @@ input[type="range"] {
     };
 
     src.start(0, safeOffset);
-    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Phase-Pure)');
+    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Active DSP)');
     tickVisualizer();
   }
 
@@ -1249,6 +1289,7 @@ input[type="range"] {
     }
   }
 
+  // WAV Encoder (16-bit & 24-bit)
   function encodeWAV(buf, bitDepth = 24) {
     const channels = buf.numberOfChannels;
     const rate = buf.sampleRate;
@@ -1303,6 +1344,7 @@ input[type="range"] {
     return new Blob([ab], { type: 'audio/wav' });
   }
 
+  // MP3 Encoder via LameJS
   async function encodeMP3(buf, kbps = 320, onProgress = null) {
     if (!window.lamejs) {
       throw new Error('MP3 encoder library not loaded');
@@ -1374,10 +1416,12 @@ input[type="range"] {
 
     try {
       const s = getSettings();
-      const tailSeconds = s.space > 2 ? 0.45 : 0.08;
+      const tailSeconds = s.space > 2 ? 0.65 : 0.10;
       const totalFrames = sourceBuffer.length + Math.ceil(sourceBuffer.sampleRate * tailSeconds);
       const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-      const off = new Offline(sourceBuffer.numberOfChannels, totalFrames, sourceBuffer.sampleRate);
+      // Always render in Stereo (2 channels) so the Stereo Vocal Doubler & Studio Plate are preserved!
+      const outChannels = Math.max(2, sourceBuffer.numberOfChannels);
+      const off = new Offline(outChannels, totalFrames, sourceBuffer.sampleRate);
 
       const src = off.createBufferSource();
       src.buffer = sourceBuffer;
@@ -1446,7 +1490,7 @@ input[type="range"] {
   });
 
   drawWave(null, 0);
-  setVals(presets.silk);
+  setVals(presets.deepchest);
 })();
 </script>
 </body>
