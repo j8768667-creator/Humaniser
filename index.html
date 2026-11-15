@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d1016">
-<title>HumanVoice Studio V5 — True Vocal Character & MP3 Desk</title>
+<title>HumanVoice Studio V6 — Clean Vocal Polish & MP3 Desk</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
 <style>
 :root {
@@ -400,13 +400,13 @@ input[type="range"] {
 <main>
 <header class="top">
   <div class="brand">
-    <div class="mark">HV5</div>
+    <div class="mark">HV6</div>
     <div>
-      <h1>HumanVoice Studio V5</h1>
-      <div class="sub">High-Impact Vocal Formant, Sub-Chest, Stereo Doubler &amp; De-Glare Desk</div>
+      <h1>HumanVoice Studio V6</h1>
+      <div class="sub">Clean Vocal Polish · De-Glare · Level-Matched A/B · Stereo Doubler</div>
     </div>
   </div>
-  <div class="pill">HIGH-CONTRAST DSP</div>
+  <div class="pill">CLEAN DSP</div>
 </header>
 
 <section class="panel">
@@ -437,7 +437,7 @@ input[type="range"] {
     <canvas id="wave" class="wave" width="1000" height="210"></canvas>
     <div class="wave-meta">
       <span id="timeReadout">00:00.0 / 00:00.0</span>
-      <span>Tap/drag waveform to seek · Instant A/B comparison</span>
+      <span>Tap/drag waveform to seek</span>
       <div class="meter-bar">
         <span>OUT</span>
         <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
@@ -447,102 +447,103 @@ input[type="range"] {
 
   <div class="transport">
     <button id="playOriginal" disabled>▶ Original (Dry)</button>
-    <button id="playHuman" class="primary" disabled>▶ Humanised (Active DSP)</button>
+    <button id="playHuman" class="primary" disabled>▶ Processed</button>
     <button id="stop" disabled>■ Stop</button>
     <button id="loopToggle" disabled>🔁 Loop: Off</button>
     <span class="status" id="status">Waiting for audio</span>
   </div>
+  <div class="small muted" id="matchInfo" style="margin-top:8px">A/B is loudness-matched, so a difference you hear is tone, not volume.</div>
 </section>
 
 <section class="panel">
-  <h2>02 / Distinct Vocal Character Presets (Immediate Audible Difference)</h2>
+  <h2>02 / Presets</h2>
   <div class="presetgrid" id="presets" style="margin-top:10px">
-    <button class="preset active" data-preset="deepchest">
-      <b>1. Deep Chest &amp; Velvet</b>
-      <span>Shifts throat formants lower, adds sub-chest weight &amp; melts digital glare</span>
+    <button class="preset active" data-preset="natural">
+      <b>1. Natural Polish</b>
+      <span>Gentle clean-up: tames glare, adds body &amp; air, light leveling. Start here.</span>
     </button>
-    <button class="preset" data-preset="darkribbon">
-      <b>2. Dark 1950s Ribbon Mic</b>
-      <span>Heavy high-frequency roll-off, rich warm low-mids, zero AI sibilance</span>
+    <button class="preset" data-preset="velvet">
+      <b>2. Warm Velvet</b>
+      <span>Rounder, darker, fuller low-mids with softened top end</span>
     </button>
-    <button class="preset" data-preset="widedoubler">
-      <b>3. Wide Stereo Vocal Doubler</b>
-      <span>L/R pitch-detuned studio double-tracking + lush room dimension</span>
+    <button class="preset" data-preset="deglare">
+      <b>3. De-Glare Clean</b>
+      <span>Strong metallic / sibilance control with a natural top end</span>
     </button>
-    <button class="preset" data-preset="vibratosoul">
-      <b>4. Expressive Vibrato &amp; Drift</b>
-      <span>Pronounced human pitch vibrato, moving vowel formants &amp; warm hall</span>
+    <button class="preset" data-preset="wide">
+      <b>4. Wide Double</b>
+      <span>Detuned L/R vocal double + small room for a thicker, wider voice</span>
     </button>
-    <button class="preset" data-preset="intimateair">
-      <b>5. Close-Mic Breath &amp; Air</b>
-      <span>Forward intimate throat tone, crisp 12kHz condenser air &amp; tight compression</span>
+    <button class="preset" data-preset="expressive">
+      <b>5. Expressive Drift</b>
+      <span>More pitch drift &amp; vibrato, moving tone, medium plate</span>
     </button>
-    <button class="preset" data-preset="deaiheavy">
-      <b>6. Heavy AI Metallic Eraser</b>
-      <span>Deep 3–8 kHz harshness surgical cut, shifted formants &amp; warm tape body</span>
+    <button class="preset" data-preset="intimate">
+      <b>6. Close &amp; Airy</b>
+      <span>Forward, dry, close-mic feel with open top air &amp; tighter dynamics</span>
     </button>
   </div>
 </section>
 
 <section class="panel">
   <div class="panel-head">
-    <h2>03 / Vocal Resynthesis &amp; Tone Controls</h2>
-    <span class="small muted">Full-range studio gains (±12 dB) — every slider makes a clear, audible change</span>
+    <h2>03 / Tone &amp; Humanise Controls</h2>
+    <span class="small muted">Moves are deliberately moderate: small EQ moves sound natural, big ones sound processed</span>
   </div>
 
   <div class="controls">
     <div class="control highlight">
-      <div class="controlhead"><label for="throat">Throat Depth (Formant Shift)</label><span class="value" id="throatV">65%</span></div>
-      <input id="throat" type="range" min="0" max="100" value="65">
-      <div class="hint">0% = Bright/Shallow · 50% = Neutral · 100% = Deep, dark, larger vocal tract</div>
+      <div class="controlhead"><label for="throat">Voice Depth (Forward ↔ Warm)</label><span class="value" id="throatV">55%</span></div>
+      <input id="throat" type="range" min="0" max="100" value="55">
+      <div class="hint">EQ tilt (±2.5 dB). Below 50% = closer &amp; more forward · above 50% = rounder &amp; warmer. Not a true formant shifter.</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="deglare">AI Glare &amp; Sibilance Eraser</label><span class="value" id="deglareV">65%</span></div>
-      <input id="deglare" type="range" min="0" max="100" value="65">
-      <div class="hint">Cuts metallic 3.2–8.5 kHz vocoder harshness &amp; rolls off digital fizz</div>
+      <div class="controlhead"><label for="deglare">AI Glare &amp; Sibilance Control</label><span class="value" id="deglareV">45%</span></div>
+      <input id="deglare" type="range" min="0" max="100" value="45">
+      <div class="hint">Dynamic de-esser above 5.5 kHz (only acts on harsh peaks) + gentle 3 kHz / 7 kHz dips</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="chest">Chest &amp; Sub-Harmonic Body</label><span class="value" id="chestV">60%</span></div>
-      <input id="chest" type="range" min="0" max="100" value="60">
-      <div class="hint">Boosts 150 Hz sternum weight (up to +10 dB) &amp; scoops 400 Hz plastic boxiness</div>
+      <div class="controlhead"><label for="chest">Body &amp; Warmth</label><span class="value" id="chestV">40%</span></div>
+      <input id="chest" type="range" min="0" max="100" value="40">
+      <div class="hint">Up to +4.5 dB at 150 Hz and a small cut at 300 Hz to avoid mud</div>
     </div>
 
     <div class="control highlight">
-      <div class="controlhead"><label for="doubler">Stereo L/R Vocal Doubler</label><span class="value" id="doublerV">35%</span></div>
-      <input id="doubler" type="range" min="0" max="100" value="35">
-      <div class="hint">Creates a detuned Left/Right stereo vocal double to thicken thin mono AI voices</div>
+      <div class="controlhead"><label for="doubler">Stereo Vocal Double</label><span class="value" id="doublerV">0%</span></div>
+      <input id="doubler" type="range" min="0" max="100" value="0">
+      <div class="hint">Two softly detuned copies panned hard L/R behind the lead</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="pitch">Pitch Drift &amp; Human Vibrato</label><span class="value" id="pitchV">45%</span></div>
-      <input id="pitch" type="range" min="0" max="100" value="45">
-      <div class="hint">Organic pitch wandering + 5.2 Hz larynx vibrato to break rigid tuning</div>
+      <div class="controlhead"><label for="pitch">Pitch Drift &amp; Vibrato</label><span class="value" id="pitchV">20%</span></div>
+      <input id="pitch" type="range" min="0" max="100" value="20">
+      <div class="hint">Up to ±12 cents of vibrato plus slow drift. Keep low on already-expressive vocals</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="vowelmod">Dynamic Vowel Motion</label><span class="value" id="vowelmodV">50%</span></div>
-      <input id="vowelmod" type="range" min="0" max="100" value="50">
-      <div class="hint">Sweeps vowel resonances (F1/F2) continuously so sustained notes feel alive</div>
+      <div class="controlhead"><label for="vowelmod">Tone Movement</label><span class="value" id="vowelmodV">15%</span></div>
+      <input id="vowelmod" type="range" min="0" max="100" value="15">
+      <div class="hint">Slowly drifts the mid-range balance so sustained notes don't sound frozen</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="air">Condenser Top Air (11 kHz)</label><span class="value" id="airV">30%</span></div>
-      <input id="air" type="range" min="0" max="100" value="30">
-      <div class="hint">0% = Dark vintage ribbon roll-off · 100% = Silky modern studio air shimmer</div>
+      <div class="controlhead"><label for="air">Top Air (11 kHz)</label><span class="value" id="airV">50%</span></div>
+      <input id="air" type="range" min="0" max="100" value="50">
+      <div class="hint">40% = neutral · 0% = −3 dB darker · 100% = +5 dB open air</div>
     </div>
 
     <div class="control">
-      <div class="controlhead"><label for="dynamics">Tube Level &amp; Density</label><span class="value" id="dynamicsV">55%</span></div>
-      <input id="dynamics" type="range" min="0" max="100" value="55">
-      <div class="hint">Warm optical vocal compression + soft-knee analog tape thickness</div>
+      <div class="controlhead"><label for="dynamics">Density (Leveler + Tape)</label><span class="value" id="dynamicsV">40%</span></div>
+      <input id="dynamics" type="range" min="0" max="100" value="40">
+      <div class="hint">Parallel compression evens out quiet words; light tape warmth. Clean at 0%</div>
     </div>
 
     <div class="control" style="grid-column: 1 / -1">
-      <div class="controlhead"><label for="space">Studio Room &amp; Warm Plate</label><span class="value" id="spaceV">25%</span></div>
-      <input id="space" type="range" min="0" max="100" value="25">
-      <div class="hint">0% = Bone-dry booth · 50% = Warm studio room · 100% = Lush ballad vocal hall</div>
+      <div class="controlhead"><label for="space">Room &amp; Plate</label><span class="value" id="spaceV">12%</span></div>
+      <input id="space" type="range" min="0" max="100" value="12">
+      <div class="hint">0% = dry booth · 25% = natural room · 60%+ = ballad hall</div>
     </div>
   </div>
 
@@ -570,25 +571,28 @@ input[type="range"] {
   </div>
 </section>
 
-<div class="footer">HumanVoice Studio V5 · High-Contrast Vocal Transformation + MP3/WAV Exporter for iPad</div>
+<div class="footer">HumanVoice Studio V6 · Clean Vocal Polish + MP3/WAV Exporter for iPad</div>
 </main>
 
 <script>
 (() => {
   const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   let ctx = null;
   let sourceBuffer = null;
+  let ana = null;            // loudness analysis of the loaded source
   let processedBuffer = null;
   let lastExportBlob = null;
-  let lastExportFilename = 'humanvoice-v5.mp3';
+  let lastExportFilename = 'humanvoice-v6.mp3';
   let lastExportMime = 'audio/mpeg';
-  let currentBaseName = 'humanvoice-v5';
+  let currentBaseName = 'humanvoice-v6';
 
   // Playback state
   let activeSource = null;
   let activeGraph = null;
   let analyser = null;
+  let meterData = null;
   let isPlaying = false;
   let isLooping = false;
   let playMode = 'human';
@@ -598,26 +602,461 @@ input[type="range"] {
 
   const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space'];
 
-  // Radically distinct presets so every click has an unmistakable sonic signature
   const presets = {
-    deepchest:   { throat: 75, deglare: 65, chest: 75, doubler: 25, pitch: 35, vowelmod: 45, air: 25, dynamics: 60, space: 20 },
-    darkribbon:  { throat: 85, deglare: 92, chest: 82, doubler: 10, pitch: 25, vowelmod: 35, air: 0,  dynamics: 65, space: 15 },
-    widedoubler: { throat: 58, deglare: 55, chest: 60, doubler: 85, pitch: 50, vowelmod: 60, air: 45, dynamics: 60, space: 48 },
-    vibratosoul: { throat: 68, deglare: 58, chest: 65, doubler: 45, pitch: 82, vowelmod: 85, air: 35, dynamics: 55, space: 55 },
-    intimateair: { throat: 32, deglare: 40, chest: 55, doubler: 20, pitch: 28, vowelmod: 40, air: 88, dynamics: 75, space: 12 },
-    deaiheavy:   { throat: 80, deglare: 95, chest: 70, doubler: 40, pitch: 55, vowelmod: 70, air: 15, dynamics: 65, space: 28 }
+    natural:    { throat: 55, deglare: 45, chest: 40, doubler: 0,  pitch: 20, vowelmod: 15, air: 50, dynamics: 40, space: 12 },
+    velvet:     { throat: 68, deglare: 55, chest: 60, doubler: 15, pitch: 25, vowelmod: 20, air: 35, dynamics: 50, space: 18 },
+    deglare:    { throat: 52, deglare: 85, chest: 35, doubler: 0,  pitch: 20, vowelmod: 10, air: 40, dynamics: 35, space: 10 },
+    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 70, pitch: 35, vowelmod: 20, air: 50, dynamics: 45, space: 28 },
+    expressive: { throat: 58, deglare: 50, chest: 45, doubler: 25, pitch: 80, vowelmod: 55, air: 45, dynamics: 45, space: 35 },
+    intimate:   { throat: 38, deglare: 45, chest: 30, doubler: 10, pitch: 25, vowelmod: 15, air: 70, dynamics: 65, space: 8 }
   };
+  const DEFAULT_PRESET = 'natural';
 
+  /* ------------------------------------------------------------------ *
+   *  Audio context
+   * ------------------------------------------------------------------ */
   function ensureContext() {
     if (!ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
       ctx = new AC();
+      ensureCal(ctx.sampleRate);
     }
     if (ctx.state === 'suspended') ctx.resume();
     return ctx;
   }
+  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 
-  // Unlock all file types toggle
+  /* ------------------------------------------------------------------ *
+   *  Compressor calibration
+   *
+   *  The Web Audio DynamicsCompressorNode ALWAYS adds an automatic
+   *  make-up gain (often +10 to +18 dB at low thresholds) and a 6 ms
+   *  look-ahead delay. Both are invisible in the node's parameters.
+   *  We measure them once per sample-rate with tiny offline renders
+   *  and compensate, so the compressors never change level or timing.
+   * ------------------------------------------------------------------ */
+  const LEVELER_CFG = { threshold: -30, knee: 10, ratio: 4, attack: 0.008, release: 0.16 };
+  const DEESS_CFG   = { threshold: -42, knee: 6,  ratio: 8, attack: 0.002, release: 0.07 };
+  const CAL = {};
+  const calPending = {};
+
+  function makeComp(ac, c) {
+    const n = ac.createDynamicsCompressor();
+    n.threshold.value = c.threshold;
+    n.knee.value = c.knee;
+    n.ratio.value = c.ratio;
+    n.attack.value = c.attack;
+    n.release.value = c.release;
+    return n;
+  }
+
+  async function calibrateComp(sr, cfg) {
+    const run = async (len, fill) => {
+      const off = new Offline(1, len, sr);
+      const b = off.createBuffer(1, len, sr);
+      fill(b.getChannelData(0));
+      const s = off.createBufferSource();
+      s.buffer = b;
+      const c = makeComp(off, cfg);
+      s.connect(c);
+      c.connect(off.destination);
+      s.start(0);
+      return (await off.startRendering()).getChannelData(0);
+    };
+    const amp = 0.002; // -54 dBFS: far below every threshold used here
+    const len = Math.floor(sr * 0.6);
+    const tone = await run(len, d => { for (let i = 0; i < len; i++) d[i] = amp * Math.sin(2 * Math.PI * 1000 * i / sr); });
+    let pw = 0, n = 0;
+    for (let i = Math.floor(len * 0.5); i < len; i++) { pw += tone[i] * tone[i]; n++; }
+    const gain = Math.sqrt(pw / n) / (amp / Math.SQRT2);
+
+    const at = 1000;
+    const imp = await run(4096, d => { d[at] = amp; });
+    let pk = 0, idx = at;
+    for (let i = 0; i < imp.length; i++) { const a = Math.abs(imp[i]); if (a > pk) { pk = a; idx = i; } }
+    return { gain: gain > 0.01 ? gain : 1, lat: clamp(idx - at, 0, Math.floor(sr * 0.04)) };
+  }
+
+  function ensureCal(sr) {
+    if (CAL[sr]) return Promise.resolve();
+    if (!calPending[sr]) {
+      calPending[sr] = (async () => {
+        try {
+          CAL[sr] = { lev: await calibrateComp(sr, LEVELER_CFG), des: await calibrateComp(sr, DEESS_CFG) };
+        } catch (e) {
+          console.warn('Compressor calibration failed, using defaults', e);
+          const lat = Math.round(0.006 * sr);
+          CAL[sr] = { lev: { gain: 1, lat }, des: { gain: 1, lat } };
+        }
+      })();
+    }
+    return calPending[sr];
+  }
+  function getCal(sr) {
+    const lat = Math.round(0.006 * sr);
+    return CAL[sr] || { lev: { gain: 1, lat }, des: { gain: 1, lat } };
+  }
+  const PITCH_BASE = 0.004;
+  function latencyFor(sr) {
+    const c = getCal(sr);
+    return PITCH_BASE + (c.lev.lat + c.des.lat) / sr;
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Static curves
+   * ------------------------------------------------------------------ */
+  // Unity small-signal gain, gentle even/odd harmonic warmth: y = tanh(a x) / a
+  const SAT_CURVE = (() => {
+    const n = 4097, a = 2.0, c = new Float32Array(n);
+    for (let i = 0; i < n; i++) { const x = (i / (n - 1)) * 2 - 1; c[i] = Math.tanh(a * x) / a; }
+    return c;
+  })();
+  // Transparent below 0.85, then a soft ceiling: safety net only, never a loudness tool
+  const CEIL_CURVE = (() => {
+    const n = 8193, k = 0.85, r = 0.13, c = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = (i / (n - 1)) * 2 - 1, a = Math.abs(x);
+      c[i] = Math.sign(x) * (a <= k ? a : k + r * Math.tanh((a - k) / r));
+    }
+    return c;
+  })();
+
+  const irCache = {};
+  function makePlateIR(ac) {
+    const sr = ac.sampleRate;
+    if (irCache[sr]) return irCache[sr];
+    const dur = 1.5, rt60 = 1.3, pre = Math.floor(0.015 * sr);
+    const len = Math.floor(sr * dur);
+    const imp = ac.createBuffer(2, len, sr);
+    for (let ch = 0; ch < 2; ch++) {
+      let seed = ch ? 271828 : 314159;
+      const rand = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 1073741823.5 - 1; };
+      const d = imp.getChannelData(ch);
+      let lp = 0;
+      for (let i = pre; i < len; i++) {
+        const t = (i - pre) / sr;
+        const env = Math.exp(-t * 6.9 / rt60) * Math.min(1, t / 0.012);
+        const a = 0.50 + 0.42 * Math.min(1, t / 1.0);   // highs die faster than lows
+        lp = lp * a + rand() * env * (1 - a);
+        d[i] = lp;
+      }
+    }
+    irCache[sr] = imp;
+    return imp;
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Loudness analysis (gated, 50 ms blocks)
+   * ------------------------------------------------------------------ */
+  function blockPowers(buf, blockSec = 0.05) {
+    const bs = Math.max(1, Math.floor(buf.sampleRate * blockSec));
+    const n = Math.floor(buf.length / bs);
+    const chs = [];
+    for (let c = 0; c < buf.numberOfChannels; c++) chs.push(buf.getChannelData(c));
+    const p = new Float64Array(n);
+    for (let b = 0; b < n; b++) {
+      let sum = 0;
+      for (const d of chs) for (let j = b * bs, e = j + bs; j < e; j++) sum += d[j] * d[j];
+      p[b] = sum / (bs * chs.length);
+    }
+    return p;
+  }
+  function gatedDb(p, from = 0, to = p.length) {
+    let sum = 0, cnt = 0;
+    for (let i = Math.max(0, from); i < Math.min(p.length, to); i++) if (p[i] > 1e-5) { sum += p[i]; cnt++; }
+    return cnt ? 10 * Math.log10(sum / cnt) : -100;
+  }
+  function analyseSource(buf) {
+    const p = blockPowers(buf);
+    const rmsDb = gatedDb(p);
+    const win = Math.max(1, Math.min(p.length, 160));       // loudest ~8 s window
+    let run = 0, best = 0, bestSum = -1;
+    for (let i = 0; i < win; i++) run += p[i];
+    bestSum = run;
+    for (let i = win; i < p.length; i++) {
+      run += p[i] - p[i - win];
+      if (run > bestSum) { bestSum = run; best = i - win + 1; }
+    }
+    // Everything inside the chain is tuned for ~-20 dB RMS, so we trim any source to that
+    const inTrimDb = rmsDb <= -99 ? 0 : clamp(-20 - rmsDb, -30, 30);
+    return { powers: p, rmsDb, inTrimDb, exStart: best * 0.05, exDur: win * 0.05 };
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  V6 CLEAN VOCAL ENGINE
+   *
+   *  source -> [trim to -20 dB RMS] -> HP -> pitch drift/vibrato -> tone EQ
+   *   -> de-glare EQ -> split-band de-esser -> tape warmth (parallel)
+   *   -> parallel leveler -> + doubler bus + plate bus
+   *   -> [restore loudness] -> transparent soft ceiling
+   * ------------------------------------------------------------------ */
+  function buildGraph(ac, input, s0, opts = {}) {
+    const sr = ac.sampleRate;
+    const cal = getCal(sr);
+    const levLat = cal.lev.lat / sr, desLat = cal.des.lat / sr;
+    const latency = PITCH_BASE + levLat + desLat;
+    const inTrim = Math.pow(10, (opts.inTrimDb || 0) / 20);
+    let matchGain = opts.matchGain || 1;
+    const oscs = [];
+
+    const G = (v = 1) => { const g = ac.createGain(); g.gain.value = v; return g; };
+    // NOTE: for lowpass/highpass the Web Audio "Q" is in dB, not linear. 0.707 there means a
+    // +0.7 dB resonance, which makes cascaded crossovers ring and sum to +7 dB. Butterworth = -3.0103 dB.
+    const BQ = (type, f, q = 0.707, gain = 0) => {
+      const b = ac.createBiquadFilter();
+      b.type = type; b.frequency.value = f;
+      b.Q.value = (type === 'lowpass' || type === 'highpass') ? -3.0103 : q;
+      b.gain.value = gain;
+      return b;
+    };
+    const OSC = (f, type = 'sine') => {
+      const o = ac.createOscillator();
+      o.type = type; o.frequency.value = f; o.start(0);
+      oscs.push(o);
+      return o;
+    };
+    const DL = (t) => { const d = ac.createDelay(0.1); d.delayTime.value = t; return d; };
+
+    // ---- A/B bypass (delay-aligned with the processed path) ----
+    const dryDelay = DL(latency);
+    const dryGain = G(0), wetMaster = G(1), masterOut = G(1);
+    input.connect(dryDelay);
+    dryDelay.connect(dryGain);
+    dryGain.connect(masterOut);
+
+    // ---- 1. Input trim + rumble filter ----
+    const inGain = G(inTrim);
+    const hp = BQ('highpass', 70, 0.707);
+    input.connect(inGain);
+    inGain.connect(hp);
+
+    // ---- 2. Pitch drift + vibrato (tiny, serial delay modulation) ----
+    const pitchDelay = DL(PITCH_BASE);
+    const drift1 = OSC(0.37), drift2 = OSC(0.61), vib = OSC(5.2);
+    const d1g = G(0), d2g = G(0), vg = G(0);
+    drift1.connect(d1g); d1g.connect(pitchDelay.delayTime);
+    drift2.connect(d2g); d2g.connect(pitchDelay.delayTime);
+    vib.connect(vg);     vg.connect(pitchDelay.delayTime);
+    hp.connect(pitchDelay);
+
+    // ---- 3. Tone EQ (moderate gains) ----
+    const body = BQ('lowshelf', 150);
+    const mud = BQ('peaking', 300, 0.9);
+    const dLow = BQ('peaking', 420, 0.8);
+    const dHigh = BQ('peaking', 2200, 0.7);
+    const vowelLFO = OSC(0.31);
+    const f1Mod = G(0), f2Mod = G(0);
+    vowelLFO.connect(f1Mod); f1Mod.connect(dLow.frequency);
+    vowelLFO.connect(f2Mod); f2Mod.connect(dHigh.frequency);
+    pitchDelay.connect(body); body.connect(mud); mud.connect(dLow); dLow.connect(dHigh);
+
+    // ---- 4. Static de-glare dips + air ----
+    const harsh = BQ('peaking', 3200, 1.0);
+    const fizz = BQ('peaking', 7000, 1.0);
+    const air = BQ('highshelf', 11000);
+    const fizzLP = BQ('lowpass', 21000, 0.6);
+    dHigh.connect(harsh); harsh.connect(fizz); fizz.connect(air); air.connect(fizzLP);
+
+    // ---- 5. Split-band de-esser (Linkwitz-Riley 4th order @ 5.5 kHz) ----
+    const dsIn = G(1), dsOut = G(1);
+    const lo1 = BQ('lowpass', 5500, 0.7071), lo2 = BQ('lowpass', 5500, 0.7071);
+    const hi1 = BQ('highpass', 5500, 0.7071), hi2 = BQ('highpass', 5500, 0.7071);
+    const loDelay = DL(desLat), hiDelay = DL(desLat);
+    const dsComp = makeComp(ac, DEESS_CFG);
+    const hiDryG = G(1), hiWetG = G(0);
+    fizzLP.connect(dsIn);
+    dsIn.connect(lo1); lo1.connect(lo2); lo2.connect(loDelay); loDelay.connect(dsOut);
+    dsIn.connect(hi1); hi1.connect(hi2);
+    hi2.connect(hiDelay); hiDelay.connect(hiDryG); hiDryG.connect(dsOut);
+    hi2.connect(dsComp); dsComp.connect(hiWetG); hiWetG.connect(dsOut);
+
+    // ---- 6. Tape warmth as a parallel blend (unity small-signal gain) ----
+    const satShaper = ac.createWaveShaper();
+    satShaper.curve = SAT_CURVE;
+    satShaper.oversample = 'none';   // oversampling adds latency, which would comb-filter the parallel blend
+    const satDryG = G(1), satWetG = G(0), satOut = G(1);
+    dsOut.connect(satDryG); satDryG.connect(satOut);
+    dsOut.connect(satShaper); satShaper.connect(satWetG); satWetG.connect(satOut);
+
+    // ---- 7. Parallel leveler (dry path delay-aligned to the compressor look-ahead) ----
+    const levDelay = DL(levLat);
+    const levComp = makeComp(ac, LEVELER_CFG);
+    const levWetG = G(0), levOut = G(1);
+    satOut.connect(levDelay); levDelay.connect(levOut);
+    satOut.connect(levComp); levComp.connect(levWetG); levWetG.connect(levOut);
+
+    // ---- 8. Output bus: lead + doubler + plate, still at internal level ----
+    const bus = G(1);
+    levOut.connect(bus);
+
+    // Doubler: two detuned, delayed copies hard-panned L/R
+    const dblHP = BQ('highpass', 180), dblLP = BQ('lowpass', 7500);
+    const dlL = DL(0.022), dlR = DL(0.031);
+    const dLfoL = OSC(0.61), dLfoR = OSC(0.47);
+    const dmL = G(0.00138), dmR = G(-0.00176);      // about +-9 cents of slow detune
+    dLfoL.connect(dmL); dmL.connect(dlL.delayTime);
+    dLfoR.connect(dmR); dmR.connect(dlR.delayTime);
+    const merger = ac.createChannelMerger(2);
+    const dblGain = G(0);
+    levOut.connect(dblHP); dblHP.connect(dblLP);
+    dblLP.connect(dlL); dblLP.connect(dlR);
+    dlL.connect(merger, 0, 0); dlR.connect(merger, 0, 1);
+    merger.connect(dblGain); dblGain.connect(bus);
+
+    // Plate
+    const revHP = BQ('highpass', 250), revLP = BQ('lowpass', 6000);
+    const conv = ac.createConvolver();
+    conv.buffer = makePlateIR(ac);
+    const revGain = G(0);
+    levOut.connect(revHP); revHP.connect(conv); conv.connect(revLP); revLP.connect(revGain); revGain.connect(bus);
+
+    // ---- 9. Restore loudness + safety ceiling ----
+    const outGain = G(matchGain / inTrim);
+    const ceiling = ac.createWaveShaper();
+    ceiling.curve = CEIL_CURVE;
+    ceiling.oversample = 'none';
+    bus.connect(outGain); outGain.connect(ceiling); ceiling.connect(wetMaster); wetMaster.connect(masterOut);
+
+    let first = true;
+    function updateParams(s, bypassed = false) {
+      const now = ac.currentTime;
+      const T = 0.03;
+      const set = (p, v) => { if (first) p.value = v; else p.setTargetAtTime(v, now, T); };
+
+      set(dryGain.gain, bypassed ? 1 : 0);
+      set(wetMaster.gain, bypassed ? 0 : 1);
+
+      // Pitch: 12 cents vibrato @5.2 Hz + two slow drifts (~6 cents total)
+      const p = s.pitch / 100;
+      set(d1g.gain, p * 0.00074);
+      set(d2g.gain, p * 0.00045);
+      set(vg.gain, p * 0.000211);
+
+      // Tone
+      const ch = s.chest / 100;
+      set(body.gain, ch * 4.5);
+      set(mud.gain, -ch * 2.5);
+      const depth = (s.throat - 50) / 50;
+      set(dLow.gain, depth * 2.5);
+      set(dHigh.gain, -depth * 2.5);
+      const vm = s.vowelmod / 100;
+      set(f1Mod.gain, vm * 110);
+      set(f2Mod.gain, -vm * 450);
+
+      // De-glare
+      const dg = s.deglare / 100;
+      set(harsh.gain, -dg * 3.5);
+      set(fizz.gain, -dg * 4.5);
+      set(fizzLP.frequency, Math.min(21000, sr / 2 - 200) - dg * 7000);
+      const amt = Math.min(1, dg * 1.15);
+      set(hiDryG.gain, 1 - amt);
+      set(hiWetG.gain, amt / cal.des.gain);
+      set(air.gain, ((s.air - 40) / 60) * 5);
+
+      // Density
+      const dyn = s.dynamics / 100;
+      set(satWetG.gain, dyn * 0.5);
+      set(satDryG.gain, 1 - dyn * 0.5);
+      set(levWetG.gain, (dyn * 0.7) / cal.lev.gain);
+
+      // Sends
+      set(dblGain.gain, (s.doubler / 100) * 0.5);
+      set(revGain.gain, (s.space / 100) * 0.5);
+      first = false;
+    }
+    updateParams(s0, !!opts.bypass);
+
+    return {
+      output: masterOut,
+      latency,
+      updateParams,
+      setMatch(g) {
+        matchGain = g;
+        outGain.gain.setTargetAtTime(g / inTrim, ac.currentTime, 0.05);
+      },
+      dispose() {
+        oscs.forEach(o => { try { o.stop(); } catch (e) {} });
+        try { masterOut.disconnect(); } catch (e) {}
+      }
+    };
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Offline rendering + loudness matching
+   * ------------------------------------------------------------------ */
+  async function renderProcessed(buf, s, o = {}) {
+    const sr = buf.sampleRate;
+    await ensureCal(sr);
+    const lat = latencyFor(sr);
+    const latF = Math.ceil(lat * sr);
+    const tail = s.space > 2 || s.doubler > 2 ? 1.6 : 0.15;
+    const total = buf.length + Math.ceil(sr * tail) + latF;
+    const off = new Offline(2, total, sr);
+    const src = off.createBufferSource();
+    src.buffer = buf;
+    const g = buildGraph(off, src, s, { inTrimDb: o.inTrimDb, matchGain: o.matchGain });
+    g.output.connect(off.destination);
+    src.start(0);
+    const full = await off.startRendering();
+    // Remove the chain latency so the file lines up with the original
+    const out = off.createBuffer(2, total - latF, sr);
+    for (let c = 0; c < 2; c++) out.copyToChannel(full.getChannelData(c).subarray(latF), c);
+    return out;
+  }
+
+  // Render a loud ~8 s excerpt and return the gain that makes processed loudness equal original
+  async function measureMatch(buf, a, s) {
+    const sr = buf.sampleRate;
+    await ensureCal(sr);
+    const exDur = Math.min(a.exDur, buf.duration - a.exStart);
+    if (!(exDur > 0.2) || a.rmsDb <= -99) return 1;
+    const pre = Math.min(0.6, a.exStart);
+    const start = a.exStart - pre;
+    const len = Math.floor(sr * (pre + exDur + 0.1));
+    const off = new Offline(2, len, sr);
+    const src = off.createBufferSource();
+    src.buffer = buf;
+    const g = buildGraph(off, src, s, { inTrimDb: a.inTrimDb, matchGain: 1 });
+    g.output.connect(off.destination);
+    src.start(0, start);
+    const out = await off.startRendering();
+    const po = blockPowers(out);
+    const outDb = gatedDb(po, Math.ceil(pre / 0.05) + 1, Math.floor((pre + exDur) / 0.05));
+    const inDb = gatedDb(a.powers, Math.round(a.exStart / 0.05), Math.round((a.exStart + exDur) / 0.05));
+    if (outDb <= -99 || inDb <= -99) return 1;
+    return clamp(Math.pow(10, (inDb - outDb) / 20), 0.4, 2.5);
+  }
+
+  async function processFull(buf, s, normalize = false) {
+    const a = buf === sourceBuffer && ana ? ana : analyseSource(buf);
+    const mg = await measureMatch(buf, a, s);
+    const out = await renderProcessed(buf, s, { inTrimDb: a.inTrimDb, matchGain: mg });
+    if (normalize) normalizeAudioBuffer(out, 0.89125);
+    return out;
+  }
+  window.__HV = { buildGraph, presets, processFull, renderProcessed, analyseSource, measureMatch, ensureCal, CAL };
+
+  // Debounced live loudness match
+  let matchTimer = null, matchToken = 0, matchCache = 1;
+  function scheduleMatch(delay = 250) {
+    if (!sourceBuffer || !ana) return;
+    clearTimeout(matchTimer);
+    matchTimer = setTimeout(async () => {
+      const tok = ++matchToken;
+      try {
+        const g = await measureMatch(sourceBuffer, ana, getSettings());
+        if (tok !== matchToken) return;
+        matchCache = g;
+        if (activeGraph) activeGraph.setMatch(g);
+        const db = 20 * Math.log10(g);
+        $('matchInfo').textContent = `A/B is loudness-matched (processed trim ${db >= 0 ? '+' : ''}${db.toFixed(1)} dB), so a difference you hear is tone, not volume.`;
+      } catch (e) { console.warn(e); }
+    }, delay);
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  File loading
+   * ------------------------------------------------------------------ */
   const defaultAccept = $('file').getAttribute('accept');
   $('unlockAllFiles').addEventListener('change', e => {
     if (e.target.checked) {
@@ -629,18 +1068,30 @@ input[type="range"] {
     }
   });
 
-  // Drag & drop
   const dropZone = $('dropZone');
   dropZone.addEventListener('dragover', e => { e.preventDefault(); });
   dropZone.addEventListener('drop', e => {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   });
-
   $('file').addEventListener('change', e => {
     const f = e.target.files && e.target.files[0];
     if (f) handleFile(f);
   });
+
+  function onSourceReady(label) {
+    ana = analyseSource(sourceBuffer);
+    processedBuffer = null;
+    lastExportBlob = null;
+    matchCache = 1;
+    $('shareBtn').disabled = true;
+    enableTransport();
+    drawWave(sourceBuffer, 0);
+    updateTimeReadout(0, sourceBuffer.duration);
+    $('renderStatus').textContent = 'Ready to render & export';
+    setStatus(label);
+    scheduleMatch(50);
+  }
 
   async function handleFile(f) {
     try {
@@ -648,20 +1099,11 @@ input[type="range"] {
       pauseOffset = 0;
       setStatus('Decoding audio…');
       $('fileInfo').textContent = `${f.name} · ${(f.size / 1048576).toFixed(2)} MB`;
-
       const ac = ensureContext();
       const bytes = await f.arrayBuffer();
       sourceBuffer = await ac.decodeAudioData(bytes.slice(0));
-      processedBuffer = null;
-      lastExportBlob = null;
-
       currentBaseName = f.name.replace(/\.[^/.]+$/, '') + '-humanised';
-
-      enableTransport();
-      drawWave(sourceBuffer, 0);
-      updateTimeReadout(0, sourceBuffer.duration);
-      $('renderStatus').textContent = 'Ready to render & export';
-      setStatus(`Loaded · ${sourceBuffer.duration.toFixed(1)}s · ${sourceBuffer.sampleRate} Hz`);
+      onSourceReady(`Loaded · ${sourceBuffer.duration.toFixed(1)}s · ${sourceBuffer.sampleRate} Hz`);
     } catch (err) {
       console.error(err);
       setStatus('Decode error');
@@ -669,7 +1111,7 @@ input[type="range"] {
     }
   }
 
-  // Synthetic Test Voice Generator
+  // Synthetic test voice (phase-continuous, so no clicks between notes)
   $('loadDemo').addEventListener('click', () => {
     stopPlayback();
     pauseOffset = 0;
@@ -678,80 +1120,70 @@ input[type="range"] {
     const dur = 5.0;
     const len = Math.floor(sr * dur);
     const buf = ac.createBuffer(2, len, sr);
-    const dL = buf.getChannelData(0);
-    const dR = buf.getChannelData(1);
-
+    const dL = buf.getChannelData(0), dR = buf.getChannelData(1);
     const melody = [146.83, 164.81, 174.61, 196.00, 164.81, 146.83];
-    for (let i = 0; i < len; i++) {
-      const t = i / sr;
-      const step = Math.min(melody.length - 1, Math.floor(t / (dur / melody.length)));
-      const f0 = melody[step];
-      let sample = 0;
-
+    const amps = melody.map(f0 => {
+      const a = [];
       for (let h = 1; h <= 28; h++) {
         const freq = f0 * h;
         const f1 = Math.exp(-Math.pow((freq - 520) / 150, 2));
         const f2 = 0.72 * Math.exp(-Math.pow((freq - 1580) / 220, 2));
         const f3 = 0.60 * Math.exp(-Math.pow((freq - 2950) / 300, 2));
-        const aiGlare = 0.40 * Math.exp(-Math.pow((freq - 6200) / 900, 2));
-        const amp = (f1 + f2 + f3 + aiGlare + 0.04) / Math.pow(h, 0.70);
-        sample += Math.sin(2 * Math.PI * freq * t) * amp;
+        const glare = 0.40 * Math.exp(-Math.pow((freq - 6200) / 900, 2));
+        a.push((f1 + f2 + f3 + glare + 0.04) / Math.pow(h, 0.70));
       }
-
+      return a;
+    });
+    let phase = 0, f = melody[0], peak = 0;
+    for (let i = 0; i < len; i++) {
+      const t = i / sr;
+      const step = Math.min(melody.length - 1, Math.floor(t / (dur / melody.length)));
+      f += (melody[step] - f) * 0.002;
+      phase += 2 * Math.PI * f / sr;
+      let sample = 0;
+      const a = amps[step];
+      for (let h = 1; h <= 28; h++) sample += Math.sin(h * phase) * a[h - 1];
       const env = Math.min(1, t / 0.05) * Math.min(1, (dur - t) / 0.15);
-      const val = Math.tanh(sample * 0.42 * env);
-      dL[i] = val;
-      dR[i] = val;
+      dL[i] = sample * env;
+      peak = Math.max(peak, Math.abs(dL[i]));
     }
+    const g = 0.5 / (peak || 1);
+    for (let i = 0; i < len; i++) { dL[i] *= g; dR[i] = dL[i]; }
 
     sourceBuffer = buf;
-    processedBuffer = null;
-    lastExportBlob = null;
-    currentBaseName = 'synthetic-demo-v5';
-    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s · Click Presets 1–6 to compare)';
-    enableTransport();
-    drawWave(sourceBuffer, 0);
-    updateTimeReadout(0, sourceBuffer.duration);
-    $('renderStatus').textContent = 'Ready to render & export';
-    setStatus('Tap ▶ Humanised and click Presets 1–6!');
+    currentBaseName = 'synthetic-demo-v6';
+    $('fileInfo').textContent = 'Synthetic AI Vocal Test (5.0s) · a real vocal file shows the presets far better';
+    onSourceReady('Tap ▶ Processed and try the presets');
   });
 
   function enableTransport() {
-    $('playOriginal').disabled = false;
-    $('playHuman').disabled = false;
-    $('stop').disabled = false;
-    $('loopToggle').disabled = false;
-    $('render').disabled = false;
+    ['playOriginal', 'playHuman', 'stop', 'loopToggle', 'render'].forEach(i => { $(i).disabled = false; });
   }
 
-  function updateValue(k) {
-    $(k + 'V').textContent = $(k).value + '%';
-  }
+  /* ------------------------------------------------------------------ *
+   *  Controls
+   * ------------------------------------------------------------------ */
+  function updateValue(k) { $(k + 'V').textContent = $(k).value + '%'; }
 
+  function pushLiveParams() {
+    if (activeGraph && ctx) activeGraph.updateParams(getSettings(), playMode === 'original');
+  }
   function setVals(obj) {
     ids.forEach(k => {
-      if (obj[k] !== undefined) {
-        $(k).value = obj[k];
-        updateValue(k);
-      }
+      if (obj[k] !== undefined) { $(k).value = obj[k]; updateValue(k); }
     });
-    if (activeGraph && ctx) {
-      activeGraph.updateParams(getSettings(), playMode === 'original');
-    }
+    pushLiveParams();
+    scheduleMatch();
   }
-
-  function getSettings() {
-    return Object.fromEntries(ids.map(k => [k, +$(k).value]));
-  }
+  function getSettings() { return Object.fromEntries(ids.map(k => [k, +$(k).value])); }
 
   ids.forEach(k => {
     $(k).addEventListener('input', () => {
       updateValue(k);
       document.querySelectorAll('.preset').forEach(b => b.classList.remove('active'));
-      if (activeGraph && ctx) {
-        activeGraph.updateParams(getSettings(), playMode === 'original');
-      }
+      pushLiveParams();
     });
+    $(k).addEventListener('change', () => scheduleMatch(150));
   });
 
   document.querySelectorAll('.preset').forEach(b => {
@@ -763,8 +1195,8 @@ input[type="range"] {
   });
 
   $('reset').addEventListener('click', () => {
-    setVals(presets.deepchest);
-    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === 'deepchest'));
+    setVals(presets[DEFAULT_PRESET]);
+    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === DEFAULT_PRESET));
   });
 
   $('loopToggle').addEventListener('click', () => {
@@ -774,21 +1206,20 @@ input[type="range"] {
     if (activeSource) activeSource.loop = isLooping;
   });
 
-  function setStatus(s) {
-    $('status').textContent = s;
-  }
-
+  function setStatus(s) { $('status').textContent = s; }
   function formatTime(sec) {
     const s = Math.max(0, sec || 0);
     const m = Math.floor(s / 60);
     const rem = (s % 60).toFixed(1).padStart(4, '0');
     return `${String(m).padStart(2, '0')}:${rem}`;
   }
-
   function updateTimeReadout(curr, total) {
     $('timeReadout').textContent = `${formatTime(curr)} / ${formatTime(total)}`;
   }
 
+  /* ------------------------------------------------------------------ *
+   *  Waveform
+   * ------------------------------------------------------------------ */
   function drawWave(buf, playheadRatio = 0) {
     const c = $('wave');
     const g = c.getContext('2d');
@@ -796,21 +1227,15 @@ input[type="range"] {
     g.clearRect(0, 0, w, h);
     g.fillStyle = '#0c1017';
     g.fillRect(0, 0, w, h);
-
     const mid = h / 2;
     g.strokeStyle = '#232e40';
     g.lineWidth = 1;
-    g.beginPath();
-    g.moveTo(0, mid);
-    g.lineTo(w, mid);
-    g.stroke();
-
+    g.beginPath(); g.moveTo(0, mid); g.lineTo(w, mid); g.stroke();
     if (!buf) return;
 
     const data = buf.getChannelData(0);
     const step = Math.max(1, Math.floor(data.length / w));
     const headX = Math.floor(playheadRatio * w);
-
     for (let x = 0; x < w; x++) {
       let mn = 1, mx = -1;
       const start = x * step;
@@ -826,30 +1251,28 @@ input[type="range"] {
       g.lineTo(x, mid + mx * mid * 0.88);
       g.stroke();
     }
-
     if (playheadRatio > 0 && playheadRatio < 1) {
       g.strokeStyle = '#f3c878';
       g.lineWidth = 2.2;
-      g.beginPath();
-      g.moveTo(headX, 0);
-      g.lineTo(headX, h);
-      g.stroke();
+      g.beginPath(); g.moveTo(headX, 0); g.lineTo(headX, h); g.stroke();
     }
   }
 
-  // Waveform Scrubbing
-  let isScrubbing = false;
-  function scrubToEvent(e) {
+  // Scrubbing (V5 bug: seeking while playing was ignored because the "same offset" shortcut fired)
+  let isScrubbing = false, lastScrubRestart = 0;
+  function scrubToEvent(e, final = false) {
     if (!sourceBuffer) return;
     const rect = $('wave').getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const ratio = clamp((e.clientX - rect.left) / rect.width, 0, 1);
     pauseOffset = ratio * sourceBuffer.duration;
     drawWave(sourceBuffer, ratio);
     updateTimeReadout(pauseOffset, sourceBuffer.duration);
-    if (isPlaying) startLivePlayback(playMode, pauseOffset);
+    const now = performance.now();
+    if (isPlaying && (final || now - lastScrubRestart > 120)) {
+      lastScrubRestart = now;
+      startLivePlayback(playMode, pauseOffset, true);
+    }
   }
-
   const waveCanvas = $('wave');
   waveCanvas.addEventListener('pointerdown', e => {
     if (!sourceBuffer) return;
@@ -857,328 +1280,23 @@ input[type="range"] {
     waveCanvas.setPointerCapture(e.pointerId);
     scrubToEvent(e);
   });
-  waveCanvas.addEventListener('pointermove', e => {
-    if (isScrubbing) scrubToEvent(e);
-  });
-  waveCanvas.addEventListener('pointerup', () => { isScrubbing = false; });
+  waveCanvas.addEventListener('pointermove', e => { if (isScrubbing) scrubToEvent(e); });
+  const endScrub = e => { if (isScrubbing) { isScrubbing = false; scrubToEvent(e, true); } };
+  waveCanvas.addEventListener('pointerup', endScrub);
+  waveCanvas.addEventListener('pointercancel', () => { isScrubbing = false; });
 
-  // Warm Analog Tape Saturation Curve (Smooth, rich 2nd-harmonic body without fizz)
-  function makeWarmTapeCurve(amount) {
-    const n = 8192;
-    const curve = new Float32Array(n);
-    const drive = 1 + amount * 2.2;
-    const norm = Math.tanh(drive);
-    for (let i = 0; i < n; i++) {
-      const x = (i * 2) / n - 1;
-      curve[i] = Math.tanh(x * drive) / norm;
-    }
-    return curve;
-  }
-
-  // Rich Stereo Vocal Studio Plate & Booth Impulse
-  function makeStudioPlateImpulse(ac, duration, decay) {
-    const sr = ac.sampleRate;
-    const len = Math.max(1, Math.floor(sr * duration));
-    const imp = ac.createBuffer(2, len, sr);
-    let seed = 314159;
-    const rand = () => {
-      seed = (seed * 16807) % 2147483647;
-      return (seed - 1) / 1073741823.5 - 1;
-    };
-    const preDelay = Math.floor(0.020 * sr);
-    for (let ch = 0; ch < 2; ch++) {
-      const d = imp.getChannelData(ch);
-      let lp = 0;
-      for (let i = preDelay; i < len; i++) {
-        const t = (i - preDelay) / (len - preDelay);
-        const attack = Math.min(1, t * 16);
-        const env = Math.pow(1 - t, decay) * attack;
-        const raw = rand() * env * 0.42;
-        lp = lp * 0.72 + raw * 0.28;
-        d[i] = lp;
-      }
-    }
-    return imp;
-  }
-
-  /**
-   * V5 HIGH-CONTRAST VOCAL ENGINE
-   * Every control now operates over a true studio dynamic range (±10 dB EQ/formant sculpting,
-   * genuine stereo Haas L/R pitch-detuned doubling, full-range ribbon-to-condenser top end,
-   * and unmistakable pitch/vowel movement) with ZERO single-band crossover phase bugs.
-   */
-  function buildGraph(ac, inputNode, initialSettings, bypass = false) {
-    const dryBypassGain = ac.createGain();
-    const wetMasterGain = ac.createGain();
-    const masterOut = ac.createGain();
-
-    // True A/B Bypass path
-    inputNode.connect(dryBypassGain);
-    dryBypassGain.connect(masterOut);
-
-    // 1. Sub-Sonic Rumble Filter
-    const hp = ac.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 55;
-    hp.Q.value = 0.707;
-
-    // 2. Serial Pitch Drift & Natural Larynx Vibrato
-    const pitchDelay = ac.createDelay(0.05);
-    pitchDelay.delayTime.value = 0.012;
-
-    const driftLFO = ac.createOscillator();
-    const vibLFO = ac.createOscillator();
-    driftLFO.type = 'sine';
-    vibLFO.type = 'sine';
-    driftLFO.frequency.value = 0.45; // Phrase-level drift
-    vibLFO.frequency.value = 5.25;   // Natural vocal vibrato rate
-
-    const driftGain = ac.createGain();
-    const vibGain = ac.createGain();
-    driftLFO.connect(driftGain);
-    vibLFO.connect(vibGain);
-    driftGain.connect(pitchDelay.delayTime);
-    vibGain.connect(pitchDelay.delayTime);
-    driftLFO.start(0);
-    vibLFO.start(0);
-
-    // 3. THROAT DEPTH & DYNAMIC VOWEL FORMANT SCULPTOR (F1 & F2)
-    // Shifts the perceived physical size of the vocal tract:
-    // High Throat % = boosts 440 Hz deep pharynx resonance & scoops 1.65 kHz thinness
-    // Low Throat %  = boosts 1.55 kHz forward mouth resonance
-    const throatF1 = ac.createBiquadFilter();
-    throatF1.type = 'peaking';
-    throatF1.frequency.value = 460;
-    throatF1.Q.value = 1.1;
-
-    const mouthF2 = ac.createBiquadFilter();
-    mouthF2.type = 'peaking';
-    mouthF2.frequency.value = 1580;
-    mouthF2.Q.value = 1.2;
-
-    const vowelLFO = ac.createOscillator();
-    vowelLFO.type = 'sine';
-    vowelLFO.frequency.value = 0.68;
-    const f1ModGain = ac.createGain();
-    const f2ModGain = ac.createGain();
-    vowelLFO.connect(f1ModGain);
-    vowelLFO.connect(f2ModGain);
-    f1ModGain.connect(throatF1.frequency);
-    f2ModGain.connect(mouthF2.frequency);
-    vowelLFO.start(0);
-
-    // 4. CHEST WEIGHT (150 Hz) & PLASTIC BOXINESS CUT (390 Hz)
-    const chestShelf = ac.createBiquadFilter();
-    chestShelf.type = 'lowshelf';
-    chestShelf.frequency.value = 165;
-
-    const boxCut = ac.createBiquadFilter();
-    boxCut.type = 'peaking';
-    boxCut.frequency.value = 395;
-    boxCut.Q.value = 1.25;
-
-    // 5. AI GLARE & SIBILANCE ERASER (3.1 kHz Harsh Bite + 6.4 kHz Metallic Fizz + Ribbon Lowpass)
-    const harshBiteCut = ac.createBiquadFilter();
-    harshBiteCut.type = 'peaking';
-    harshBiteCut.frequency.value = 3150;
-    harshBiteCut.Q.value = 1.1;
-
-    const sibilanceCut = ac.createBiquadFilter();
-    sibilanceCut.type = 'peaking';
-    sibilanceCut.frequency.value = 6500;
-    sibilanceCut.Q.value = 1.5;
-
-    const highAirShelf = ac.createBiquadFilter();
-    highAirShelf.type = 'highshelf';
-    highAirShelf.frequency.value = 10500;
-
-    const ribbonLowpass = ac.createBiquadFilter();
-    ribbonLowpass.type = 'lowpass';
-    ribbonLowpass.frequency.value = 16000;
-    ribbonLowpass.Q.value = 0.55;
-
-    // 6. ANALOG TAPE SATURATION & OPTICAL COMPRESSOR
-    const tapeShaper = ac.createWaveShaper();
-    tapeShaper.oversample = '4x';
-
-    const optoComp = ac.createDynamicsCompressor();
-    optoComp.knee.value = 18;
-    optoComp.attack.value = 0.012;
-    optoComp.release.value = 0.18;
-    const makeupGain = ac.createGain();
-
-    // 7. TRUE STEREO HAAS L/R DETUNED VOCAL DOUBLER
-    // Creates a dedicated Left (13ms, detuned down) and Right (21ms, detuned up) stereo double
-    const stereoMerger = ac.createChannelMerger(2);
-    const delayLeft = ac.createDelay(0.05);
-    const delayRight = ac.createDelay(0.05);
-    delayLeft.delayTime.value = 0.013;
-    delayRight.delayTime.value = 0.021;
-
-    const dblLFO = ac.createOscillator();
-    dblLFO.type = 'triangle';
-    dblLFO.frequency.value = 0.85;
-    const dblModL = ac.createGain();
-    const dblModR = ac.createGain();
-    dblModL.gain.value = 0.00045;
-    dblModR.gain.value = -0.00045; // Opposite pitch phase for wide stereo spread
-    dblLFO.connect(dblModL);
-    dblLFO.connect(dblModR);
-    dblModL.connect(delayLeft.delayTime);
-    dblModR.connect(delayRight.delayTime);
-    dblLFO.start(0);
-
-    const doublerLP = ac.createBiquadFilter();
-    doublerLP.type = 'lowpass';
-    doublerLP.frequency.value = 4500; // Keep doubles warm so they never add sibilance
-    const doublerGain = ac.createGain();
-
-    // 8. WARM STUDIO ROOM & PLATE REVERB
-    const reverbConv = ac.createConvolver();
-    reverbConv.buffer = makeStudioPlateImpulse(ac, 0.85, 2.8);
-    const reverbLP = ac.createBiquadFilter();
-    reverbLP.type = 'lowpass';
-    reverbLP.frequency.value = 3200;
-    const reverbGain = ac.createGain();
-
-    // Brickwall Output Peak Limiter
-    const limiter = ac.createDynamicsCompressor();
-    limiter.threshold.value = -1.0;
-    limiter.knee.value = 2.0;
-    limiter.ratio.value = 18.0;
-    limiter.attack.value = 0.002;
-    limiter.release.value = 0.08;
-
-    // Connect Serial Core Chain (Zero parallel phase cancellation!)
-    inputNode.connect(hp);
-    hp.connect(pitchDelay);
-    pitchDelay.connect(throatF1);
-    throatF1.connect(mouthF2);
-    mouthF2.connect(chestShelf);
-    chestShelf.connect(boxCut);
-    boxCut.connect(harshBiteCut);
-    harshBiteCut.connect(sibilanceCut);
-    sibilanceCut.connect(highAirShelf);
-    highAirShelf.connect(ribbonLowpass);
-    ribbonLowpass.connect(tapeShaper);
-    tapeShaper.connect(optoComp);
-    optoComp.connect(makeupGain);
-
-    // Center Lead Vocal to Output
-    makeupGain.connect(wetMasterGain);
-
-    // Stereo L/R Doubler Bus
-    makeupGain.connect(doublerLP);
-    doublerLP.connect(delayLeft);
-    doublerLP.connect(delayRight);
-    delayLeft.connect(stereoMerger, 0, 0);
-    delayRight.connect(stereoMerger, 0, 1);
-    stereoMerger.connect(doublerGain);
-    doublerGain.connect(wetMasterGain);
-
-    // Studio Room / Plate Bus
-    makeupGain.connect(reverbConv);
-    reverbConv.connect(reverbLP);
-    reverbLP.connect(reverbGain);
-    reverbGain.connect(wetMasterGain);
-
-    wetMasterGain.connect(limiter);
-    limiter.connect(masterOut);
-
-    function updateParams(s, isBypassed = false) {
-      const now = ac.currentTime;
-      if (isBypassed) {
-        dryBypassGain.gain.setTargetAtTime(1, now, 0.015);
-        wetMasterGain.gain.setTargetAtTime(0, now, 0.015);
-        return;
-      }
-
-      dryBypassGain.gain.setTargetAtTime(0, now, 0.015);
-      wetMasterGain.gain.setTargetAtTime(1, now, 0.015);
-
-      // 1. Throat Depth (Formant Shift): 50% is neutral, >50% deepens throat, <50% brightens/forwards
-      const tNorm = (s.throat - 50) / 50; // -1.0 to +1.0
-      throatF1.frequency.setTargetAtTime(480 - tNorm * 95, now, 0.02);
-      throatF1.gain.setTargetAtTime(tNorm * 7.5, now, 0.02);     // Up to ±7.5 dB throat body
-      mouthF2.frequency.setTargetAtTime(1550 - tNorm * 280, now, 0.02);
-      mouthF2.gain.setTargetAtTime(-tNorm * 6.5, now, 0.02);    // Inverse vowel balance
-
-      // 2. Dynamic Vowel Motion (Sweeps F1 and F2 continuously)
-      const vm = s.vowelmod / 100;
-      f1ModGain.gain.setTargetAtTime(vm * 130, now, 0.02);
-      f2ModGain.gain.setTargetAtTime(-vm * 280, now, 0.02);
-
-      // 3. Chest & Sub-Harmonic Body (Full studio range: up to +9.5 dB chest, -7 dB boxiness)
-      const ch = s.chest / 100;
-      chestShelf.gain.setTargetAtTime(ch * 9.5 - 1.0, now, 0.02);
-      boxCut.gain.setTargetAtTime(-ch * 7.0, now, 0.02);
-
-      // 4. AI Glare & Sibilance Eraser (Up to -10 dB at 3.15kHz and -12 dB at 6.5kHz + Ribbon roll-off)
-      const dg = s.deglare / 100;
-      harshBiteCut.gain.setTargetAtTime(-dg * 8.5, now, 0.02);
-      sibilanceCut.gain.setTargetAtTime(-dg * 11.5, now, 0.02);
-      // At 90-100% deglare, rolls highs down to 4.2 kHz like a vintage RCA 44 ribbon mic
-      const lpFreq = Math.max(4200, 18500 - Math.pow(dg, 1.3) * 14300);
-      ribbonLowpass.frequency.setTargetAtTime(lpFreq, now, 0.02);
-
-      // 5. Condenser Top Air (10.5 kHz) — from -6 dB dark to +8 dB airy shimmer
-      const airNorm = (s.air - 35) / 65;
-      highAirShelf.gain.setTargetAtTime(airNorm * 8.0, now, 0.02);
-
-      // 6. Pitch Drift & Human Vibrato
-      const p = s.pitch / 100;
-      driftGain.gain.setTargetAtTime(p * 0.0018, now, 0.02);
-      vibGain.gain.setTargetAtTime(p * 0.00048, now, 0.02);
-
-      // 7. Tube Level & Density
-      const dyn = s.dynamics / 100;
-      tapeShaper.curve = makeWarmTapeCurve(dyn * 0.85);
-      optoComp.threshold.setTargetAtTime(-8 - dyn * 22, now, 0.02);
-      optoComp.ratio.setTargetAtTime(1.5 + dyn * 4.5, now, 0.02);
-      makeupGain.gain.setTargetAtTime(1.0 + dyn * 0.55, now, 0.02);
-
-      // 8. Stereo L/R Vocal Doubler
-      const dbl = s.doubler / 100;
-      doublerGain.gain.setTargetAtTime(dbl * 0.65, now, 0.02);
-
-      // 9. Studio Room & Plate
-      const sp = s.space / 100;
-      reverbGain.gain.setTargetAtTime(sp * 0.70, now, 0.02);
-    }
-
-    updateParams(initialSettings, bypass);
-
-    return {
-      output: masterOut,
-      updateParams,
-      dispose() {
-        try {
-          driftLFO.stop();
-          vibLFO.stop();
-          vowelLFO.stop();
-          dblLFO.stop();
-        } catch (e) {}
-        try { masterOut.disconnect(); } catch (e) {}
-      }
-    };
-  }
-
-  // Real-Time Playback Engine
+  /* ------------------------------------------------------------------ *
+   *  Real-time playback
+   * ------------------------------------------------------------------ */
   function stopPlayback(resetOffset = true) {
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     if (activeSource) {
       activeSource.onended = null;
       try { activeSource.stop(); } catch (e) {}
       try { activeSource.disconnect(); } catch (e) {}
       activeSource = null;
     }
-    if (activeGraph) {
-      activeGraph.dispose();
-      activeGraph = null;
-    }
+    if (activeGraph) { activeGraph.dispose(); activeGraph = null; }
     isPlaying = false;
     $('meterFill').style.width = '0%';
     $('playOriginal').classList.remove('active-mode');
@@ -1190,16 +1308,17 @@ input[type="range"] {
     }
   }
 
-  function startLivePlayback(mode, offset = pauseOffset) {
+  async function startLivePlayback(mode, offset = pauseOffset, restart = false) {
     if (!sourceBuffer) return;
     const ac = ensureContext();
+    await ensureCal(ac.sampleRate);
 
-    if (isPlaying && activeGraph && offset === pauseOffset) {
+    if (isPlaying && activeGraph && !restart && offset === pauseOffset) {
       playMode = mode;
       activeGraph.updateParams(getSettings(), playMode === 'original');
       $('playOriginal').classList.toggle('active-mode', playMode === 'original');
       $('playHuman').classList.toggle('active-mode', playMode === 'human');
-      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Active DSP)');
+      setStatus(playMode === 'original' ? 'Playing Original (Dry)' : 'Playing Processed');
       return;
     }
 
@@ -1210,10 +1329,14 @@ input[type="range"] {
     src.buffer = sourceBuffer;
     src.loop = isLooping;
 
-    const graph = buildGraph(ac, src, getSettings(), mode === 'original');
+    const graph = buildGraph(ac, src, getSettings(), {
+      bypass: mode === 'original',
+      inTrimDb: ana ? ana.inTrimDb : 0,
+      matchGain: matchCache
+    });
     analyser = ac.createAnalyser();
     analyser.fftSize = 256;
-
+    meterData = new Uint8Array(analyser.fftSize);
     graph.output.connect(analyser);
     analyser.connect(ac.destination);
 
@@ -1221,7 +1344,7 @@ input[type="range"] {
     activeGraph = graph;
     isPlaying = true;
 
-    const safeOffset = Math.max(0, Math.min(offset, sourceBuffer.duration - 0.05));
+    const safeOffset = clamp(offset, 0, Math.max(0, sourceBuffer.duration - 0.05));
     startTime = ac.currentTime - safeOffset;
 
     $('playOriginal').classList.toggle('active-mode', mode === 'original');
@@ -1233,52 +1356,45 @@ input[type="range"] {
         setStatus('Playback finished');
       }
     };
-
     src.start(0, safeOffset);
-    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Humanised (Active DSP)');
+    setStatus(mode === 'original' ? 'Playing Original (Dry)' : 'Playing Processed');
+    scheduleMatch(0);
     tickVisualizer();
   }
 
   function tickVisualizer() {
     if (!isPlaying || !sourceBuffer || !ctx) return;
     let elapsed = ctx.currentTime - startTime;
-    if (isLooping) {
-      elapsed = elapsed % sourceBuffer.duration;
-    } else if (elapsed >= sourceBuffer.duration) {
-      elapsed = sourceBuffer.duration;
-    }
+    if (isLooping) elapsed = elapsed % sourceBuffer.duration;
+    else if (elapsed >= sourceBuffer.duration) elapsed = sourceBuffer.duration;
     pauseOffset = elapsed;
     drawWave(sourceBuffer, elapsed / sourceBuffer.duration);
     updateTimeReadout(elapsed, sourceBuffer.duration);
 
-    if (analyser) {
-      const td = new Uint8Array(analyser.fftSize);
-      analyser.getByteTimeDomainData(td);
+    if (analyser && meterData) {
+      analyser.getByteTimeDomainData(meterData);
       let peak = 0;
-      for (let i = 0; i < td.length; i++) {
-        const v = Math.abs((td[i] - 128) / 128);
+      for (let i = 0; i < meterData.length; i++) {
+        const v = Math.abs((meterData[i] - 128) / 128);
         if (v > peak) peak = v;
       }
-      $('meterFill').style.width = Math.min(100, peak * 115).toFixed(1) + '%';
+      $('meterFill').style.width = Math.min(100, peak * 100).toFixed(1) + '%';
     }
     rafId = requestAnimationFrame(tickVisualizer);
   }
 
   $('playOriginal').addEventListener('click', () => startLivePlayback('original', pauseOffset));
   $('playHuman').addEventListener('click', () => startLivePlayback('human', pauseOffset));
-  $('stop').addEventListener('click', () => {
-    stopPlayback(true);
-    setStatus('Stopped');
-  });
+  $('stop').addEventListener('click', () => { stopPlayback(true); setStatus('Stopped'); });
 
+  /* ------------------------------------------------------------------ *
+   *  Export
+   * ------------------------------------------------------------------ */
   function normalizeAudioBuffer(buf, targetPeak = 0.89125) {
     let maxPeak = 0;
     for (let c = 0; c < buf.numberOfChannels; c++) {
       const d = buf.getChannelData(c);
-      for (let i = 0; i < d.length; i++) {
-        const a = Math.abs(d[i]);
-        if (a > maxPeak) maxPeak = a;
-      }
+      for (let i = 0; i < d.length; i++) { const a = Math.abs(d[i]); if (a > maxPeak) maxPeak = a; }
     }
     if (maxPeak > 0.0001) {
       const gain = targetPeak / maxPeak;
@@ -1289,7 +1405,6 @@ input[type="range"] {
     }
   }
 
-  // WAV Encoder (16-bit & 24-bit)
   function encodeWAV(buf, bitDepth = 24) {
     const channels = buf.numberOfChannels;
     const rate = buf.sampleRate;
@@ -1299,32 +1414,19 @@ input[type="range"] {
     const dataSize = frames * blockAlign;
     const ab = new ArrayBuffer(44 + dataSize);
     const v = new DataView(ab);
-
-    function str(offset, s) {
-      for (let i = 0; i < s.length; i++) v.setUint8(offset + i, s.charCodeAt(i));
-    }
-
-    str(0, 'RIFF');
-    v.setUint32(4, 36 + dataSize, true);
-    str(8, 'WAVE');
-    str(12, 'fmt ');
-    v.setUint32(16, 16, true);
-    v.setUint16(20, 1, true);
-    v.setUint16(22, channels, true);
-    v.setUint32(24, rate, true);
-    v.setUint32(28, rate * blockAlign, true);
-    v.setUint16(32, blockAlign, true);
-    v.setUint16(34, bitDepth, true);
-    str(36, 'data');
-    v.setUint32(40, dataSize, true);
+    const str = (offset, s) => { for (let i = 0; i < s.length; i++) v.setUint8(offset + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + dataSize, true); str(8, 'WAVE'); str(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, channels, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * blockAlign, true);
+    v.setUint16(32, blockAlign, true); v.setUint16(34, bitDepth, true);
+    str(36, 'data'); v.setUint32(40, dataSize, true);
 
     const chData = Array.from({ length: channels }, (_, c) => buf.getChannelData(c));
     let off = 44;
-
     if (bitDepth === 24) {
       for (let i = 0; i < frames; i++) {
         for (let c = 0; c < channels; c++) {
-          const x = Math.max(-1, Math.min(1, chData[c][i]));
+          const x = clamp(chData[c][i], -1, 1);
           const sample = Math.round(x < 0 ? x * 8388608 : x * 8388607);
           v.setUint8(off, sample & 0xff);
           v.setUint8(off + 1, (sample >> 8) & 0xff);
@@ -1335,8 +1437,8 @@ input[type="range"] {
     } else {
       for (let i = 0; i < frames; i++) {
         for (let c = 0; c < channels; c++) {
-          const x = Math.max(-1, Math.min(1, chData[c][i]));
-          v.setInt16(off, x < 0 ? x * 32768 : x * 32767, true);
+          const x = clamp(chData[c][i], -1, 1);
+          v.setInt16(off, Math.round(x < 0 ? x * 32768 : x * 32767), true);
           off += 2;
         }
       }
@@ -1344,53 +1446,33 @@ input[type="range"] {
     return new Blob([ab], { type: 'audio/wav' });
   }
 
-  // MP3 Encoder via LameJS
   async function encodeMP3(buf, kbps = 320, onProgress = null) {
-    if (!window.lamejs) {
-      throw new Error('MP3 encoder library not loaded');
-    }
+    if (!window.lamejs) throw new Error('MP3 encoder library not loaded');
     const channels = Math.min(2, buf.numberOfChannels);
-    const sampleRate = buf.sampleRate;
-    const mp3encoder = new window.lamejs.Mp3Encoder(channels, sampleRate, kbps);
+    const enc = new window.lamejs.Mp3Encoder(channels, buf.sampleRate, kbps);
     const mp3Data = [];
-
-    const leftF32 = buf.getChannelData(0);
-    const rightF32 = channels > 1 ? buf.getChannelData(1) : leftF32;
-    const len = buf.length;
-
     const floatTo16 = arr => {
       const out = new Int16Array(arr.length);
       for (let i = 0; i < arr.length; i++) {
-        const s = Math.max(-1, Math.min(1, arr[i]));
-        out[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+        const s = clamp(arr[i], -1, 1);
+        out[i] = Math.round(s < 0 ? s * 0x8000 : s * 0x7FFF);
       }
       return out;
     };
-
-    const left16 = floatTo16(leftF32);
-    const right16 = channels > 1 ? floatTo16(rightF32) : null;
-
-    const blockSize = 1152 * 16;
+    const left16 = floatTo16(buf.getChannelData(0));
+    const right16 = channels > 1 ? floatTo16(buf.getChannelData(1)) : null;
+    const len = buf.length, blockSize = 1152 * 16;
     for (let i = 0; i < len; i += blockSize) {
-      const lChunk = left16.subarray(i, i + blockSize);
-      let mp3buf;
-      if (channels === 1) {
-        mp3buf = mp3encoder.encodeBuffer(lChunk);
-      } else {
-        const rChunk = right16.subarray(i, i + blockSize);
-        mp3buf = mp3encoder.encodeBuffer(lChunk, rChunk);
-      }
+      const l = left16.subarray(i, i + blockSize);
+      const mp3buf = channels === 1 ? enc.encodeBuffer(l) : enc.encodeBuffer(l, right16.subarray(i, i + blockSize));
       if (mp3buf.length > 0) mp3Data.push(mp3buf);
-
       if (onProgress && (i % (blockSize * 4) === 0)) {
         onProgress(Math.min(99, Math.round((i / len) * 100)));
         await new Promise(r => setTimeout(r, 0));
       }
     }
-
-    const endBuf = mp3encoder.flush();
+    const endBuf = enc.flush();
     if (endBuf.length > 0) mp3Data.push(endBuf);
-
     return new Blob(mp3Data, { type: 'audio/mpeg' });
   }
 
@@ -1402,65 +1484,40 @@ input[type="range"] {
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    setTimeout(() => {
-      a.remove();
-      URL.revokeObjectURL(url);
-    }, 60000);
+    setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 60000);
   }
 
   $('render').addEventListener('click', async () => {
     if (!sourceBuffer) return;
     $('render').disabled = true;
-    $('renderStatus').textContent = 'Rendering DSP master…';
+    $('renderStatus').textContent = 'Rendering master…';
     setStatus('Processing offline render…');
-
     try {
       const s = getSettings();
-      const tailSeconds = s.space > 2 ? 0.65 : 0.10;
-      const totalFrames = sourceBuffer.length + Math.ceil(sourceBuffer.sampleRate * tailSeconds);
-      const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-      // Always render in Stereo (2 channels) so the Stereo Vocal Doubler & Studio Plate are preserved!
-      const outChannels = Math.max(2, sourceBuffer.numberOfChannels);
-      const off = new Offline(outChannels, totalFrames, sourceBuffer.sampleRate);
-
-      const src = off.createBufferSource();
-      src.buffer = sourceBuffer;
-
-      const graph = buildGraph(off, src, s, false);
-      graph.output.connect(off.destination);
-      src.start(0);
-
-      processedBuffer = await off.startRendering();
-
-      if ($('normalizeChk').checked) {
-        normalizeAudioBuffer(processedBuffer, 0.89125);
-      }
+      const mg = await measureMatch(sourceBuffer, ana, s);
+      processedBuffer = await renderProcessed(sourceBuffer, s, { inTrimDb: ana.inTrimDb, matchGain: mg });
+      if ($('normalizeChk').checked) normalizeAudioBuffer(processedBuffer, 0.89125);
 
       const fmt = $('exportFormat').value;
-      if (fmt.startsWith('mp3')) {
+      const mp3Rates = [32000, 44100, 48000];
+      if (fmt.startsWith('mp3') && window.lamejs && mp3Rates.includes(processedBuffer.sampleRate)) {
         const kbps = fmt === 'mp3-320' ? 320 : 192;
-        if (!window.lamejs) {
-          lastExportBlob = encodeWAV(processedBuffer, 24);
-          lastExportFilename = `${currentBaseName}.wav`;
-          lastExportMime = 'audio/wav';
-          $('renderStatus').textContent = `Offline fallback: Exported 24-bit WAV`;
-        } else {
-          $('renderStatus').textContent = `Encoding ${kbps} kbps MP3 (0%)…`;
-          lastExportBlob = await encodeMP3(processedBuffer, kbps, pct => {
-            $('renderStatus').textContent = `Encoding ${kbps} kbps MP3 (${pct}%)…`;
-          });
-          lastExportFilename = `${currentBaseName}.mp3`;
-          lastExportMime = 'audio/mpeg';
-          $('renderStatus').textContent = `Exported ${kbps} kbps MP3 (${(lastExportBlob.size / 1048576).toFixed(2)} MB)`;
-        }
+        $('renderStatus').textContent = `Encoding ${kbps} kbps MP3 (0%)…`;
+        lastExportBlob = await encodeMP3(processedBuffer, kbps, pct => {
+          $('renderStatus').textContent = `Encoding ${kbps} kbps MP3 (${pct}%)…`;
+        });
+        lastExportFilename = `${currentBaseName}.mp3`;
+        lastExportMime = 'audio/mpeg';
+        $('renderStatus').textContent = `Exported ${kbps} kbps MP3 (${(lastExportBlob.size / 1048576).toFixed(2)} MB)`;
       } else {
-        const bits = fmt === 'wav-24' ? 24 : 16;
+        const bits = fmt === 'wav-16' ? 16 : 24;
         lastExportBlob = encodeWAV(processedBuffer, bits);
         lastExportFilename = `${currentBaseName}.wav`;
         lastExportMime = 'audio/wav';
-        $('renderStatus').textContent = `Exported ${bits}-bit WAV (${(lastExportBlob.size / 1048576).toFixed(1)} MB)`;
+        $('renderStatus').textContent = fmt.startsWith('mp3')
+          ? `MP3 encoder unavailable, exported ${bits}-bit WAV instead`
+          : `Exported ${bits}-bit WAV (${(lastExportBlob.size / 1048576).toFixed(1)} MB)`;
       }
-
       $('shareBtn').disabled = false;
       setStatus(`Master exported (${lastExportFilename})`);
       triggerDownload(lastExportBlob, lastExportFilename);
@@ -1490,7 +1547,7 @@ input[type="range"] {
   });
 
   drawWave(null, 0);
-  setVals(presets.deepchest);
+  setVals(presets[DEFAULT_PRESET]);
 })();
 </script>
 </body>
