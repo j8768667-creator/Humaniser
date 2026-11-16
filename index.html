@@ -482,6 +482,30 @@ input[type="range"] {
       <b>6. Close &amp; Airy</b>
       <span>Forward, dry, close-mic feel with open top air &amp; tighter dynamics</span>
     </button>
+    <button class="preset" data-preset="broadcast">
+      <b>7. Broadcast Radio</b>
+      <span>Tight, dense, upfront and dry: a polished radio / podcast voice</span>
+    </button>
+    <button class="preset" data-preset="tape">
+      <b>8. Vintage Tape</b>
+      <span>Dark, saturated, heavily leveled: an old record-room sound</span>
+    </button>
+    <button class="preset" data-preset="choir">
+      <b>9. Choir Stack</b>
+      <span>Maximum width and drift: one voice becomes a small ensemble</span>
+    </button>
+    <button class="preset" data-preset="hall">
+      <b>10. Ballad Hall</b>
+      <span>Big warm space, gentle vibrato and breath for slow emotional songs</span>
+    </button>
+    <button class="preset" data-preset="breathy">
+      <b>11. Breathy Soul</b>
+      <span>Lots of breath and air, soft and close with moving tone</span>
+    </button>
+    <button class="preset" data-preset="sheen">
+      <b>12. Bright Pop Sheen</b>
+      <span>Forward, glossy, wide and shimmering with controlled harshness</span>
+    </button>
   </div>
 </section>
 
@@ -540,7 +564,13 @@ input[type="range"] {
       <div class="hint">Parallel compression evens out quiet words; light tape warmth. Clean at 0%</div>
     </div>
 
-    <div class="control" style="grid-column: 1 / -1">
+    <div class="control">
+      <div class="controlhead"><label for="breath">Breath &amp; Texture</label><span class="value" id="breathV">15%</span></div>
+      <input id="breath" type="range" min="0" max="100" value="15">
+      <div class="hint">Adds airy breath noise that follows the voice, so it sounds less sterile and less "synthesised"</div>
+    </div>
+
+    <div class="control">
       <div class="controlhead"><label for="space">Room &amp; Plate</label><span class="value" id="spaceV">12%</span></div>
       <input id="space" type="range" min="0" max="100" value="12">
       <div class="hint">0% = dry booth · 25% = natural room · 60%+ = ballad hall</div>
@@ -600,15 +630,21 @@ input[type="range"] {
   let pauseOffset = 0;
   let rafId = null;
 
-  const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space'];
+  const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space', 'breath'];
 
   const presets = {
-    natural:    { throat: 58, deglare: 50, chest: 50, doubler: 0,  pitch: 25, vowelmod: 20, air: 55, dynamics: 50, space: 15 },
-    velvet:     { throat: 80, deglare: 60, chest: 75, doubler: 20, pitch: 25, vowelmod: 25, air: 15, dynamics: 55, space: 22 },
-    deglare:    { throat: 50, deglare: 95, chest: 35, doubler: 0,  pitch: 20, vowelmod: 10, air: 35, dynamics: 40, space: 10 },
-    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 90, pitch: 35, vowelmod: 20, air: 55, dynamics: 50, space: 30 },
-    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30, pitch: 90, vowelmod: 70, air: 50, dynamics: 50, space: 40 },
-    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10, pitch: 25, vowelmod: 15, air: 90, dynamics: 80, space: 8 }
+    natural:    { throat: 58, deglare: 50, chest: 50, doubler: 0,   pitch: 25, vowelmod: 20, air: 55,  dynamics: 50, space: 15, breath: 15 },
+    velvet:     { throat: 80, deglare: 60, chest: 75, doubler: 20,  pitch: 25, vowelmod: 25, air: 15,  dynamics: 55, space: 22, breath: 10 },
+    deglare:    { throat: 50, deglare: 95, chest: 35, doubler: 0,   pitch: 20, vowelmod: 10, air: 35,  dynamics: 40, space: 10, breath: 10 },
+    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 90,  pitch: 35, vowelmod: 20, air: 55,  dynamics: 50, space: 30, breath: 15 },
+    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30,  pitch: 90, vowelmod: 70, air: 50,  dynamics: 50, space: 40, breath: 30 },
+    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10,  pitch: 25, vowelmod: 15, air: 90,  dynamics: 80, space: 8,  breath: 40 },
+    broadcast:  { throat: 30, deglare: 55, chest: 55, doubler: 0,   pitch: 10, vowelmod: 5,  air: 60,  dynamics: 95, space: 0,  breath: 0 },
+    tape:       { throat: 78, deglare: 85, chest: 65, doubler: 25,  pitch: 45, vowelmod: 30, air: 0,   dynamics: 90, space: 20, breath: 20 },
+    choir:      { throat: 60, deglare: 55, chest: 55, doubler: 100, pitch: 55, vowelmod: 40, air: 55,  dynamics: 55, space: 55, breath: 10 },
+    hall:       { throat: 65, deglare: 60, chest: 60, doubler: 30,  pitch: 70, vowelmod: 50, air: 45,  dynamics: 60, space: 85, breath: 35 },
+    breathy:    { throat: 62, deglare: 55, chest: 55, doubler: 15,  pitch: 60, vowelmod: 45, air: 65,  dynamics: 55, space: 30, breath: 100 },
+    sheen:      { throat: 20, deglare: 70, chest: 35, doubler: 40,  pitch: 20, vowelmod: 10, air: 100, dynamics: 70, space: 18, breath: 15 }
   };
   const DEFAULT_PRESET = 'natural';
 
@@ -720,6 +756,20 @@ input[type="range"] {
     }
     return c;
   })();
+
+  const noiseCache = {};
+  function makeNoise(ac) {
+    const sr = ac.sampleRate;
+    if (noiseCache[sr]) return noiseCache[sr];
+    const len = sr * 4, b = ac.createBuffer(2, len, sr);
+    for (let ch = 0; ch < 2; ch++) {
+      let seed = ch ? 16180339 : 27182818;
+      const d = b.getChannelData(ch);
+      for (let i = 0; i < len; i++) { seed = (seed * 16807) % 2147483647; d[i] = (seed - 1) / 1073741823.5 - 1; }
+    }
+    noiseCache[sr] = b;
+    return b;
+  }
 
   const irCache = {};
   function makePlateIR(ac) {
@@ -910,6 +960,18 @@ input[type="range"] {
     const revGain = G(0);
     levOut.connect(revHP); revHP.connect(conv); conv.connect(revLP); revLP.connect(revGain); revGain.connect(bus);
 
+    // Breath & texture: band-limited noise whose level follows the voice envelope
+    const noiseSrc = ac.createBufferSource();
+    noiseSrc.buffer = makeNoise(ac); noiseSrc.loop = true; noiseSrc.start(0);
+    oscs.push(noiseSrc);
+    const nHP = BQ('highpass', 2500), nLP = BQ('lowpass', 9000);
+    const absShaper = ac.createWaveShaper();
+    absShaper.curve = new Float32Array([1, 0, 1]);
+    const envLP = BQ('lowpass', 25);
+    const envGain = G(0), breathGain = G(0);
+    levOut.connect(absShaper); absShaper.connect(envLP); envLP.connect(envGain); envGain.connect(breathGain.gain);
+    noiseSrc.connect(nHP); nHP.connect(nLP); nLP.connect(breathGain); breathGain.connect(bus);
+
     // ---- 9. Restore loudness + safety ceiling ----
     const outGain = G(matchGain / inTrim);
     const ceiling = ac.createWaveShaper();
@@ -958,6 +1020,8 @@ input[type="range"] {
       set(satWetG.gain, dyn * 0.8);
       set(satDryG.gain, 1 - dyn * 0.8);
       set(levWetG.gain, (dyn * 1.0) / cal.lev.gain);
+
+      set(envGain.gain, ((s.breath || 0) / 100) * 0.45);
 
       // Sends
       set(dblGain.gain, (s.doubler / 100) * 0.85);
@@ -1074,7 +1138,6 @@ input[type="range"] {
     if (normalize) normalizeAudioBuffer(out, 0.89125);
     return out;
   }
-  window.__HV = { buildGraph, presets, processFull, renderProcessed, analyseSource, measureMatch, ensureCal, CAL };
 
   // Debounced live loudness match
   let matchTimer = null, matchToken = 0, matchCache = 1;
