@@ -819,6 +819,13 @@ input[type="range"] {
     return modCache;
   }
 
+  // Soft cap on the breath envelope: y = c * tanh(x / c)
+  const BREATH_CAP_CURVE = (() => {
+    const n = 2049, c = 0.06, cur = new Float32Array(n);
+    for (let i = 0; i < n; i++) { const x = (i / (n - 1)) * 2 - 1; cur[i] = c * Math.tanh(x / c); }
+    return cur;
+  })();
+
   const noiseCache = {};
   function makeNoise(ac) {
     const sr = ac.sampleRate;
@@ -1198,10 +1205,16 @@ input[type="range"] {
     noiseSrc.buffer = makeNoise(ac); noiseSrc.loop = true; noiseSrc.start(0);
     oscs.push(noiseSrc);
     const bMul = G(0), bScale = G(0);
+    // The follower only listens to the vocal midrange (kicks and cymbals can't trigger it), is slow
+    // enough to ignore single hits, and is capped so breath can never exceed a fixed ceiling.
+    const bBandHP = BQ('highpass', 350), bBandHP2 = BQ('highpass', 350), bBandLP = BQ('lowpass', 3000);
     const bAbs = ac.createWaveShaper();
     bAbs.curve = new Float32Array([1, 0, 1]);
-    const bEnv = BQ('lowpass', 30);
-    levOut.connect(bAbs); bAbs.connect(bEnv); bEnv.connect(bScale); bScale.connect(bMul.gain);
+    const bEnv = BQ('lowpass', 6);
+    const bCap = ac.createWaveShaper();
+    bCap.curve = BREATH_CAP_CURVE;
+    levOut.connect(bBandHP); bBandHP.connect(bBandHP2); bBandHP2.connect(bBandLP); bBandLP.connect(bAbs); bAbs.connect(bEnv);
+    bEnv.connect(bCap); bCap.connect(bScale); bScale.connect(bMul.gain);
     noiseSrc.connect(bMul);
     const bHP = BQ('highpass', 450), bF1 = BQ('peaking', 700, 1.5, 4), bF2 = BQ('peaking', 1700, 1.5, 3);
     const bF3 = BQ('peaking', 3000, 1.5, 2), bLP1 = BQ('lowpass', 4500), bLP2 = BQ('lowpass', 4500);
@@ -1261,7 +1274,7 @@ input[type="range"] {
       set(satDryG.gain, 1 - dyn * 0.6);
       set(levWetG.gain, (dyn * 0.8) / cal.lev.gain);
 
-      set(bScale.gain, ((s.breath || 0) / 100) * 0.28);
+      set(bScale.gain, ((s.breath || 0) / 100) * 0.34);
 
       // Sends
       set(dblGain.gain, (s.doubler / 100) * 0.6);
