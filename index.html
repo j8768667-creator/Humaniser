@@ -458,52 +458,56 @@ input[type="range"] {
 <section class="panel">
   <h2>02 / Presets</h2>
   <div class="presetgrid" id="presets" style="margin-top:10px">
-    <button class="preset active" data-preset="natural">
-      <b>1. Natural Polish</b>
+    <button class="preset active" data-preset="human">
+      <b>Human Realism</b>
+      <span>Most human: random drift, jitter, shimmer, moving vowels and soft breath. Start here.</span>
+    </button>
+    <button class="preset" data-preset="natural">
+      <b>Natural Polish</b>
       <span>Gentle clean-up: tames glare, adds body &amp; air, light leveling. Start here.</span>
     </button>
     <button class="preset" data-preset="velvet">
-      <b>2. Warm Velvet</b>
+      <b>Warm Velvet</b>
       <span>Rounder, darker, fuller low-mids with softened top end</span>
     </button>
     <button class="preset" data-preset="deglare">
-      <b>3. De-Glare Clean</b>
+      <b>De-Glare Clean</b>
       <span>Strong metallic / sibilance control with a natural top end</span>
     </button>
     <button class="preset" data-preset="wide">
-      <b>4. Wide Double</b>
+      <b>Wide Double</b>
       <span>Detuned L/R vocal double + small room for a thicker, wider voice</span>
     </button>
     <button class="preset" data-preset="expressive">
-      <b>5. Expressive Drift</b>
+      <b>Expressive Drift</b>
       <span>More pitch drift &amp; vibrato, moving tone, medium plate</span>
     </button>
     <button class="preset" data-preset="intimate">
-      <b>6. Close &amp; Airy</b>
+      <b>Close &amp; Airy</b>
       <span>Forward, dry, close-mic feel with open top air &amp; tighter dynamics</span>
     </button>
     <button class="preset" data-preset="broadcast">
-      <b>7. Broadcast Radio</b>
+      <b>Broadcast Radio</b>
       <span>Tight, dense, upfront and dry: a polished radio / podcast voice</span>
     </button>
     <button class="preset" data-preset="tape">
-      <b>8. Vintage Tape</b>
+      <b>Vintage Tape</b>
       <span>Dark, saturated, heavily leveled: an old record-room sound</span>
     </button>
     <button class="preset" data-preset="choir">
-      <b>9. Choir Stack</b>
+      <b>Choir Stack</b>
       <span>Maximum width and drift: one voice becomes a small ensemble</span>
     </button>
     <button class="preset" data-preset="hall">
-      <b>10. Ballad Hall</b>
+      <b>Ballad Hall</b>
       <span>Big warm space, gentle vibrato and breath for slow emotional songs</span>
     </button>
     <button class="preset" data-preset="breathy">
-      <b>11. Breathy Soul</b>
+      <b>Breathy Soul</b>
       <span>Lots of breath and air, soft and close with moving tone</span>
     </button>
     <button class="preset" data-preset="sheen">
-      <b>12. Bright Pop Sheen</b>
+      <b>Bright Pop Sheen</b>
       <span>Forward, glossy, wide and shimmering with controlled harshness</span>
     </button>
   </div>
@@ -543,19 +547,19 @@ input[type="range"] {
     <div class="control">
       <div class="controlhead"><label for="pitch">Pitch Drift &amp; Vibrato</label><span class="value" id="pitchV">20%</span></div>
       <input id="pitch" type="range" min="0" max="100" value="20">
-      <div class="hint">Up to ±20 cents of vibrato plus slow drift. Keep low on already-expressive vocals</div>
+      <div class="hint">Random slow pitch drift plus a vibrato whose depth and speed wander. Keep low on already-expressive vocals</div>
     </div>
 
     <div class="control">
       <div class="controlhead"><label for="vowelmod">Tone Movement</label><span class="value" id="vowelmodV">15%</span></div>
       <input id="vowelmod" type="range" min="0" max="100" value="15">
-      <div class="hint">Slowly drifts the mid-range balance so sustained notes don't sound frozen</div>
+      <div class="hint">Vowel colour slowly wanders at random (three moving mid-range resonances) so sustained notes don't sound frozen</div>
     </div>
 
     <div class="control">
       <div class="controlhead"><label for="air">Top Air (11 kHz)</label><span class="value" id="airV">50%</span></div>
       <input id="air" type="range" min="0" max="100" value="50">
-      <div class="hint">40% = neutral · 0% = −6 dB darker · 100% = +9 dB open air</div>
+      <div class="hint">40% = neutral · 0% = −4 dB darker · 100% = +5 dB gentle air (kept low on purpose: it also lifts AI fizz)</div>
     </div>
 
     <div class="control">
@@ -567,10 +571,16 @@ input[type="range"] {
     <div class="control">
       <div class="controlhead"><label for="breath">Breath &amp; Texture</label><span class="value" id="breathV">15%</span></div>
       <input id="breath" type="range" min="0" max="100" value="15">
-      <div class="hint">Adds airy breath noise that follows the voice, so it sounds less sterile and less "synthesised"</div>
+      <div class="hint">Soft, voice-shaped breath (mid-range, no hiss) that follows the singing, so notes feel breathed rather than generated</div>
     </div>
 
-    <div class="control">
+    <div class="control highlight">
+      <div class="controlhead"><label for="micro">Human Imperfection</label><span class="value" id="microV">30%</span></div>
+      <input id="micro" type="range" min="0" max="100" value="30">
+      <div class="hint">Random pitch jitter, volume shimmer and wandering vowel colour: the tiny irregularities real voices have and AI voices lack</div>
+    </div>
+
+    <div class="control" style="grid-column: 1 / -1">
       <div class="controlhead"><label for="space">Room &amp; Plate</label><span class="value" id="spaceV">12%</span></div>
       <input id="space" type="range" min="0" max="100" value="12">
       <div class="hint">0% = dry booth · 25% = natural room · 60%+ = ballad hall</div>
@@ -630,23 +640,24 @@ input[type="range"] {
   let pauseOffset = 0;
   let rafId = null;
 
-  const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space', 'breath'];
+  const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space', 'breath', 'micro'];
 
   const presets = {
-    natural:    { throat: 58, deglare: 50, chest: 50, doubler: 0,   pitch: 25, vowelmod: 20, air: 55,  dynamics: 50, space: 15, breath: 15 },
-    velvet:     { throat: 80, deglare: 60, chest: 75, doubler: 20,  pitch: 25, vowelmod: 25, air: 15,  dynamics: 55, space: 22, breath: 10 },
-    deglare:    { throat: 50, deglare: 95, chest: 35, doubler: 0,   pitch: 20, vowelmod: 10, air: 35,  dynamics: 40, space: 10, breath: 10 },
-    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 90,  pitch: 35, vowelmod: 20, air: 55,  dynamics: 50, space: 30, breath: 15 },
-    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30,  pitch: 90, vowelmod: 70, air: 50,  dynamics: 50, space: 40, breath: 30 },
-    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10,  pitch: 25, vowelmod: 15, air: 90,  dynamics: 80, space: 8,  breath: 40 },
-    broadcast:  { throat: 30, deglare: 55, chest: 55, doubler: 0,   pitch: 10, vowelmod: 5,  air: 60,  dynamics: 95, space: 0,  breath: 0 },
-    tape:       { throat: 78, deglare: 85, chest: 65, doubler: 25,  pitch: 45, vowelmod: 30, air: 0,   dynamics: 90, space: 20, breath: 20 },
-    choir:      { throat: 60, deglare: 55, chest: 55, doubler: 100, pitch: 55, vowelmod: 40, air: 55,  dynamics: 55, space: 55, breath: 10 },
-    hall:       { throat: 65, deglare: 60, chest: 60, doubler: 30,  pitch: 70, vowelmod: 50, air: 45,  dynamics: 60, space: 85, breath: 35 },
-    breathy:    { throat: 62, deglare: 55, chest: 55, doubler: 15,  pitch: 60, vowelmod: 45, air: 65,  dynamics: 55, space: 30, breath: 100 },
-    sheen:      { throat: 20, deglare: 70, chest: 35, doubler: 40,  pitch: 20, vowelmod: 10, air: 100, dynamics: 70, space: 18, breath: 15 }
+    human:      { throat: 55, deglare: 55, chest: 45, doubler: 15,  pitch: 55, vowelmod: 45, air: 40,  dynamics: 45, space: 15, breath: 40,  micro: 70 },
+    natural:    { throat: 58, deglare: 50, chest: 50, doubler: 0,   pitch: 25, vowelmod: 20, air: 50,  dynamics: 50, space: 15, breath: 15,  micro: 30 },
+    velvet:     { throat: 80, deglare: 60, chest: 75, doubler: 20,  pitch: 25, vowelmod: 25, air: 15,  dynamics: 55, space: 22, breath: 10,  micro: 25 },
+    deglare:    { throat: 50, deglare: 95, chest: 35, doubler: 0,   pitch: 20, vowelmod: 10, air: 35,  dynamics: 40, space: 10, breath: 10,  micro: 20 },
+    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 90,  pitch: 35, vowelmod: 20, air: 50,  dynamics: 50, space: 30, breath: 15,  micro: 35 },
+    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30,  pitch: 90, vowelmod: 70, air: 45,  dynamics: 50, space: 40, breath: 30,  micro: 55 },
+    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10,  pitch: 25, vowelmod: 15, air: 80,  dynamics: 80, space: 8,  breath: 40,  micro: 35 },
+    broadcast:  { throat: 30, deglare: 55, chest: 55, doubler: 0,   pitch: 10, vowelmod: 5,  air: 55,  dynamics: 95, space: 0,  breath: 0,   micro: 15 },
+    tape:       { throat: 78, deglare: 85, chest: 65, doubler: 25,  pitch: 45, vowelmod: 30, air: 0,   dynamics: 90, space: 20, breath: 20,  micro: 40 },
+    choir:      { throat: 60, deglare: 55, chest: 55, doubler: 100, pitch: 55, vowelmod: 40, air: 50,  dynamics: 55, space: 55, breath: 10,  micro: 60 },
+    hall:       { throat: 65, deglare: 60, chest: 60, doubler: 30,  pitch: 70, vowelmod: 50, air: 45,  dynamics: 60, space: 85, breath: 35,  micro: 45 },
+    breathy:    { throat: 62, deglare: 55, chest: 55, doubler: 15,  pitch: 60, vowelmod: 45, air: 55,  dynamics: 55, space: 30, breath: 100, micro: 50 },
+    sheen:      { throat: 20, deglare: 70, chest: 35, doubler: 40,  pitch: 20, vowelmod: 10, air: 90,  dynamics: 70, space: 18, breath: 15,  micro: 20 }
   };
-  const DEFAULT_PRESET = 'natural';
+  const DEFAULT_PRESET = 'human';
 
   /* ------------------------------------------------------------------ *
    *  Audio context
@@ -732,7 +743,7 @@ input[type="range"] {
     const lat = Math.round(0.006 * sr);
     return CAL[sr] || { lev: { gain: 1, lat }, des: { gain: 1, lat } };
   }
-  const PITCH_BASE = 0.004;
+  const PITCH_BASE = 0.008;
   function latencyFor(sr) {
     const c = getCal(sr);
     return PITCH_BASE + (c.lev.lat + c.des.lat) / sr;
@@ -756,6 +767,54 @@ input[type="range"] {
     }
     return c;
   })();
+
+  // Slow band-limited random signals (rms 1) used to modulate pitch, level and vowel colour.
+  // Random, not sine, so nothing ever repeats mechanically. Stored at 22.05 kHz to keep memory small.
+  let modCache = null;
+  function getModNoise(ac) {
+    if (modCache) return modCache;
+    const sr = 22050, N = Math.floor(sr * 23), M = sr * 2;
+    const bq = (type, f) => {
+      const w0 = 2 * Math.PI * f / sr, c = Math.cos(w0), al = Math.sin(w0) / (2 * 0.70710678);
+      const k = type === 'lp' ? [(1 - c) / 2, 1 - c, (1 - c) / 2] : [(1 + c) / 2, -(1 + c), (1 + c) / 2];
+      const a0 = 1 + al;
+      return { b0: k[0] / a0, b1: k[1] / a0, b2: k[2] / a0, a1: -2 * c / a0, a2: (1 - al) / a0, x1: 0, x2: 0, y1: 0, y2: 0 };
+    };
+    const step = (f, x) => {
+      const y = f.b0 * x + f.b1 * f.x1 + f.b2 * f.x2 - f.a1 * f.y1 - f.a2 * f.y2;
+      f.x2 = f.x1; f.x1 = x; f.y2 = f.y1; f.y1 = y; return y;
+    };
+    const make = (seed0, lo, hi) => {
+      let seed = seed0;
+      const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 1073741823.5 - 1; };
+      const chain = [bq('hp', lo), bq('hp', lo), bq('lp', hi), bq('lp', hi)];
+      const L = N + M, x = new Float64Array(L);
+      let sum = 0, sq = 0, cnt = 0;
+      for (let i = 0; i < L; i++) {
+        let v = rnd() + rnd() + rnd() + rnd();
+        for (const f of chain) v = step(f, v);
+        x[i] = v;
+        if (i > sr * 4) { sum += v; sq += v * v; cnt++; }     // statistics after filter warm-up
+      }
+      const mean = sum / cnt, sd = Math.sqrt(sq / cnt - mean * mean) || 1;
+      const out = new Float32Array(N);
+      for (let i = 0; i < N; i++) {
+        let v;
+        if (i < M) { const t = i / M; v = x[i] * Math.sqrt(t) + x[N + i] * Math.sqrt(1 - t); }   // seamless loop
+        else v = x[i];
+        out[i] = Math.max(-3, Math.min(3, (v - mean) / sd));
+      }
+      return out;
+    };
+    const defs = { drift: [0.15, 1.3, 11], jitter: [8, 35, 22], shimmer: [3, 22, 33], f1: [0.25, 1.6, 44], f2: [0.2, 1.1, 55] };
+    modCache = {};
+    for (const [k, [lo, hi, sd]] of Object.entries(defs)) {
+      const b = ac.createBuffer(1, N, sr);
+      b.getChannelData(0).set(make(sd * 7919, lo, hi));
+      modCache[k] = b;
+    }
+    return modCache;
+  }
 
   const noiseCache = {};
   function makeNoise(ac) {
@@ -881,31 +940,51 @@ input[type="range"] {
     inGain.connect(hp);
 
     // ---- 2. Pitch drift + vibrato (tiny, serial delay modulation) ----
+    const MOD = getModNoise(ac);
+    const RND = key => {
+      const n = ac.createBufferSource();
+      n.buffer = MOD[key]; n.loop = true; n.start(0);
+      oscs.push(n);
+      return n;
+    };
+    const nDrift = RND('drift'), nJit = RND('jitter'), nShim = RND('shimmer'), nF1 = RND('f1'), nF2 = RND('f2');
     const pitchDelay = DL(PITCH_BASE);
-    const drift1 = OSC(0.37), drift2 = OSC(0.61), vib = OSC(5.2);
-    const d1g = G(0), d2g = G(0), vg = G(0);
-    drift1.connect(d1g); d1g.connect(pitchDelay.delayTime);
-    drift2.connect(d2g); d2g.connect(pitchDelay.delayTime);
-    vib.connect(vg);     vg.connect(pitchDelay.delayTime);
+    const vib = OSC(5.2);
+    const vg = G(0), vibAmp = G(0), vibRate = G(0.6);
+    const driftG = G(0), jitG = G(0);
+    nDrift.connect(driftG); driftG.connect(pitchDelay.delayTime);          // slow random pitch drift
+    nJit.connect(jitG);     jitG.connect(pitchDelay.delayTime);            // fast cycle-to-cycle jitter
+    vib.connect(vg);        vg.connect(pitchDelay.delayTime);              // vibrato...
+    nDrift.connect(vibAmp); vibAmp.connect(vg.gain);                       // ...whose depth wanders
+    nF1.connect(vibRate);   vibRate.connect(vib.frequency);                // ...and whose speed wanders
+    const shimNode = G(1), shimG = G(0);
+    nShim.connect(shimG); shimG.connect(shimNode.gain);                    // volume shimmer
     hp.connect(pitchDelay);
+    pitchDelay.connect(shimNode);
 
     // ---- 3. Tone EQ (moderate gains) ----
     const body = BQ('lowshelf', 150);
     const mud = BQ('peaking', 300, 0.9);
     const dLow = BQ('peaking', 420, 0.8);
     const dHigh = BQ('peaking', 2200, 0.7);
-    const vowelLFO = OSC(0.31);
     const f1Mod = G(0), f2Mod = G(0);
-    vowelLFO.connect(f1Mod); f1Mod.connect(dLow.frequency);
-    vowelLFO.connect(f2Mod); f2Mod.connect(dHigh.frequency);
-    pitchDelay.connect(body); body.connect(mud); mud.connect(dLow); dLow.connect(dHigh);
+    nF1.connect(f1Mod); f1Mod.connect(dLow.frequency);
+    nF2.connect(f2Mod); f2Mod.connect(dHigh.frequency);
+    // three vowel-colour resonances whose gains wander randomly
+    const w1 = BQ('peaking', 700, 2.0), w2 = BQ('peaking', 1700, 2.0), w3 = BQ('peaking', 2900, 2.0);
+    const w1g = G(0), w2g = G(0), w3g = G(0);
+    nF2.connect(w1g); w1g.connect(w1.gain);
+    nF1.connect(w2g); w2g.connect(w2.gain);
+    nDrift.connect(w3g); w3g.connect(w3.gain);
+    shimNode.connect(body); body.connect(mud); mud.connect(dLow); dLow.connect(dHigh);
+    dHigh.connect(w1); w1.connect(w2); w2.connect(w3);
 
     // ---- 4. Static de-glare dips + air ----
     const harsh = BQ('peaking', 3200, 1.0);
     const fizz = BQ('peaking', 7000, 1.0);
     const air = BQ('highshelf', 11000);
     const fizzLP = BQ('lowpass', 21000, 0.6);
-    dHigh.connect(harsh); harsh.connect(fizz); fizz.connect(air); air.connect(fizzLP);
+    w3.connect(harsh); harsh.connect(fizz); fizz.connect(air); air.connect(fizzLP);
 
     // ---- 5. Split-band de-esser (Linkwitz-Riley 4th order @ 5.5 kHz) ----
     const dsIn = G(1), dsOut = G(1);
@@ -960,17 +1039,17 @@ input[type="range"] {
     const revGain = G(0);
     levOut.connect(revHP); revHP.connect(conv); conv.connect(revLP); revLP.connect(revGain); revGain.connect(bus);
 
-    // Breath & texture: band-limited noise whose level follows the voice envelope
+    // Breath: noise multiplied by the voice itself, so it is pulsed with the singing, then
+    // shaped like a vocal tract (mid-range, low-passed at 5 kHz) so it can never sound like a hi-hat
     const noiseSrc = ac.createBufferSource();
     noiseSrc.buffer = makeNoise(ac); noiseSrc.loop = true; noiseSrc.start(0);
     oscs.push(noiseSrc);
-    const nHP = BQ('highpass', 2500), nLP = BQ('lowpass', 9000);
-    const absShaper = ac.createWaveShaper();
-    absShaper.curve = new Float32Array([1, 0, 1]);
-    const envLP = BQ('lowpass', 25);
-    const envGain = G(0), breathGain = G(0);
-    levOut.connect(absShaper); absShaper.connect(envLP); envLP.connect(envGain); envGain.connect(breathGain.gain);
-    noiseSrc.connect(nHP); nHP.connect(nLP); nLP.connect(breathGain); breathGain.connect(bus);
+    const bMul = G(0), bScale = G(0);
+    levOut.connect(bScale); bScale.connect(bMul.gain);
+    noiseSrc.connect(bMul);
+    const bHP = BQ('highpass', 450), bF1 = BQ('peaking', 700, 1.5, 4), bF2 = BQ('peaking', 1700, 1.5, 3);
+    const bF3 = BQ('peaking', 3000, 1.5, 2), bLP1 = BQ('lowpass', 5000), bLP2 = BQ('lowpass', 5000);
+    bMul.connect(bHP); bHP.connect(bF1); bF1.connect(bF2); bF2.connect(bF3); bF3.connect(bLP1); bLP1.connect(bLP2); bLP2.connect(bus);
 
     // ---- 9. Restore loudness + safety ceiling ----
     const outGain = G(matchGain / inTrim);
@@ -989,10 +1068,12 @@ input[type="range"] {
       set(wetMaster.gain, bypassed ? 0 : 1);
 
       // Pitch: 12 cents vibrato @5.2 Hz + two slow drifts (~6 cents total)
-      const p = s.pitch / 100;
-      set(d1g.gain, p * 0.0011);
-      set(d2g.gain, p * 0.00068);
-      set(vg.gain, p * 0.00035);
+      const p = s.pitch / 100, mi = (s.micro || 0) / 100;
+      set(driftG.gain, p * 0.00040);         // a few cents rms of random drift at 100%
+      set(vg.gain, p * 0.00020);
+      set(vibAmp.gain, p * 0.00008);
+      set(jitG.gain, mi * 0.000035);         // about 0.5% rms cycle jitter at 100%
+      set(shimG.gain, mi * 0.10);            // about 0.8 dB rms of level shimmer at 100%
 
       // Tone
       const ch = s.chest / 100;
@@ -1002,8 +1083,11 @@ input[type="range"] {
       set(dLow.gain, depth * 5.5);
       set(dHigh.gain, -depth * 5.5);
       const vm = s.vowelmod / 100;
-      set(f1Mod.gain, vm * 160);
-      set(f2Mod.gain, -vm * 700);
+      set(f1Mod.gain, vm * 110);
+      set(f2Mod.gain, vm * 350);
+      set(w1g.gain, vm * 3.5);
+      set(w2g.gain, vm * 3.0);
+      set(w3g.gain, vm * 2.5);
 
       // De-glare
       const dg = s.deglare / 100;
@@ -1013,7 +1097,7 @@ input[type="range"] {
       const amt = Math.min(1, dg * 1.15);
       set(hiDryG.gain, 1 - amt);
       set(hiWetG.gain, amt / cal.des.gain);
-      set(air.gain, ((s.air - 40) / 60) * 9);
+      set(air.gain, s.air >= 40 ? ((s.air - 40) / 60) * 5 : ((s.air - 40) / 40) * 4);
 
       // Density
       const dyn = s.dynamics / 100;
@@ -1021,7 +1105,7 @@ input[type="range"] {
       set(satDryG.gain, 1 - dyn * 0.8);
       set(levWetG.gain, (dyn * 1.0) / cal.lev.gain);
 
-      set(envGain.gain, ((s.breath || 0) / 100) * 0.45);
+      set(bScale.gain, ((s.breath || 0) / 100) * 0.35);
 
       // Sends
       set(dblGain.gain, (s.doubler / 100) * 0.85);
