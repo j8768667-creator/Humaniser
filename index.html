@@ -511,6 +511,8 @@ input[type="range"] {
       <span>Forward, glossy, wide and shimmering with controlled harshness</span>
     </button>
   </div>
+  <label class="chk-label" style="margin-top:12px"><input type="checkbox" id="autoFit" checked> Auto-fit presets to this file</label>
+  <div class="small muted" id="profileInfo" style="margin-top:4px">Load a file and the app will analyse it, then scale each preset to suit it.</div>
 </section>
 
 <section class="panel">
@@ -643,20 +645,21 @@ input[type="range"] {
   const ids = ['throat', 'deglare', 'chest', 'doubler', 'pitch', 'vowelmod', 'air', 'dynamics', 'space', 'breath', 'micro'];
 
   const presets = {
-    human:      { throat: 55, deglare: 55, chest: 45, doubler: 15,  pitch: 55, vowelmod: 45, air: 40,  dynamics: 45, space: 15, breath: 40,  micro: 70 },
+    human:      { throat: 55, deglare: 55, chest: 45, doubler: 12,  pitch: 50, vowelmod: 40, air: 40,  dynamics: 45, space: 15, breath: 35,  micro: 60 },
     natural:    { throat: 58, deglare: 50, chest: 50, doubler: 0,   pitch: 25, vowelmod: 20, air: 50,  dynamics: 50, space: 15, breath: 15,  micro: 30 },
     velvet:     { throat: 80, deglare: 60, chest: 75, doubler: 20,  pitch: 25, vowelmod: 25, air: 15,  dynamics: 55, space: 22, breath: 10,  micro: 25 },
     deglare:    { throat: 50, deglare: 95, chest: 35, doubler: 0,   pitch: 20, vowelmod: 10, air: 35,  dynamics: 40, space: 10, breath: 10,  micro: 20 },
-    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 90,  pitch: 35, vowelmod: 20, air: 50,  dynamics: 50, space: 30, breath: 15,  micro: 35 },
-    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30,  pitch: 90, vowelmod: 70, air: 45,  dynamics: 50, space: 40, breath: 30,  micro: 55 },
-    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10,  pitch: 25, vowelmod: 15, air: 80,  dynamics: 80, space: 8,  breath: 40,  micro: 35 },
-    broadcast:  { throat: 30, deglare: 55, chest: 55, doubler: 0,   pitch: 10, vowelmod: 5,  air: 55,  dynamics: 95, space: 0,  breath: 0,   micro: 15 },
-    tape:       { throat: 78, deglare: 85, chest: 65, doubler: 25,  pitch: 45, vowelmod: 30, air: 0,   dynamics: 90, space: 20, breath: 20,  micro: 40 },
-    choir:      { throat: 60, deglare: 55, chest: 55, doubler: 100, pitch: 55, vowelmod: 40, air: 50,  dynamics: 55, space: 55, breath: 10,  micro: 60 },
-    hall:       { throat: 65, deglare: 60, chest: 60, doubler: 30,  pitch: 70, vowelmod: 50, air: 45,  dynamics: 60, space: 85, breath: 35,  micro: 45 },
-    breathy:    { throat: 62, deglare: 55, chest: 55, doubler: 15,  pitch: 60, vowelmod: 45, air: 55,  dynamics: 55, space: 30, breath: 100, micro: 50 },
-    sheen:      { throat: 20, deglare: 70, chest: 35, doubler: 40,  pitch: 20, vowelmod: 10, air: 90,  dynamics: 70, space: 18, breath: 15,  micro: 20 }
+    wide:       { throat: 55, deglare: 50, chest: 45, doubler: 80,  pitch: 35, vowelmod: 20, air: 50,  dynamics: 50, space: 30, breath: 15,  micro: 35 },
+    expressive: { throat: 60, deglare: 50, chest: 50, doubler: 30,  pitch: 80, vowelmod: 60, air: 45,  dynamics: 50, space: 40, breath: 30,  micro: 50 },
+    intimate:   { throat: 25, deglare: 45, chest: 25, doubler: 10,  pitch: 25, vowelmod: 15, air: 75,  dynamics: 60, space: 8,  breath: 35,  micro: 35 },
+    broadcast:  { throat: 30, deglare: 55, chest: 55, doubler: 0,   pitch: 10, vowelmod: 5,  air: 55,  dynamics: 75, space: 0,  breath: 0,   micro: 15 },
+    tape:       { throat: 78, deglare: 85, chest: 65, doubler: 25,  pitch: 45, vowelmod: 30, air: 0,   dynamics: 70, space: 20, breath: 15,  micro: 40 },
+    choir:      { throat: 60, deglare: 55, chest: 55, doubler: 90,  pitch: 55, vowelmod: 40, air: 50,  dynamics: 55, space: 55, breath: 10,  micro: 55 },
+    hall:       { throat: 65, deglare: 60, chest: 60, doubler: 30,  pitch: 65, vowelmod: 45, air: 45,  dynamics: 60, space: 80, breath: 30,  micro: 45 },
+    breathy:    { throat: 62, deglare: 55, chest: 55, doubler: 15,  pitch: 55, vowelmod: 45, air: 55,  dynamics: 55, space: 30, breath: 75,  micro: 45 },
+    sheen:      { throat: 20, deglare: 70, chest: 35, doubler: 40,  pitch: 20, vowelmod: 10, air: 85,  dynamics: 65, space: 18, breath: 15,  micro: 20 }
   };
+  let activePreset = null;
   const DEFAULT_PRESET = 'human';
 
   /* ------------------------------------------------------------------ *
@@ -892,6 +895,156 @@ input[type="range"] {
   }
 
   /* ------------------------------------------------------------------ *
+   *  File analysis for auto-fit presets
+   * ------------------------------------------------------------------ */
+  function fftInPlace(re, im) {
+    const n = re.length;
+    for (let i = 1, j = 0; i < n; i++) {
+      let bit = n >> 1;
+      for (; j & bit; bit >>= 1) j ^= bit;
+      j ^= bit;
+      if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+    }
+    for (let len = 2; len <= n; len <<= 1) {
+      const ang = -2 * Math.PI / len, wr = Math.cos(ang), wi = Math.sin(ang), h = len >> 1;
+      for (let i = 0; i < n; i += len) {
+        let cr = 1, ci = 0;
+        for (let j = 0; j < h; j++) {
+          const a = i + j, b = a + h;
+          const vr = re[b] * cr - im[b] * ci, vi = re[b] * ci + im[b] * cr;
+          re[b] = re[a] - vr; im[b] = im[a] - vi; re[a] += vr; im[a] += vi;
+          const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t;
+        }
+      }
+    }
+  }
+
+  // Spectral shape, dynamics and noise floor of the loudest part of the file
+  function toneProfile(buf, a) {
+    const sr = buf.sampleRate, N = 4096;
+    const nc = Math.min(2, buf.numberOfChannels), chs = [];
+    for (let c = 0; c < nc; c++) chs.push(buf.getChannelData(c));
+    const s0 = Math.floor(a.exStart * sr), s1 = Math.min(buf.length, Math.floor((a.exStart + a.exDur) * sr));
+    const thr = Math.max(1e-5, Math.pow(10, (a.rmsDb - 12) / 10));
+    const acc = new Float64Array(N / 2), re = new Float64Array(N), im = new Float64Array(N);
+    const win = new Float64Array(N);
+    for (let i = 0; i < N; i++) win[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1));
+    let cnt = 0;
+    for (let p = s0; p + N <= s1; p += N) {
+      let ms = 0;
+      for (let i = 0; i < N; i++) {
+        let v = 0;
+        for (const d of chs) v += d[p + i];
+        v /= nc; re[i] = v * win[i]; im[i] = 0; ms += v * v;
+      }
+      if (ms / N < thr) continue;
+      fftInPlace(re, im);
+      for (let i = 0; i < N / 2; i++) acc[i] += re[i] * re[i] + im[i] * im[i];
+      cnt++;
+    }
+    if (cnt < 3) return null;
+    const band = (f1, f2) => {
+      const hi = Math.min(f2, sr / 2 - 200);
+      let sum = 0, n = 0;
+      for (let i = Math.ceil(f1 * N / sr); i <= Math.floor(hi * N / sr); i++) { sum += acc[i]; n++; }
+      return 10 * Math.log10(sum / (n || 1) / cnt + 1e-30);
+    };
+    const tilt = (band(4000, 8000) - band(1000, 2000)) / 2;            // dB per octave, per-bin power
+    const fizz = band(10000, 16000) - band(4000, 8000);                // negative is normal
+    const mud = band(250, 500) - band(500, 1000);
+    // loudness spread and noise floor from 50 ms blocks
+    const db = [];
+    for (const p of a.powers) if (p > 1e-9) db.push(10 * Math.log10(p));
+    db.sort((x, y) => x - y);
+    const q = f => db.length ? db[Math.min(db.length - 1, Math.floor(f * db.length))] : -100;
+    const act = db.filter(v => v > -50);
+    const dr = act.length > 10 ? act[Math.floor(act.length * 0.9)] - act[Math.floor(act.length * 0.2)] : 10;
+    const floor = q(0.03);                       // the quietest few percent of the file, not fades
+    return { tilt, fizz, mud, dr, floor, noisy: floor > -58 && floor < a.rmsDb - 10 };
+  }
+
+  // How much does the pitch already move within a held note? (cents, median frame-to-frame)
+  function pitchMovement(buf, a) {
+    const sr = buf.sampleRate, dec = Math.max(1, Math.round(sr / 12000)), fs = sr / dec;
+    const nc = Math.min(2, buf.numberOfChannels);
+    const s0 = Math.floor(a.exStart * sr), s1 = Math.min(buf.length, Math.floor((a.exStart + a.exDur) * sr));
+    const n = Math.floor((s1 - s0) / dec);
+    if (n < 4096) return null;
+    const x = new Float32Array(n);
+    for (let c = 0; c < nc; c++) {
+      const d = buf.getChannelData(c);
+      for (let i = 0; i < n; i++) { let v = 0; for (let k = 0; k < dec; k++) v += d[s0 + i * dec + k]; x[i] += v / (dec * nc); }
+    }
+    const W = 1024, H = 512, lmin = Math.floor(fs / 500), lmax = Math.floor(fs / 80);
+    const f0 = [];
+    const r = new Float32Array(lmax + 2);
+    for (let p = 0; p + W + lmax + 1 <= n; p += H) {
+      let e0 = 0;
+      for (let j = 0; j < W; j++) e0 += x[p + j] * x[p + j];
+      if (e0 / W < 1e-7) { f0.push(0); continue; }
+      let best = 0;
+      for (let lag = lmin - 1; lag <= lmax + 1; lag++) {
+        let c = 0, e1 = 0;
+        for (let j = 0; j < W; j++) { const y = x[p + j + lag]; c += x[p + j] * y; e1 += y * y; }
+        r[lag] = c / Math.sqrt(e0 * e1 + 1e-12);
+        if (lag >= lmin && lag <= lmax && r[lag] > best) best = r[lag];
+      }
+      if (best < 0.75) { f0.push(0); continue; }
+      let bl = 0;
+      for (let lag = lmin; lag <= lmax; lag++) if (r[lag] >= 0.9 * best && r[lag] >= r[lag - 1] && r[lag] >= r[lag + 1]) { bl = lag; break; }
+      if (!bl) { f0.push(0); continue; }
+      const y0 = r[bl - 1], y1 = r[bl], y2 = r[bl + 1], den = y0 - 2 * y1 + y2;
+      const delta = den ? 0.5 * (y0 - y2) / den : 0;
+      f0.push(fs / (bl + clamp(delta, -1, 1)));
+    }
+    const mv = [];
+    for (let i = 1; i < f0.length; i++) {
+      if (f0[i] > 0 && f0[i - 1] > 0) {
+        const c = Math.abs(1200 * Math.log2(f0[i] / f0[i - 1]));
+        if (c < 80) mv.push(c);
+      }
+    }
+    if (mv.length < 8) return null;
+    mv.sort((p, q) => p - q);
+    return mv[Math.floor(mv.length / 2)];
+  }
+
+  // Scale a preset to the file: fix what is wrong with this recording, then add the preset's style
+  function fitPreset(base, prof, mv) {
+    const o = { ...base }, notes = [];
+    const lim = v => clamp(Math.round(v), 0, 100);
+    if (prof) {
+      const bright = clamp(prof.tilt + 9, -6, 8);           // dB/oct brighter than a typical voice
+      const fizzy = clamp(prof.fizz + 12, 0, 12);           // top-octave plateau (codec / AI fizz)
+      o.deglare = lim(base.deglare + 5 * Math.max(0, bright) + 2 * fizzy - 3 * Math.max(0, -bright));
+      o.air = lim(base.air - 5 * Math.max(0, bright) - 2.5 * fizzy + 4 * Math.max(0, -bright - 2));
+      o.throat = lim(base.throat + 3 * clamp(bright, -4, 5));
+      o.chest = lim(base.chest - 2.5 * clamp(prof.mud - 3, -4, 5));
+      o.dynamics = lim(base.dynamics + 2.5 * clamp(prof.dr - 10, -6, 6));
+      if (prof.noisy) { o.dynamics = Math.min(o.dynamics, 45); o.breath = lim(base.breath * 0.25); o.air = Math.min(o.air, base.air - 10); }
+      else if (prof.fizz > -6) o.breath = lim(base.breath * 0.5);
+    }
+    const stable = mv == null ? 0.8 : mv < 4 ? 1 : mv < 10 ? 0.75 : mv < 20 ? 0.5 : 0.3;
+    o.pitch = lim(base.pitch * stable);
+    o.micro = lim(base.micro * stable);
+    o.vowelmod = lim(base.vowelmod * (0.5 + 0.5 * stable));
+    return o;
+  }
+
+  function describeProfile(prof, mv) {
+    if (!prof) return 'File too short or quiet to analyse; using preset values as they are.';
+    const bright = prof.tilt + 9;
+    const parts = [];
+    parts.push(bright > 3 ? 'bright / harsh' : bright < -3 ? 'dark / dull' : 'balanced tone');
+    if (prof.fizz > -6) parts.push('high-frequency fizz');
+    parts.push(prof.mud > 8 ? 'boomy low-mids' : prof.mud < -1 ? 'thin low-mids' : 'normal body');
+    parts.push(mv == null ? 'pitch movement unknown' : mv < 4 ? `very steady pitch (${mv.toFixed(1)}¢)` : mv < 10 ? `fairly steady pitch (${mv.toFixed(1)}¢)` : `already expressive pitch (${mv.toFixed(1)}¢)`);
+    parts.push(`dynamic range ${prof.dr.toFixed(0)} dB`);
+    if (prof.noisy) parts.push('noisy background');
+    return 'This file: ' + parts.join(', ') + '.';
+  }
+
+  /* ------------------------------------------------------------------ *
    *  V6 CLEAN VOCAL ENGINE
    *
    *  source -> [trim to -20 dB RMS] -> HP -> pitch drift/vibrato -> tone EQ
@@ -971,7 +1124,7 @@ input[type="range"] {
     nF1.connect(f1Mod); f1Mod.connect(dLow.frequency);
     nF2.connect(f2Mod); f2Mod.connect(dHigh.frequency);
     // three vowel-colour resonances whose gains wander randomly
-    const w1 = BQ('peaking', 700, 2.0), w2 = BQ('peaking', 1700, 2.0), w3 = BQ('peaking', 2900, 2.0);
+    const w1 = BQ('peaking', 700, 1.2), w2 = BQ('peaking', 1700, 1.2), w3 = BQ('peaking', 2900, 1.2);
     const w1g = G(0), w2g = G(0), w3g = G(0);
     nF2.connect(w1g); w1g.connect(w1.gain);
     nF1.connect(w2g); w2g.connect(w2.gain);
@@ -1019,8 +1172,8 @@ input[type="range"] {
     levOut.connect(bus);
 
     // Doubler: two detuned, delayed copies hard-panned L/R
-    const dblHP = BQ('highpass', 180), dblLP = BQ('lowpass', 7500);
-    const dlL = DL(0.022), dlR = DL(0.031);
+    const dblHP = BQ('highpass', 250), dblLP = BQ('lowpass', 6500);
+    const dlL = DL(0.024), dlR = DL(0.037);
     const dLfoL = OSC(0.61), dLfoR = OSC(0.47);
     const dmL = G(0.00138), dmR = G(-0.00176);      // about +-9 cents of slow detune
     dLfoL.connect(dmL); dmL.connect(dlL.delayTime);
@@ -1048,7 +1201,7 @@ input[type="range"] {
     levOut.connect(bScale); bScale.connect(bMul.gain);
     noiseSrc.connect(bMul);
     const bHP = BQ('highpass', 450), bF1 = BQ('peaking', 700, 1.5, 4), bF2 = BQ('peaking', 1700, 1.5, 3);
-    const bF3 = BQ('peaking', 3000, 1.5, 2), bLP1 = BQ('lowpass', 5000), bLP2 = BQ('lowpass', 5000);
+    const bF3 = BQ('peaking', 3000, 1.5, 2), bLP1 = BQ('lowpass', 4500), bLP2 = BQ('lowpass', 4500);
     bMul.connect(bHP); bHP.connect(bF1); bF1.connect(bF2); bF2.connect(bF3); bF3.connect(bLP1); bLP1.connect(bLP2); bLP2.connect(bus);
 
     // ---- 9. Restore loudness + safety ceiling ----
@@ -1069,11 +1222,11 @@ input[type="range"] {
 
       // Pitch: 12 cents vibrato @5.2 Hz + two slow drifts (~6 cents total)
       const p = s.pitch / 100, mi = (s.micro || 0) / 100;
-      set(driftG.gain, p * 0.00040);         // a few cents rms of random drift at 100%
-      set(vg.gain, p * 0.00020);
-      set(vibAmp.gain, p * 0.00008);
-      set(jitG.gain, mi * 0.000035);         // about 0.5% rms cycle jitter at 100%
-      set(shimG.gain, mi * 0.10);            // about 0.8 dB rms of level shimmer at 100%
+      set(driftG.gain, p * 0.00030);         // a few cents rms of random drift at 100%
+      set(vg.gain, p * 0.00014);
+      set(vibAmp.gain, p * 0.00005);
+      set(jitG.gain, mi * 0.000018);         // about 0.25% rms cycle jitter at 100% (more reads as roughness/warble)
+      set(shimG.gain, mi * 0.06);            // about 0.5 dB rms of level shimmer at 100% (more reads as tremolo)
 
       // Tone
       const ch = s.chest / 100;
@@ -1085,9 +1238,9 @@ input[type="range"] {
       const vm = s.vowelmod / 100;
       set(f1Mod.gain, vm * 110);
       set(f2Mod.gain, vm * 350);
-      set(w1g.gain, vm * 3.5);
-      set(w2g.gain, vm * 3.0);
-      set(w3g.gain, vm * 2.5);
+      set(w1g.gain, vm * 2.2);
+      set(w2g.gain, vm * 2.0);
+      set(w3g.gain, vm * 1.6);
 
       // De-glare
       const dg = s.deglare / 100;
@@ -1101,14 +1254,14 @@ input[type="range"] {
 
       // Density
       const dyn = s.dynamics / 100;
-      set(satWetG.gain, dyn * 0.8);
-      set(satDryG.gain, 1 - dyn * 0.8);
-      set(levWetG.gain, (dyn * 1.0) / cal.lev.gain);
+      set(satWetG.gain, dyn * 0.6);
+      set(satDryG.gain, 1 - dyn * 0.6);
+      set(levWetG.gain, (dyn * 0.8) / cal.lev.gain);
 
-      set(bScale.gain, ((s.breath || 0) / 100) * 0.35);
+      set(bScale.gain, ((s.breath || 0) / 100) * 0.22);
 
       // Sends
-      set(dblGain.gain, (s.doubler / 100) * 0.85);
+      set(dblGain.gain, (s.doubler / 100) * 0.6);
       set(revGain.gain, (s.space / 100) * 0.9);
       first = false;
     }
@@ -1271,12 +1424,15 @@ input[type="range"] {
     processedBuffer = null;
     lastExportBlob = null;
     matchCache = 1;
+    try { tone = toneProfile(sourceBuffer, ana); } catch (e) { console.warn(e); tone = null; }
+    try { pitchMv = pitchMovement(sourceBuffer, ana); } catch (e) { console.warn(e); pitchMv = null; }
     $('shareBtn').disabled = true;
     enableTransport();
     drawWave(sourceBuffer, 0);
     updateTimeReadout(0, sourceBuffer.duration);
     $('renderStatus').textContent = 'Ready to render & export';
     setStatus(label);
+    applyPreset(activePreset || DEFAULT_PRESET);
     scheduleMatch(50);
   }
 
@@ -1366,6 +1522,7 @@ input[type="range"] {
 
   ids.forEach(k => {
     $(k).addEventListener('input', () => {
+      activePreset = null;
       updateValue(k);
       document.querySelectorAll('.preset').forEach(b => b.classList.remove('active'));
       pushLiveParams();
@@ -1373,18 +1530,28 @@ input[type="range"] {
     $(k).addEventListener('change', () => scheduleMatch(150));
   });
 
-  document.querySelectorAll('.preset').forEach(b => {
-    b.addEventListener('click', () => {
-      document.querySelectorAll('.preset').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      setVals(presets[b.dataset.preset]);
-    });
-  });
+  let tone = null, pitchMv = null;
+  function applyPreset(name) {
+    activePreset = name;
+    document.querySelectorAll('.preset').forEach(x => x.classList.toggle('active', x.dataset.preset === name));
+    const base = presets[name];
+    const fit = $('autoFit').checked && sourceBuffer && ana;
+    const vals = fit ? fitPreset(base, tone, pitchMv) : base;
+    setVals(vals);
+    if (fit) {
+      const diffs = ids.filter(k => Math.abs(vals[k] - base[k]) >= 5)
+        .map(k => `${$(k).closest('.control').querySelector('label').textContent.split(' (')[0]} ${vals[k] > base[k] ? '+' : ''}${vals[k] - base[k]}`);
+      $('profileInfo').textContent = describeProfile(tone, pitchMv) + (diffs.length ? ' Auto-fit adjusted: ' + diffs.join(', ') + '.' : ' The preset already suits it.');
+    } else if (!sourceBuffer) {
+      $('profileInfo').textContent = 'Load a file and the app will analyse it, then scale each preset to suit it.';
+    } else {
+      $('profileInfo').textContent = 'Auto-fit is off: preset values are used exactly as designed.';
+    }
+  }
+  document.querySelectorAll('.preset').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.preset)));
+  $('autoFit').addEventListener('change', () => { if (activePreset) applyPreset(activePreset); else $('profileInfo').textContent = $('autoFit').checked ? 'Pick a preset to auto-fit it.' : 'Auto-fit is off.'; });
 
-  $('reset').addEventListener('click', () => {
-    setVals(presets[DEFAULT_PRESET]);
-    document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === DEFAULT_PRESET));
-  });
+  $('reset').addEventListener('click', () => applyPreset(DEFAULT_PRESET));
 
   $('loopToggle').addEventListener('click', () => {
     isLooping = !isLooping;
@@ -1734,7 +1901,7 @@ input[type="range"] {
   });
 
   drawWave(null, 0);
-  setVals(presets[DEFAULT_PRESET]);
+  applyPreset(DEFAULT_PRESET);
 })();
 </script>
 </body>
