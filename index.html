@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d1016">
-<title>HumanVoice Studio V6.3 — Clean Vocal Polish & MP3 Desk</title>
+<title>HumanVoice Studio V6 — Clean Vocal Polish & MP3 Desk</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
 <style>
 :root {
@@ -1192,13 +1192,16 @@ input[type="range"] {
     const revGain = G(0);
     levOut.connect(revHP); revHP.connect(conv); conv.connect(revLP); revLP.connect(revGain); revGain.connect(bus);
 
-    // Breath: noise multiplied by the voice itself, so it is pulsed with the singing, then
-    // shaped like a vocal tract (mid-range, low-passed at 5 kHz) so it can never sound like a hi-hat
+    // Breath: mid-range noise whose level follows the SMOOTH loudness envelope of the voice.
+    // (Multiplying noise by the voice waveform itself acts like a ring modulator and sounds like fuzz.)
     const noiseSrc = ac.createBufferSource();
     noiseSrc.buffer = makeNoise(ac); noiseSrc.loop = true; noiseSrc.start(0);
     oscs.push(noiseSrc);
     const bMul = G(0), bScale = G(0);
-    levOut.connect(bScale); bScale.connect(bMul.gain);
+    const bAbs = ac.createWaveShaper();
+    bAbs.curve = new Float32Array([1, 0, 1]);
+    const bEnv = BQ('lowpass', 30);
+    levOut.connect(bAbs); bAbs.connect(bEnv); bEnv.connect(bScale); bScale.connect(bMul.gain);
     noiseSrc.connect(bMul);
     const bHP = BQ('highpass', 450), bF1 = BQ('peaking', 700, 1.5, 4), bF2 = BQ('peaking', 1700, 1.5, 3);
     const bF3 = BQ('peaking', 3000, 1.5, 2), bLP1 = BQ('lowpass', 4500), bLP2 = BQ('lowpass', 4500);
@@ -1258,7 +1261,7 @@ input[type="range"] {
       set(satDryG.gain, 1 - dyn * 0.6);
       set(levWetG.gain, (dyn * 0.8) / cal.lev.gain);
 
-      set(bScale.gain, ((s.breath || 0) / 100) * 0.22);
+      set(bScale.gain, ((s.breath || 0) / 100) * 0.28);
 
       // Sends
       set(dblGain.gain, (s.doubler / 100) * 0.6);
